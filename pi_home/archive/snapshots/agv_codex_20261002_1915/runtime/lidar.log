@@ -1,0 +1,10 @@
+[INFO] [launch]: All log files can be found below /home/khangho/.ros/log/2026-10-02-19-26-50-577810-khang-2430
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [sllidar_node-1]: process started with pid [2456]
+[sllidar_node-1] [INFO] [1790944011.288338665] [sllidar_node]: SLLidar running on ROS2 package SLLidar.ROS2 SDK Version:1.0.1, SLLIDAR SDK Version:2.1.0
+[sllidar_node-1] [INFO] [1790944011.810878840] [sllidar_node]: SLLidar S/N: A915E18DC2E699D6C89792F453B6416E
+[sllidar_node-1] [INFO] [1790944011.811063169] [sllidar_node]: Firmware Ver: 1.02
+[sllidar_node-1] [INFO] [1790944011.811100779] [sllidar_node]: Hardware Rev: 18
+[sllidar_node-1] [INFO] [1790944011.814012785] [sllidar_node]: SLLidar health status : 0
+[sllidar_node-1] [INFO] [1790944011.814159708] [sllidar_node]: SLLidar health status : OK.
+[sllidar_node-1] [INFO] [1790944012.116910873] [sllidar_node]: current scan mode: Standard, sample rate: 5 Khz, max_distance: 16.0 m, scan frequency:10.0 Hz, 

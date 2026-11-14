@@ -1,0 +1,9 @@
+{
+  "pid": 111847,
+  "backup": "/home/khangho/agv_spin_fix_20261020_xCz2NE/backup",
+  "status": "APPLIED_DISARMED",
+  "hashes": {
+    "agv_unified_brain.py": "e7290beff5a5daf910a15744731b9b1440052c69aec56a5a0d13b7d96a75d280",
+    "agv_speed_profile.py": "ece845e19e9890499e9d3bf446896a99fff4a848f65a29f1bc5e94d29af83fc5"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "timestamp_utc": "2026-10-22T18:30:32Z",
+  "status": "APPLIED_DISARMED",
+  "pi_host": "khang.local",
+  "pi_root": "/home/khangho/agv_codex_reader_20261003_0652",
+  "brain_pid_before": 8929,
+  "brain_pid_after": 10005,
+  "brain_cmd": [
+    "python3",
+    "-B",
+    "-u",
+    "agv_unified_brain.py",
+    "--operator-control"
+  ],
+  "brain_exe": "/usr/bin/python3.12",
+  "brain_cwd": "/home/khangho/agv_codex_reader_20261003_0652",
+  "backup_dir": "/home/khangho/agv_smooth_navigation_20261022_1819/backup",
+  "staging_dir": "/home/khangho/agv_smooth_navigation_20261022_1819",
+  "deployed_files": {
+    "agv_unified_brain.py": {
+      "sha256": "2b9da1132091b209730caf643a577cb9d325d5d52ac258f30f23e70a0a50cf7b",
+      "before_sha256": "89e0c0d3b3b6b4aaf48a6ad0ae32042ac78110cb7407ce4beebc3c7e8988b200"
+    },
+    "agv_speed_profile.py": {
+      "sha256": "205d9bcab8a9324dce2f250d6a681f256a3fc102b074f23c89751b0fbaba19c8",
+      "before_sha256": "ece845e19e9890499e9d3bf446896a99fff4a848f65a29f1bc5e94d29af83fc5"
+    }
+  },
+  "verification": {
+    "http_ui_status": 200,
+    "auto_mode": false,
+    "armed": false,
+    "mcu_safety": "DISARMED",
+    "motor_rpms": {
+      "left": 0.0,
+      "right": 0.0
+    },
+    "motor_pwms": {
+      "left": 0,
+      "right": 0
+    },
+    "velocities": {
+      "v": 0.0,
+      "w": 0.0
+    },
+    "d0_age_s": 0.05592521200014744,
+    "has_map": true,
+    "map_size": [
+      219,
+      175
+    ],
+    "home": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "trajectory_points": 0,
+    "distance_m": 0.0,
+    "preflight_ready": true,
+    "rpm_profile_enabled": true
+  }
+}

@@ -1,0 +1,356 @@
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+Traceback (most recent call last):
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 307, in main
+    rclpy.spin(node)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+    executor.spin_once()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 918, in _spin_once_impl
+    raise handler.exception()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 286, in _execute_coroutine_step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 592, in handler
+    await call_coroutine()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 454, in _execute
+    await await_or_execute(tmr.callback)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 115, in await_or_execute
+    return callback(*args)
+           ^^^^^^^^^^^^^^^
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275, in on_timer
+    p.point.z = float(support)   # do rong cum (so cot)
+                      ^^^^^^^
+NameError: name 'support' is not defined
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+Traceback (most recent call last):
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 307, in main
+    rclpy.spin(node)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+    executor.spin_once()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 918, in _spin_once_impl
+    raise handler.exception()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 286, in _execute_coroutine_step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 592, in handler
+    await call_coroutine()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 454, in _execute
+    await await_or_execute(tmr.callback)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 115, in await_or_execute
+    return callback(*args)
+           ^^^^^^^^^^^^^^^
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275, in on_timer
+    p.point.z = float(support)   # do rong cum (so cot)
+                      ^^^^^^^
+NameError: name 'support' is not defined
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+Traceback (most recent call last):
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 307, in main
+    rclpy.spin(node)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+    executor.spin_once()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 918, in _spin_once_impl
+    raise handler.exception()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 286, in _execute_coroutine_step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 592, in handler
+    await call_coroutine()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 454, in _execute
+    await await_or_execute(tmr.callback)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 115, in await_or_execute
+    return callback(*args)
+           ^^^^^^^^^^^^^^^
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275, in on_timer
+    p.point.z = float(support)   # do rong cum (so cot)
+                      ^^^^^^^
+NameError: name 'support' is not defined
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+Traceback (most recent call last):
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 307, in main
+    rclpy.spin(node)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+    executor.spin_once()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 918, in _spin_once_impl
+    raise handler.exception()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 286, in _execute_coroutine_step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 592, in handler
+    await call_coroutine()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 454, in _execute
+    await await_or_execute(tmr.callback)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 115, in await_or_execute
+    return callback(*args)
+           ^^^^^^^^^^^^^^^
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275, in on_timer
+    p.point.z = float(support)   # do rong cum (so cot)
+                      ^^^^^^^
+NameError: name 'support' is not defined
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+Traceback (most recent call last):
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 307, in main
+    rclpy.spin(node)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+    executor.spin_once()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 918, in _spin_once_impl
+    raise handler.exception()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 286, in _execute_coroutine_step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 592, in handler
+    await call_coroutine()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 454, in _execute
+    await await_or_execute(tmr.callback)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 115, in await_or_execute
+    return callback(*args)
+           ^^^^^^^^^^^^^^^
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275, in on_timer
+    p.point.z = float(support)   # do rong cum (so cot)
+                      ^^^^^^^
+NameError: name 'support' is not defined
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+Traceback (most recent call last):
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 307, in main
+    rclpy.spin(node)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+    executor.spin_once()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 918, in _spin_once_impl
+    raise handler.exception()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 286, in _execute_coroutine_step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 592, in handler
+    await call_coroutine()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 454, in _execute
+    await await_or_execute(tmr.callback)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 115, in await_or_execute
+    return callback(*args)
+           ^^^^^^^^^^^^^^^
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275, in on_timer
+    p.point.z = float(support)   # do rong cum (so cot)
+                      ^^^^^^^
+NameError: name 'support' is not defined
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+Traceback (most recent call last):
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 307, in main
+    rclpy.spin(node)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+    executor.spin_once()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 918, in _spin_once_impl
+    raise handler.exception()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 286, in _execute_coroutine_step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 592, in handler
+    await call_coroutine()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 454, in _execute
+    await await_or_execute(tmr.callback)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 115, in await_or_execute
+    return callback(*args)
+           ^^^^^^^^^^^^^^^
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275, in on_timer
+    p.point.z = float(support)   # do rong cum (so cot)
+                      ^^^^^^^
+NameError: name 'support' is not defined
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+Traceback (most recent call last):
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 307, in main
+    rclpy.spin(node)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+    executor.spin_once()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 918, in _spin_once_impl
+    raise handler.exception()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 286, in _execute_coroutine_step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 592, in handler
+    await call_coroutine()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 454, in _execute
+    await await_or_execute(tmr.callback)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 115, in await_or_execute
+    return callback(*args)
+           ^^^^^^^^^^^^^^^
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275, in on_timer
+    p.point.z = float(support)   # do rong cum (so cot)
+                      ^^^^^^^
+NameError: name 'support' is not defined
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+Traceback (most recent call last):
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 307, in main
+    rclpy.spin(node)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+    executor.spin_once()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 918, in _spin_once_impl
+    raise handler.exception()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 286, in _execute_coroutine_step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 592, in handler
+    await call_coroutine()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 454, in _execute
+    await await_or_execute(tmr.callback)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 115, in await_or_execute
+    return callback(*args)
+           ^^^^^^^^^^^^^^^
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275, in on_timer
+    p.point.z = float(support)   # do rong cum (so cot)
+                      ^^^^^^^
+NameError: name 'support' is not defined
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+Traceback (most recent call last):
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 307, in main
+    rclpy.spin(node)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+    executor.spin_once()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 918, in _spin_once_impl
+    raise handler.exception()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 286, in _execute_coroutine_step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 592, in handler
+    await call_coroutine()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 454, in _execute
+    await await_or_execute(tmr.callback)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 115, in await_or_execute
+    return callback(*args)
+           ^^^^^^^^^^^^^^^
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275, in on_timer
+    p.point.z = float(support)   # do rong cum (so cot)
+                      ^^^^^^^
+NameError: name 'support' is not defined
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+Traceback (most recent call last):
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 307, in main
+    rclpy.spin(node)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+    executor.spin_once()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 918, in _spin_once_impl
+    raise handler.exception()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 286, in _execute_coroutine_step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 592, in handler
+    await call_coroutine()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 454, in _execute
+    await await_or_execute(tmr.callback)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 115, in await_or_execute
+    return callback(*args)
+           ^^^^^^^^^^^^^^^
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275, in on_timer
+    p.point.z = float(support)   # do rong cum (so cot)
+                      ^^^^^^^
+NameError: name 'support' is not defined
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+Traceback (most recent call last):
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 307, in main
+    rclpy.spin(node)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 247, in spin
+    executor.spin_once()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 918, in _spin_once_impl
+    raise handler.exception()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 286, in _execute_coroutine_step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 592, in handler
+    await call_coroutine()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 454, in _execute
+    await await_or_execute(tmr.callback)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 115, in await_or_execute
+    return callback(*args)
+           ^^^^^^^^^^^^^^^
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275, in on_timer
+    p.point.z = float(support)   # do rong cum (so cot)
+                      ^^^^^^^
+NameError: name 'support' is not defined
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275
+    p.point.z = float(state.get(" support\, 0) or 0) # do rong cum (so cot)
+                                ^
+SyntaxError: unterminated string literal (detected at line 275)
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275
+    p.point.z = float(state.get(" support\, 0) or 0) # do rong cum (so cot)
+                                ^
+SyntaxError: unterminated string literal (detected at line 275)
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275
+    p.point.z = float(state.get(" support\, 0) or 0) # do rong cum (so cot)
+                                ^
+SyntaxError: unterminated string literal (detected at line 275)
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275
+    p.point.z = float(state.get(" support\, 0) or 0) # do rong cum (so cot)
+                                ^
+SyntaxError: unterminated string literal (detected at line 275)
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275
+    p.point.z = float(state.get(" support\, 0) or 0) # do rong cum (so cot)
+                                ^
+SyntaxError: unterminated string literal (detected at line 275)
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275
+    p.point.z = float(state.get(" support\, 0) or 0) # do rong cum (so cot)
+                                ^
+SyntaxError: unterminated string literal (detected at line 275)
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275
+    p.point.z = float(state.get(" support\, 0) or 0) # do rong cum (so cot)
+                                ^
+SyntaxError: unterminated string literal (detected at line 275)
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275
+    p.point.z = float(state.get(" support\, 0) or 0) # do rong cum (so cot)
+                                ^
+SyntaxError: unterminated string literal (detected at line 275)
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275
+    p.point.z = float(state.get(" support\, 0) or 0) # do rong cum (so cot)
+                                ^
+SyntaxError: unterminated string literal (detected at line 275)
+  File "/home/khangho/agv-cam/nodes/cam_range_node.py", line 275
+    p.point.z = float(state.get(" support\, 0) or 0) # do rong cum (so cot)
+                                ^
+SyntaxError: unterminated string literal (detected at line 275)
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz
+[cam_range] A=54.9 v0=177.8 rms=0.016 cx=320.2 fx=457.4 valid=0.20-1.00 m
+[cam_range] publish /cam_range, /cam_obstacle @ 10.0 Hz

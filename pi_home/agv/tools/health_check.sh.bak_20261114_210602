@@ -1,0 +1,30 @@
+#!/bin/bash
+# Tu kiem tra: neu LiDAR khong toi brain qua 30s thi restart agv (toi da 1 lan / 5 phut)
+STATE=/tmp/agv_health_last_restart
+NOW=$(date +%s)
+LAST=0
+[ -f "$STATE" ] && LAST=$(cat "$STATE" 2>/dev/null || echo 0)
+
+python3 - "$NOW" "$LAST" "$STATE" <<'PY'
+import json, subprocess, sys, urllib.request
+
+now = int(sys.argv[1]); last = int(sys.argv[2]); state = sys.argv[3]
+try:
+    with urllib.request.urlopen('http://127.0.0.1:8080/api/telemetry', timeout=6) as r:
+        t = json.loads(r.read().decode())
+except Exception:
+    sys.exit(0)
+
+lidar = t.get('lidar') or {}
+age = lidar.get('age_s')
+stale = (lidar.get('connected') is False) and (age is not None) and (age > 30)
+if not stale:
+    sys.exit(0)
+if now - last < 300:
+    sys.exit(0)          # vua restart gan day, tranh lap vo han
+with open(state, 'w') as fh:
+    fh.write(str(now))
+print("RESTART: lidar age=%.0fs" % age, flush=True)
+subprocess.run(['sudo', '-n', 'systemctl', 'restart', 'agv'], timeout=60)
+PY
+

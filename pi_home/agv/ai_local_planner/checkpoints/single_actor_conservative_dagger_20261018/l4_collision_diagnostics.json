@@ -1,0 +1,446 @@
+{
+  "checkpoint": "ai_local_planner\\checkpoints\\single_actor_conservative_dagger_20261018\\retention_candidate.pth",
+  "diagnosed_seeds": 12,
+  "failed_rollouts": [
+    {
+      "seed": 13104003,
+      "success": false,
+      "collision": true,
+      "steps": 230,
+      "prior_15_avg_actual_v_mps": 0.21915037072780874,
+      "prior_15_avg_front_clearance_m": 0.3380551386052347,
+      "prior_15_avg_radial_clearance_m": 0.338000780565073,
+      "prior_15_avg_context_probability": 0.6117728173732757,
+      "prior_15_avg_context_gain": 1.0,
+      "prior_15_avg_action_abs_error": 0.8852301282652965,
+      "prior_15_student_action": [
+        0.3122361193100611,
+        -0.12508086894328396
+      ],
+      "prior_15_teacher_action": [
+        -0.810818076133728,
+        0.1587885243197282
+      ],
+      "last_step": {
+        "actual_speed_mps": 0.14211635101637818,
+        "applied_omega_radps": -0.2560385698586025,
+        "front_clearance_m": 0.190278746194261,
+        "radial_clearance_m": 0.18981056887015932,
+        "student_action": [
+          -0.19397872686386108,
+          -0.19015182554721832
+        ],
+        "teacher_action": [
+          -1.0,
+          0.08180331438779831
+        ],
+        "p4": 0.5911762118339539,
+        "gain": 1.0
+      }
+    },
+    {
+      "seed": 13104011,
+      "success": false,
+      "collision": true,
+      "steps": 107,
+      "prior_15_avg_actual_v_mps": 0.22767089025790277,
+      "prior_15_avg_front_clearance_m": 3.0919499327258384,
+      "prior_15_avg_radial_clearance_m": 0.2451656939511216,
+      "prior_15_avg_context_probability": 0.3159418726960818,
+      "prior_15_avg_context_gain": 0.9535081009070079,
+      "prior_15_avg_action_abs_error": 0.7207167085492984,
+      "prior_15_student_action": [
+        0.2565295054887732,
+        -0.014672187824423115
+      ],
+      "prior_15_teacher_action": [
+        -0.17023172378540039,
+        1.0
+      ],
+      "last_step": {
+        "actual_speed_mps": 0.2752946816081967,
+        "applied_omega_radps": -0.056160568163600426,
+        "front_clearance_m": 2.3062271703379307,
+        "radial_clearance_m": 0.18741030818668597,
+        "student_action": [
+          0.8312132954597473,
+          0.1591990888118744
+        ],
+        "teacher_action": [
+          0.005984187126159668,
+          1.0
+        ],
+        "p4": 0.037235938012599945,
+        "gain": 0.3026215136051178
+      }
+    },
+    {
+      "seed": 13104022,
+      "success": false,
+      "collision": true,
+      "steps": 191,
+      "prior_15_avg_actual_v_mps": 0.26311594101220104,
+      "prior_15_avg_front_clearance_m": 3.6554369025685203,
+      "prior_15_avg_radial_clearance_m": 0.2811643904949586,
+      "prior_15_avg_context_probability": 0.6292177577813466,
+      "prior_15_avg_context_gain": 1.0,
+      "prior_15_avg_action_abs_error": 0.93622519467026,
+      "prior_15_student_action": [
+        0.49501309196154275,
+        -0.07622510977089406
+      ],
+      "prior_15_teacher_action": [
+        -0.3100000222524007,
+        0.9912121653556824
+      ],
+      "last_step": {
+        "actual_speed_mps": 0.23362557549176025,
+        "applied_omega_radps": 0.011589404077816588,
+        "front_clearance_m": 3.4798657798225134,
+        "radial_clearance_m": 0.19474257582194887,
+        "student_action": [
+          0.3607710003852844,
+          -0.13052913546562195
+        ],
+        "teacher_action": [
+          -0.2916983962059021,
+          1.0
+        ],
+        "p4": 0.2548415958881378,
+        "gain": 1.0
+      }
+    },
+    {
+      "seed": 13104024,
+      "success": false,
+      "collision": true,
+      "steps": 176,
+      "prior_15_avg_actual_v_mps": 0.15548244517364118,
+      "prior_15_avg_front_clearance_m": 0.2952621766944174,
+      "prior_15_avg_radial_clearance_m": 0.2952560251203415,
+      "prior_15_avg_context_probability": 0.6887537002563476,
+      "prior_15_avg_context_gain": 1.0,
+      "prior_15_avg_action_abs_error": 0.7558083557834228,
+      "prior_15_student_action": [
+        -0.10148125495761633,
+        -0.04604528031001488
+      ],
+      "prior_15_teacher_action": [
+        -0.9624011437098186,
+        -0.39655872037013373
+      ],
+      "last_step": {
+        "actual_speed_mps": 0.0511244432446404,
+        "applied_omega_radps": -0.23759456690058528,
+        "front_clearance_m": 0.19867593412173737,
+        "radial_clearance_m": 0.1986730546453887,
+        "student_action": [
+          -0.7288077473640442,
+          -0.16228067874908447
+        ],
+        "teacher_action": [
+          -1.0,
+          0.4397929906845093
+        ],
+        "p4": 0.5195626020431519,
+        "gain": 1.0
+      }
+    },
+    {
+      "seed": 13104029,
+      "success": false,
+      "collision": true,
+      "steps": 186,
+      "prior_15_avg_actual_v_mps": 0.2252848648375623,
+      "prior_15_avg_front_clearance_m": 0.6746880571227364,
+      "prior_15_avg_radial_clearance_m": 0.3378520775750761,
+      "prior_15_avg_context_probability": 0.9068675676981608,
+      "prior_15_avg_context_gain": 1.0,
+      "prior_15_avg_action_abs_error": 0.8265436125608782,
+      "prior_15_student_action": [
+        0.31247496406237285,
+        -0.03997605585803588
+      ],
+      "prior_15_teacher_action": [
+        -0.33702793916066487,
+        -0.9734625140825908
+      ],
+      "last_step": {
+        "actual_speed_mps": 0.2155928661801625,
+        "applied_omega_radps": 0.09779030021523577,
+        "front_clearance_m": 0.2652858245112242,
+        "radial_clearance_m": 0.19828185150022226,
+        "student_action": [
+          0.366596519947052,
+          -0.06804536283016205
+        ],
+        "teacher_action": [
+          -1.0,
+          -1.0
+        ],
+        "p4": 0.8661810755729675,
+        "gain": 1.0
+      }
+    },
+    {
+      "seed": 13104031,
+      "success": false,
+      "collision": true,
+      "steps": 205,
+      "prior_15_avg_actual_v_mps": 0.27556144194975957,
+      "prior_15_avg_front_clearance_m": 1.2140340660701339,
+      "prior_15_avg_radial_clearance_m": 0.30174183546682115,
+      "prior_15_avg_context_probability": 0.6692691703637441,
+      "prior_15_avg_context_gain": 1.0,
+      "prior_15_avg_action_abs_error": 0.975205837811033,
+      "prior_15_student_action": [
+        0.4296085258324941,
+        0.08763042266170183
+      ],
+      "prior_15_teacher_action": [
+        -0.6084335724512736,
+        1.0
+      ],
+      "last_step": {
+        "actual_speed_mps": 0.19473113204928477,
+        "applied_omega_radps": -0.09775189831450698,
+        "front_clearance_m": 2.783027402053089,
+        "radial_clearance_m": 0.15611605296607,
+        "student_action": [
+          -0.03164912015199661,
+          -0.1220998764038086
+        ],
+        "teacher_action": [
+          -1.0,
+          1.0
+        ],
+        "p4": 0.5158576369285583,
+        "gain": 1.0
+      }
+    },
+    {
+      "seed": 13104038,
+      "success": false,
+      "collision": true,
+      "steps": 48,
+      "prior_15_avg_actual_v_mps": 0.15412035122161055,
+      "prior_15_avg_front_clearance_m": 5.738163889455627,
+      "prior_15_avg_radial_clearance_m": 0.25192477873237784,
+      "prior_15_avg_context_probability": 0.8137460788091023,
+      "prior_15_avg_context_gain": 1.0,
+      "prior_15_avg_action_abs_error": 0.7186477141066765,
+      "prior_15_student_action": [
+        -0.14229849769423406,
+        -0.023078530266260108
+      ],
+      "prior_15_teacher_action": [
+        -0.5479275782903036,
+        1.0
+      ],
+      "last_step": {
+        "actual_speed_mps": 0.19211655932744542,
+        "applied_omega_radps": -0.07804624090361488,
+        "front_clearance_m": 4.439681184453767,
+        "radial_clearance_m": 0.17819861220780603,
+        "student_action": [
+          0.2888649106025696,
+          0.04236176237463951
+        ],
+        "teacher_action": [
+          -1.0,
+          1.0
+        ],
+        "p4": 0.8462061882019043,
+        "gain": 1.0
+      }
+    },
+    {
+      "seed": 13104042,
+      "success": false,
+      "collision": true,
+      "steps": 126,
+      "prior_15_avg_actual_v_mps": 0.16216953355970365,
+      "prior_15_avg_front_clearance_m": 1.9369699401852707,
+      "prior_15_avg_radial_clearance_m": 0.2304633000566696,
+      "prior_15_avg_context_probability": 0.0011284480183045768,
+      "prior_15_avg_context_gain": 0.0,
+      "prior_15_avg_action_abs_error": 0.9685606499202549,
+      "prior_15_student_action": [
+        0.0028151238958040873,
+        -0.09220772702246904
+      ],
+      "prior_15_teacher_action": [
+        -1.0,
+        -0.3333333333333333
+      ],
+      "last_step": {
+        "actual_speed_mps": 0.3133637715154131,
+        "applied_omega_radps": -0.15874534287987788,
+        "front_clearance_m": 3.9243556710369236,
+        "radial_clearance_m": 0.19481390535887688,
+        "student_action": [
+          0.8159152865409851,
+          -0.15494304895401
+        ],
+        "teacher_action": [
+          -1.0,
+          -1.0
+        ],
+        "p4": 3.695406121551059e-05,
+        "gain": 0.0
+      }
+    },
+    {
+      "seed": 13104048,
+      "success": false,
+      "collision": true,
+      "steps": 53,
+      "prior_15_avg_actual_v_mps": 0.2538143096077563,
+      "prior_15_avg_front_clearance_m": 1.571428319491911,
+      "prior_15_avg_radial_clearance_m": 0.28773679767039034,
+      "prior_15_avg_context_probability": 0.38826119899749756,
+      "prior_15_avg_context_gain": 1.0,
+      "prior_15_avg_action_abs_error": 0.9124062484828755,
+      "prior_15_student_action": [
+        0.4873610079288483,
+        -0.07444043232438464
+      ],
+      "prior_15_teacher_action": [
+        -0.40233007272084553,
+        -0.9759572466214498
+      ],
+      "last_step": {
+        "actual_speed_mps": 0.2883152268837784,
+        "applied_omega_radps": 0.17882454977183385,
+        "front_clearance_m": 1.38118330409271,
+        "radial_clearance_m": 0.17717769456551957,
+        "student_action": [
+          0.6442707777023315,
+          -0.015859466046094894
+        ],
+        "teacher_action": [
+          -0.43601715564727783,
+          -1.0
+        ],
+        "p4": 0.32278257608413696,
+        "gain": 1.0
+      }
+    },
+    {
+      "seed": 13104049,
+      "success": false,
+      "collision": true,
+      "steps": 197,
+      "prior_15_avg_actual_v_mps": 0.2186232738784656,
+      "prior_15_avg_front_clearance_m": 0.3140290856132009,
+      "prior_15_avg_radial_clearance_m": 0.3140186543925575,
+      "prior_15_avg_context_probability": 0.7131964842478434,
+      "prior_15_avg_context_gain": 1.0,
+      "prior_15_avg_action_abs_error": 0.9316141061950475,
+      "prior_15_student_action": [
+        0.1968365181858341,
+        0.06872508634502689
+      ],
+      "prior_15_teacher_action": [
+        -1.0,
+        0.152495595254004
+      ],
+      "last_step": {
+        "actual_speed_mps": 0.1381224246739612,
+        "applied_omega_radps": -0.089701757667106,
+        "front_clearance_m": 0.1962150800258019,
+        "radial_clearance_m": 0.1961493229029171,
+        "student_action": [
+          -0.2881789803504944,
+          0.07989578694105148
+        ],
+        "teacher_action": [
+          -1.0,
+          0.1792973279953003
+        ],
+        "p4": 0.8969919681549072,
+        "gain": 1.0
+      }
+    },
+    {
+      "seed": 13104052,
+      "success": false,
+      "collision": true,
+      "steps": 154,
+      "prior_15_avg_actual_v_mps": 0.2651786240887489,
+      "prior_15_avg_front_clearance_m": 0.7415955852119609,
+      "prior_15_avg_radial_clearance_m": 0.2684542105687023,
+      "prior_15_avg_context_probability": 0.7739283601442973,
+      "prior_15_avg_context_gain": 1.0,
+      "prior_15_avg_action_abs_error": 1.1350837521255017,
+      "prior_15_student_action": [
+        0.39523382286230724,
+        0.22732443610827127
+      ],
+      "prior_15_teacher_action": [
+        -0.924802287419637,
+        -0.7228069578607877
+      ],
+      "last_step": {
+        "actual_speed_mps": 0.22815196271277255,
+        "applied_omega_radps": 0.4900673476636866,
+        "front_clearance_m": 2.9709010116267094,
+        "radial_clearance_m": 0.19955261346352188,
+        "student_action": [
+          0.07318896055221558,
+          0.1748289316892624
+        ],
+        "teacher_action": [
+          -1.0,
+          -0.8124844431877136
+        ],
+        "p4": 0.7232110500335693,
+        "gain": 1.0
+      }
+    },
+    {
+      "seed": 13104053,
+      "success": false,
+      "collision": true,
+      "steps": 210,
+      "prior_15_avg_actual_v_mps": 0.30070531759200636,
+      "prior_15_avg_front_clearance_m": 1.7286472941084143,
+      "prior_15_avg_radial_clearance_m": 0.3708334532826078,
+      "prior_15_avg_context_probability": 0.9930918137232463,
+      "prior_15_avg_context_gain": 1.0,
+      "prior_15_avg_action_abs_error": 0.9289093880914152,
+      "prior_15_student_action": [
+        0.7032923062642416,
+        -0.08387675204624732
+      ],
+      "prior_15_teacher_action": [
+        -0.2995796044667562,
+        -0.7944768150647481
+      ],
+      "last_step": {
+        "actual_speed_mps": 0.29898485891359095,
+        "applied_omega_radps": 0.029056236448302127,
+        "front_clearance_m": 2.9928655835630176,
+        "radial_clearance_m": 0.1984729047976471,
+        "student_action": [
+          0.6386233568191528,
+          -0.16155752539634705
+        ],
+        "teacher_action": [
+          -1.0,
+          -1.0
+        ],
+        "p4": 0.9574005007743835,
+        "gain": 1.0
+      }
+    }
+  ],
+  "means_over_failures": {
+    "prior_15_avg_actual_v_mps": 0.22673978032559725,
+    "prior_15_avg_front_clearance_m": 1.775021698987772,
+    "prior_15_avg_radial_clearance_m": 0.2935509998230581,
+    "prior_15_avg_context_probability": 0.625431272509104,
+    "prior_15_avg_context_gain": 0.9127923417422507,
+    "prior_15_avg_action_abs_error": 0.8912459747134968
+  }
+}

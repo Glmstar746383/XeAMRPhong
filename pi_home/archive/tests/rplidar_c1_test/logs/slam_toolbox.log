@@ -1,0 +1,13 @@
+[INFO] [launch]: All log files can be found below /home/khangho/.ros/log/2026-09-30-21-26-31-723629-khang-2146
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [launch.user]: Khởi chạy SLAM Toolbox với file cấu hình: /home/khangho/rplidar_c1_test/config/slam_toolbox.yaml
+[INFO] [launch.user]: [CHÚ Ý] Đang chạy chế độ Pi + LiDAR Test: Phát sóng dynamic TF odom->base_link->laser 25Hz đồng bộ.
+[INFO] [odom_tf_broadcaster.py-1]: process started with pid [2154]
+[INFO] [async_slam_toolbox_node-2]: process started with pid [2155]
+[async_slam_toolbox_node-2] [INFO] [1790778392.693649077] [slam_toolbox]: Node using stack size 40000000
+[odom_tf_broadcaster.py-1] [INFO] [1790778394.607452800] [odom_tf_broadcaster]: Đang phát sóng dynamic TF odom -> base_link -> laser (25 Hz, laser_z=0.1m)...
+[async_slam_toolbox_node-2] [INFO] [1790778406.131390317] [slam_toolbox]: Configuring
+[async_slam_toolbox_node-2] [INFO] [1790778406.279676704] [slam_toolbox]: Using solver plugin solver_plugins::CeresSolver
+[async_slam_toolbox_node-2] [INFO] [1790778411.414790474] [slam_toolbox]: Activating
+[async_slam_toolbox_node-2] Registering sensor: [Custom Described Lidar]
+[async_slam_toolbox_node-2] [INFO] [1790779463.158501244] [slam_toolbox]: Message Filter dropping message: frame 'laser' at time 1790779462.959 for reason 'discarding message because the queue is full'

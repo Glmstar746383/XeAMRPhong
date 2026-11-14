@@ -1,0 +1,1 @@
+{"event": "summary", "scans": 0, "inference_count": 0, "lidar_bins_min": null, "lidar_bins_max": null, "min_obstacle_m": null, "ai1_zero_commands": 0, "ai1_p50_ms": null, "ai1_p95_ms": null, "ai1_p99_ms": null, "ai1_max_ms": null, "pose_sources": [], "map_count": 0, "ai2_count": 0}

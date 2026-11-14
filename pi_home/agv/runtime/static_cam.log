@@ -1,0 +1,4 @@
+[INFO] [1794669334.629479624] [static_transform_publisher_eSA0UbO3k9UihF4W]: Spinning until stopped - publishing transform
+translation: ('0.145000', '0.000000', '0.130000')
+rotation: ('0.000000', '0.067948', '0.000000', '0.997689')
+from 'base_footprint' to 'camera_link'

@@ -1,0 +1,12 @@
+{
+  "host": "Windows-11-10.0.26200-SP0",
+  "machine": "AMD64",
+  "model": "ai_local_planner\\checkpoints\\single_actor_conservative_dagger_20261018\\experimental_contextual.onnx",
+  "inferences": 1500,
+  "warmup": 100,
+  "p50_ms": 0.1779,
+  "p95_ms": 0.33842999999999995,
+  "p99_ms": 0.4870769999999998,
+  "max_ms": 0.9846,
+  "target_p99_below_2ms": true
+}

@@ -1,0 +1,7 @@
+{
+  "enabled": true,
+  "stop_m": 0.3,
+  "clear_m": 0.45,
+  "half_w": 0.25,
+  "timeout_s": 2.0
+}

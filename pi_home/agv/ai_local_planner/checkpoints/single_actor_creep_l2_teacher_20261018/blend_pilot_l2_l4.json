@@ -1,0 +1,233 @@
+[
+  {
+    "alpha": 0.0,
+    "checkpoint": "ai_local_planner\\checkpoints\\single_actor_creep_l2_teacher_20261018\\blend_alpha_0.00.pth",
+    "pilot": {
+      "2": {
+        "level": 2,
+        "episodes": 30,
+        "seed_start": 17402000,
+        "domain_randomization": true,
+        "success_rate": 0.9333333333333333,
+        "collision_rate": 0.06666666666666667,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 216.5,
+        "mean_min_clearance_m": 0.4303831222140203,
+        "collision_seeds": [
+          17402008,
+          17402023
+        ],
+        "timeout_seeds": [],
+        "mean_reward": 271.8425747490612
+      },
+      "4": {
+        "level": 4,
+        "episodes": 30,
+        "seed_start": 17404000,
+        "domain_randomization": true,
+        "success_rate": 0.7333333333333333,
+        "collision_rate": 0.26666666666666666,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 271.06666666666666,
+        "mean_min_clearance_m": 0.38186274385773517,
+        "collision_seeds": [
+          17404003,
+          17404007,
+          17404014,
+          17404016,
+          17404017,
+          17404020,
+          17404024,
+          17404026
+        ],
+        "timeout_seeds": [],
+        "mean_reward": 239.8339893406377
+      }
+    }
+  },
+  {
+    "alpha": 0.25,
+    "checkpoint": "ai_local_planner\\checkpoints\\single_actor_creep_l2_teacher_20261018\\blend_alpha_0.25.pth",
+    "pilot": {
+      "2": {
+        "level": 2,
+        "episodes": 30,
+        "seed_start": 17402000,
+        "domain_randomization": true,
+        "success_rate": 0.9333333333333333,
+        "collision_rate": 0.06666666666666667,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 216.53333333333333,
+        "mean_min_clearance_m": 0.43060104986749687,
+        "collision_seeds": [
+          17402008,
+          17402023
+        ],
+        "timeout_seeds": [],
+        "mean_reward": 271.8725341512524
+      },
+      "4": {
+        "level": 4,
+        "episodes": 30,
+        "seed_start": 17404000,
+        "domain_randomization": true,
+        "success_rate": 0.7333333333333333,
+        "collision_rate": 0.26666666666666666,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 285.0,
+        "mean_min_clearance_m": 0.39364262565162683,
+        "collision_seeds": [
+          17404003,
+          17404005,
+          17404007,
+          17404014,
+          17404016,
+          17404017,
+          17404020,
+          17404024
+        ],
+        "timeout_seeds": [],
+        "mean_reward": 237.47900453176453
+      }
+    }
+  },
+  {
+    "alpha": 0.5,
+    "checkpoint": "ai_local_planner\\checkpoints\\single_actor_creep_l2_teacher_20261018\\blend_alpha_0.50.pth",
+    "pilot": {
+      "2": {
+        "level": 2,
+        "episodes": 30,
+        "seed_start": 17402000,
+        "domain_randomization": true,
+        "success_rate": 0.9333333333333333,
+        "collision_rate": 0.06666666666666667,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 216.53333333333333,
+        "mean_min_clearance_m": 0.43075526505199857,
+        "collision_seeds": [
+          17402008,
+          17402023
+        ],
+        "timeout_seeds": [],
+        "mean_reward": 271.87765807364076
+      },
+      "4": {
+        "level": 4,
+        "episodes": 30,
+        "seed_start": 17404000,
+        "domain_randomization": true,
+        "success_rate": 0.8333333333333334,
+        "collision_rate": 0.16666666666666666,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 341.6666666666667,
+        "mean_min_clearance_m": 0.38748024612743753,
+        "collision_seeds": [
+          17404003,
+          17404010,
+          17404014,
+          17404016,
+          17404017
+        ],
+        "timeout_seeds": [],
+        "mean_reward": 264.38354878707867
+      }
+    }
+  },
+  {
+    "alpha": 0.75,
+    "checkpoint": "ai_local_planner\\checkpoints\\single_actor_creep_l2_teacher_20261018\\blend_alpha_0.75.pth",
+    "pilot": {
+      "2": {
+        "level": 2,
+        "episodes": 30,
+        "seed_start": 17402000,
+        "domain_randomization": true,
+        "success_rate": 0.9333333333333333,
+        "collision_rate": 0.06666666666666667,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 216.56666666666666,
+        "mean_min_clearance_m": 0.4306683130863104,
+        "collision_seeds": [
+          17402008,
+          17402023
+        ],
+        "timeout_seeds": [],
+        "mean_reward": 271.8986138105071
+      },
+      "4": {
+        "level": 4,
+        "episodes": 30,
+        "seed_start": 17404000,
+        "domain_randomization": true,
+        "success_rate": 0.7333333333333333,
+        "collision_rate": 0.26666666666666666,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 333.53333333333336,
+        "mean_min_clearance_m": 0.37053736559592176,
+        "collision_seeds": [
+          17404003,
+          17404007,
+          17404010,
+          17404011,
+          17404014,
+          17404016,
+          17404017,
+          17404028
+        ],
+        "timeout_seeds": [],
+        "mean_reward": 233.73580613352382
+      }
+    }
+  },
+  {
+    "alpha": 1.0,
+    "checkpoint": "ai_local_planner\\checkpoints\\single_actor_creep_l2_teacher_20261018\\blend_alpha_1.00.pth",
+    "pilot": {
+      "2": {
+        "level": 2,
+        "episodes": 30,
+        "seed_start": 17402000,
+        "domain_randomization": true,
+        "success_rate": 0.9333333333333333,
+        "collision_rate": 0.06666666666666667,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 216.53333333333333,
+        "mean_min_clearance_m": 0.4307836215485545,
+        "collision_seeds": [
+          17402008,
+          17402023
+        ],
+        "timeout_seeds": [],
+        "mean_reward": 271.8542485005207
+      },
+      "4": {
+        "level": 4,
+        "episodes": 30,
+        "seed_start": 17404000,
+        "domain_randomization": true,
+        "success_rate": 0.6333333333333333,
+        "collision_rate": 0.3333333333333333,
+        "timeout_rate": 0.03333333333333333,
+        "mean_episode_steps": 334.26666666666665,
+        "mean_min_clearance_m": 0.35901209731335015,
+        "collision_seeds": [
+          17404003,
+          17404005,
+          17404007,
+          17404010,
+          17404011,
+          17404014,
+          17404016,
+          17404017,
+          17404018,
+          17404028
+        ],
+        "timeout_seeds": [
+          17404001
+        ],
+        "mean_reward": 204.89828938573137
+      }
+    }
+  }
+]

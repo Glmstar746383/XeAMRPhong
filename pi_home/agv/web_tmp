@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AGV Fusion — LiDAR + Camera</title>
+<style>
+  :root{
+    --bg:#070b12; --panel:#0d1522; --panel2:#111c2c; --line:#1e2f45;
+    --cyan:#22d3ee; --green:#34d399; --amber:#fbbf24; --red:#f87171; --txt:#d6e4f5; --dim:#7d93ad;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:"Segoe UI",Roboto,sans-serif;font-size:14px}
+  header{display:flex;align-items:center;gap:14px;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--panel)}
+  h1{font-size:16px;margin:0;letter-spacing:.5px;color:var(--cyan)}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+  .chip{padding:3px 10px;border-radius:20px;border:1px solid var(--line);background:var(--panel2);font-size:12px;color:var(--dim)}
+  .chip.on{color:#04121a;background:var(--green);border-color:var(--green);font-weight:600}
+  .chip.warn{color:#1a1204;background:var(--amber);border-color:var(--amber);font-weight:600}
+  .chip.bad{color:#1a0404;background:var(--red);border-color:var(--red);font-weight:600}
+  main{display:grid;grid-template-columns:1fr 1fr 300px;gap:12px;padding:12px}
+  @media(max-width:1200px){main{grid-template-columns:1fr 1fr}}
+  @media(max-width:820px){main{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .card h2{margin:0;padding:8px 12px;font-size:13px;letter-spacing:.6px;color:var(--dim);
+           border-bottom:1px solid var(--line);text-transform:uppercase;display:flex;gap:8px;align-items:center}
+  .body{padding:10px}
+  canvas{display:block;width:100%;height:auto;background:#050a11;border-radius:6px}
+  #cam{width:100%;display:block;background:#000;border-radius:6px;min-height:240px}
+  .readout{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+  .metric{flex:1;min-width:96px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px}
+  .metric .k{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.5px}
+  .metric .v{font-size:20px;font-weight:700;margin-top:2px}
+  .v.ok{color:var(--green)} .v.warn{color:var(--amber)} .v.bad{color:var(--red)}
+  .btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .btns.two{grid-template-columns:1fr 1fr}
+  button{cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--panel2);
+         color:var(--txt);padding:10px;font-size:13px;font-weight:600;transition:.12s}
+  button:hover{border-color:var(--cyan);color:var(--cyan)}
+  button.primary{background:#0e3b45;border-color:var(--cyan);color:var(--cyan)}
+  button.go{background:#0d3a2a;border-color:var(--green);color:var(--green)}
+  button.stop{background:#3a0d14;border-color:var(--red);color:var(--red);font-size:15px}
+  button:disabled{opacity:.4;cursor:not-allowed}
+  .pad{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(3,56px);
+       gap:6px;justify-content:center;margin:8px auto}
+  .pad button{font-size:16px;padding:0}
+  .pad .empty{visibility:hidden}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:6px 0;font-size:12px}
+  input[type=range]{width:120px;accent-color:var(--cyan)}
+  input[type=number]{width:70px;background:#050a11;border:1px solid var(--line);color:var(--txt);border-radius:6px;padding:4px}
+  label.sw{display:flex;gap:6px;align-items:center;color:var(--dim);font-size:12px;cursor:pointer}
+  .log{height:120px;overflow:auto;background:#050a11;border:1px solid var(--line);border-radius:6px;
+       padding:6px;font-family:Consolas,monospace;font-size:11px;color:var(--dim)}
+  .log div{border-bottom:1px solid #0d1522;padding:2px 0}
+  .hint{color:var(--dim);font-size:11px;margin-top:4px}
+  a{color:var(--cyan)}
+</style>
+</head>
+<body>
+<header>
+  <h1>AGV FUSION &nbsp;·&nbsp; LiDAR + CAMERA</h1>
+  <div class="chips">
+    <span class="chip" id="cArm">ARMED</span>
+    <span class="chip" id="cAuto">AUTO</span>
+    <span class="chip" id="cMode">MODE</span>
+    <span class="chip" id="cFault">FAULT</span>
+    <span class="chip" id="cLidar">LiDAR</span>
+    <span class="chip" id="cCam">CAMERA</span>
+    <span class="chip" id="cAvoid">AVOID</span>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <h2>LiDAR 2D — radar <span id="radarInfo" style="margin-left:auto;color:var(--dim);font-weight:400"></span></h2>
+    <div class="body">
+      <canvas id="radar" width="640" height="640"></canvas>
+      <div class="readout">
+        <div class="metric"><div class="k">Gần nhất</div><div class="v" id="mMin">--</div></div>
+        <div class="metric"><div class="k">Trước</div><div class="v" id="mFront">--</div></div>
+        <div class="metric"><div class="k">Trái / Phải</div><div class="v" id="mLR">--</div></div>
+        <div class="metric"><div class="k">Phủ sàn</div><div class="v" id="mCov">--</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Camera — vật cản thấp <span id="camLink" style="margin-left:auto;font-weight:400"></span></h2>
+    <div class="body">
+      <img id="cam" alt="camera stream">
+      <div class="readout">
+        <div class="metric"><div class="k">Camera đo</div><div class="v" id="camD">--</div></div>
+        <div class="metric"><div class="k">Lệch ngang</div><div class="v" id="camX">--</div></div>
+        <div class="metric"><div class="k">Chặn</div><div class="v" id="camBlock">--</div></div>
+        <div class="metric"><div class="k">Độ trễ</div><div class="v" id="camAge">--</div></div>
+      </div>
+      <div class="hint">Camera bắt vật thấp dưới mặt phẳng quét của LiDAR: dây điện, cạnh hộp, chân bàn.</div>
+    </div>
+  </section>
+
+  <aside class="card">
+    <h2>Điều khiển</h2>
+    <div class="body">
+      <div class="btns two">
+        <button id="bArm" class="primary">ARM</button>
+        <button id="bReset">RESET</button>
+      </div>
+      <div class="btns" style="margin-top:8px">
+        <button id="bExplore" class="go">EXPLORE</button>
+        <button id="bCoverage" class="go">COVERAGE</button>
+        <button id="bAutoStop">DỪNG AUTO</button>
+      </div>
+      <div class="pad">
+        <span class="empty"></span><button data-mv="fwd">▲</button><span class="empty"></span>
+        <button data-mv="left">◀</button><button data-mv="stop" class="stop" style="font-size:11px">STOP</button><button data-mv="right">▶</button>
+        <span class="empty"></span><button data-mv="back">▼</button><span class="empty"></span>
+      </div>
+      <button id="bEstop" class="stop" style="width:100%">■ DỪNG KHẨN CẤP</button>
+      <div class="hint">Giữ nút mũi tên để chạy, thả ra để dừng. Cần ARM trước.</div>
+    </div>
+  </aside>
+
+  <section class="card" style="grid-column:span 1">
+    <h2>Ngưỡng camera <label class="sw" style="margin-left:auto;font-weight:400">
+      <input type="checkbox" id="camEnabled"> bật</label></h2>
+    <div class="body">
+      <div class="row"><span>Chặn dưới (m)</span><input type="range" id="sStop" min="0.10" max="0.90" step="0.01"><span id="vStop">0.30</span></div>
+      <div class="row"><span>Nhả trên (m)</span><input type="range" id="sClear" min="0.15" max="1.20" step="0.01"><span id="vClear">0.45</span></div>
+      <div class="row"><span>Nửa bề ngang (m)</span><input type="range" id="sHalf" min="0.05" max="0.60" step="0.01"><span id="vHalf">0.25</span></div>
+      <div class="row"><span>Timeout (s)</span><input type="range" id="sTo" min="0.3" max="5" step="0.1"><span id="vTo">2.0</span></div>
+      <div class="btns two" style="margin-top:8px">
+        <button id="bApplyCam" class="primary">Áp dụng</button>
+        <button id="bReloadCam">Tải lại</button>
+      </div>
+      <div class="row" style="margin-top:10px"><span>Test logic (m)</span>
+        <input type="number" id="testD" value="0.2" step="0.05" min="0.05" max="2">
+        <button id="bTest" style="padding:6px 10px">Thử</button></div>
+      <div class="hint" id="testOut">Nhập khoảng cách rồi bấm Thử — kiểm tra chặn mà không cần cho xe chạy.</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Nhật ký</h2>
+    <div class="body"><div class="log" id="log"></div></div>
+  </section>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const state = { telemetry:null, camCfg:null, host: location.hostname };
+
+/* ---------- helpers ---------- */
+function fmt(v, d=2){ return (v===null||v===undefined||isNaN(v)) ? '--' : Number(v).toFixed(d); }
+function cls(el, mode){ el.classList.remove('on','warn','bad'); if(mode) el.classList.add(mode); }
+function logLine(msg){
+  const box = $('log');
+  const t = new Date().toLocaleTimeString();
+  const div = document.createElement('div');
+  div.textContent = `[${t}] ${msg}`;
+  box.prepend(div);
+  while(box.childElementCount > 60) box.lastChild.remove();
+}
+async function api(path, opts){
+  const r = await fetch(path, opts);
+  const t = await r.text();
+  try { return JSON.parse(t); } catch { return { raw:t }; }
+}
+function send(cmd, note){
+  return api('/api/cmd?val=' + encodeURIComponent(cmd))
+    .then(j => logLine(`${note||cmd} → ${j.status||'?'} ${j.reason||''}`))
+    .catch(e => logLine('Lỗi: ' + e));
+}
+
+/* ---------- camera stream ---------- */
+$('cam').src = `http://${state.host}:8081/view`;
+$('camLink').innerHTML = `<a href="http://${state.host}:8081/view" target="_blank">mở tab riêng</a>`;
+
+/* ---------- radar ---------- */
+const cv = $('radar'), ctx = cv.getContext('2d');
+const MAX_R = 4.0;                       // m
+function drawRadar(t){
+  const W = cv.width, H = cv.height, cx = W/2, cy = H*0.82;
+  const scale = Math.min(W, H) / (MAX_R*2);
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle = '#050a11'; ctx.fillRect(0,0,W,H);
+
+  // vòng khoảng cách
+  ctx.strokeStyle = '#12202f'; ctx.lineWidth = 1;
+  for(let r=1; r<=4; r++){
+    ctx.beginPath(); ctx.arc(cx, cy, r*scale, Math.PI, 2*Math.PI); ctx.stroke();
+    ctx.fillStyle = '#2c4258'; ctx.font = '11px Consolas';
+    ctx.fillText(r+'m', cx + r*scale - 12, cy - 4);
+  }
+  // trục
+  ctx.strokeStyle = '#16283a';
+  ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx, cy-MAX_R*scale); ctx.stroke();
+  for(const a of [-60,-30,0,30,60]){
+    const rad = (a-90)*Math.PI/180;
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+Math.cos(rad)*MAX_R*scale, cy+Math.sin(rad)*MAX_R*scale); ctx.stroke();
+  }
+
+  // tia lidar
+  const ranges = (t && t.ranges) || [];
+  const n = ranges.length || 0;
+  for(let i=0;i<n;i++){
+    const d = ranges[i];
+    if(!isFinite(d) || d<=0.02 || d>=15) continue;
+    const ang = (i/n)*2*Math.PI;               // 0 = truoc, CCW
+    const r = Math.min(d, MAX_R)*scale;
+    const x = cx + Math.sin(ang)*r, y = cy - Math.cos(ang)*r;
+    ctx.fillStyle = d < 0.35 ? '#f87171' : d < 0.8 ? '#fbbf24' : '#22d3ee';
+    ctx.fillRect(x-1.5, y-1.5, 3, 3);
+  }
+
+  // nón camera ±25 độ tới khoảng cách camera đo
+  const cam = (t && t.camera) || {};
+  if(cam.enabled && isFinite(cam.d) && cam.d < 9){
+    const dr = Math.min(cam.d, MAX_R)*scale;
+    ctx.fillStyle = cam.blocked ? 'rgba(248,113,113,.22)' : 'rgba(52,211,153,.14)';
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.arc(cx, cy, dr, -Math.PI/2 - 0.44, -Math.PI/2 + 0.44);
+    ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = cam.blocked ? '#f87171' : '#34d399';
+    ctx.beginPath(); ctx.arc(cx, cy, dr, -Math.PI/2-0.44, -Math.PI/2+0.44); ctx.stroke();
+  }
+
+  // than xe
+  const bl = 0.16*scale, bw = 0.12*scale;
+  ctx.fillStyle = '#22d3ee';
+  ctx.fillRect(cx-bw, cy-bl, bw*2, bl*2);
+  ctx.fillStyle = '#04121a'; ctx.font = 'bold 11px Consolas'; ctx.textAlign='center';
+  ctx.fillText('AGV', cx, cy+4); ctx.textAlign='start';
+}
+
+/* ---------- vòng cập nhật ---------- */
+async function tick(){
+  try{
+    const t = await api('/api/telemetry');
+    state.telemetry = t;
+    if(t.status === 'NO_TRANSPORT'){ logLine('Không kết nối điều khiển'); return; }
+
+    const c = t.control || {};
+    cls($('cArm'), c.armed ? 'on' : null); $('cArm').textContent = c.armed ? 'ARMED' : 'DISARMED';
+    cls($('cAuto'), t.auto ? 'on' : null); $('cAuto').textContent = t.auto ? 'AUTO' : 'MANUAL';
+    cls($('cMode'), null); $('cMode').textContent = (t.map_info && t.map_info.task_mode) || 'IDLE';
+    const fault = c.fault || (c.latest_d0 && c.latest_d0.safety === 'FAULT' ? 'FAULT' : null);
+    cls($('cFault'), fault ? 'bad' : null); $('cFault').textContent = fault ? fault : 'OK';
+    const lidarOk = t.lidar && t.lidar.connected;
+    cls($('cLidar'), lidarOk ? 'on' : 'bad');
+    $('cLidar').textContent = lidarOk ? `LiDAR ${fmt((t.lidar||{}).age_s,2)}s` : 'LiDAR mất';
+
+    const cam = t.camera || {};
+    const camOk = cam.enabled && cam.age_s !== null && cam.age_s <= (cam.timeout_s||2);
+    cls($('cCam'), camOk ? 'on' : (cam.enabled ? 'warn' : null));
+    $('cCam').textContent = cam.enabled ? (camOk ? 'CAMERA OK' : 'CAMERA TRỄ') : 'CAMERA TẮT';
+    cls($('cAvoid'), cam.blocked ? 'bad' : (cam.enabled ? 'on' : null));
+    $('cAvoid').textContent = cam.enabled ? (cam.blocked ? 'ĐANG CHẶN' : 'SẴN SÀNG') : 'TẮT';
+
+    $('mMin').textContent = fmt(t.min_m, 2) + ' m';
+    cls($('mMin'), t.min_m < 0.3 ? 'bad' : t.min_m < 0.6 ? 'warn' : 'ok');
+    const z = t.zones || {};
+    $('mFront').textContent = fmt(z.front, 2) + ' m';
+    cls($('mFront'), z.front < 0.35 ? 'bad' : z.front < 0.7 ? 'warn' : 'ok');
+    $('mLR').textContent = `${fmt(z.left,1)} / ${fmt(z.right,1)}`;
+    const cov = t.trajectory ? t.trajectory.coverage_pct : null;
+    $('mCov').textContent = fmt(cov, 1) + ' %';
+
+    $('camD').textContent = cam.d === 9.9 || cam.d > 9 ? 'trống' : fmt(cam.d, 2) + ' m';
+    cls($('camD'), cam.blocked ? 'bad' : 'ok');
+    $('camX').textContent = fmt(cam.x, 2) + ' m';
+    $('camBlock').textContent = cam.blocked ? 'CÓ' : 'không';
+    cls($('camBlock'), cam.blocked ? 'bad' : 'ok');
+    $('camAge').textContent = fmt(cam.age_s, 2) + ' s';
+    cls($('camAge'), cam.age_s > (cam.timeout_s||2) ? 'bad' : 'ok');
+
+    $('radarInfo').textContent = `${(t.ranges||[]).length} tia · ${(t.map_info||{}).phase || ''}`;
+    drawRadar(t);
+  }catch(e){ /* im lặng */ }
+}
+
+/* nạp cấu hình camera */
+async function loadCam(){
+  try{
+    const j = await api('/api/cam');
+    if(j.status !== 'ok') return;
+    state.camCfg = j;
+    $('camEnabled').checked = !!j.enabled;
+    $('sStop').value = j.stop_m; $('vStop').textContent = Number(j.stop_m).toFixed(2);
+    $('sClear').value = j.clear_m; $('vClear').textContent = Number(j.clear_m).toFixed(2);
+    $('sHalf').value = j.half_w; $('vHalf').textContent = Number(j.half_w).toFixed(2);
+    $('sTo').value = j.timeout_s; $('vTo').textContent = Number(j.timeout_s).toFixed(1);
+  }catch(e){}
+}
+
+/* ---------- sự kiện ---------- */
+$('bArm').onclick = () => send('ARM', 'ARM');
+$('bReset').onclick = () => send('RESET', 'RESET');
+$('bEstop').onclick = () => { send('STOP','DỪNG KHẨN CẤP'); api('/api/auto?act=STOP').catch(()=>{}); };
+$('bAutoStop').onclick = () => api('/api/auto?act=STOP').then(j=>logLine('Auto STOP → '+(j.reason||j.status))).catch(()=>{});
+$('bExplore').onclick = () => api('/api/auto?act=START&mode=EXPLORE')
+  .then(j => logLine(`EXPLORE → ${j.status} ${(j.blockers||[]).join(',')||j.reason||''}`)).catch(()=>{});
+$('bCoverage').onclick = () => api('/api/auto?act=START&mode=COVERAGE')
+  .then(j => logLine(`COVERAGE → ${j.status} ${(j.blockers||[]).join(',')||j.reason||''}`)).catch(()=>{});
+
+/* nút giữ để chạy tay */
+let holdTimer = null;
+document.querySelectorAll('.pad button').forEach(btn => {
+  const mv = btn.dataset.mv;
+  const start = e => {
+    e.preventDefault();
+    if(mv === 'stop'){ send('STOP','STOP tay'); return; }
+    const cmd = mv==='fwd'  ? 'V 0.12 0.0'
+              : mv==='back' ? 'V -0.10 0.0'
+              : mv==='left' ? 'V 0.0 0.6'
+              :               'V 0.0 -0.6';
+    send(cmd, mv);
+    clearInterval(holdTimer);
+    holdTimer = setInterval(()=>send(cmd, mv), 150);
+  };
+  const stop = () => { if(holdTimer){ clearInterval(holdTimer); holdTimer=null; send('V 0.000 0.000','nhả'); } };
+  btn.addEventListener('pointerdown', start);
+  btn.addEventListener('pointerup', stop);
+  btn.addEventListener('pointerleave', stop);
+  btn.addEventListener('pointercancel', stop);
+});
+
+/* cấu hình camera */
+['sStop','sClear','sHalf','sTo'].forEach(id=>{
+  $(id).addEventListener('input', ()=>{
+    $('v'+id.slice(1)).textContent = Number($(id).value).toFixed(id==='sTo'?1:2);
+  });
+});
+$('bApplyCam').onclick = async ()=>{
+  const q = new URLSearchParams({
+    enabled: $('camEnabled').checked ? 1 : 0,
+    stop_m: $('sStop').value, clear_m: $('sClear').value,
+    half_w: $('sHalf').value, timeout_s: $('sTo').value
+  });
+  const j = await api('/api/cam_config?' + q.toString());
+  logLine('Cấu hình camera → ' + (j.status||'?'));
+};
+$('bReloadCam').onclick = loadCam;
+$('bTest').onclick = async ()=>{
+  const d = $('testD').value;
+  const j = await api(`/api/cam_gate?v=0.12&d=${d}`);
+  $('testOut').textContent = j.allow
+    ? `d=${d} m → KHÔNG chặn (${j.status||''})`
+    : `d=${d} m → CHẶN (${j.reason||''})`;
+  $('testOut').style.color = j.allow ? 'var(--green)' : 'var(--red)';
+};
+
+/* vòng chạy */
+tick(); loadCam();
+setInterval(tick, 250);
+setInterval(loadCam, 5000);
+</script>
+</body>
+</html>

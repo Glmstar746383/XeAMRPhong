@@ -1,0 +1,5 @@
+[OK] ĐÃ NẠP MÔ HÌNH AI 1 (NÉ CẢN): /home/khangho/agv/ai_local_planner/exported/local_planner.onnx
+[OK] ĐÃ NẠP MÔ HÌNH AI 2 (PHỦ KÍN SÀN): /home/khangho/agv/models/coverage_model.onnx
+[INFO] [1794669340.601671467] [agv_unified_brain]: CAMERA AVOID: /cam_range + /cam_obstacle (enabled=True, stop=0.30m)
+[INFO] [1794669340.616749992] [agv_unified_brain]: ĐÃ MỞ CỔNG SERIAL /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0; DISARMED, KHÔNG AUTO ARM
+=== AGV WEB PORT 8080; MODE=OPERATOR_CONTROL ===

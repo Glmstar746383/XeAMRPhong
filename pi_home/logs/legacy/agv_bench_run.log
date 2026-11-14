@@ -1,0 +1,111 @@
+[5414.0609] MSG    Giai đoạn 1: Xác minh boot an toàn (Chờ >= 3.0s tránh autoscan, nhận >= 3 mẫu DISARMED liên tiếp sau 3s)...
+[5414.1381] MSG    BOOT_TELEMETRY (t=0.07s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5414.2380] MSG    BOOT_TELEMETRY (t=0.15s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5414.3380] MSG    BOOT_TELEMETRY (t=0.25s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5414.4379] MSG    BOOT_TELEMETRY (t=0.35s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5414.5380] MSG    BOOT_TELEMETRY (t=0.45s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5414.6380] MSG    BOOT_TELEMETRY (t=0.55s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5414.7379] MSG    BOOT_TELEMETRY (t=0.65s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5414.8379] MSG    BOOT_TELEMETRY (t=0.75s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5414.9380] MSG    BOOT_TELEMETRY (t=0.85s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5415.0380] MSG    BOOT_TELEMETRY (t=0.95s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5415.1379] MSG    BOOT_TELEMETRY (t=1.05s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5415.2379] MSG    BOOT_TELEMETRY (t=1.15s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5415.3380] MSG    BOOT_TELEMETRY (t=1.25s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5415.4380] MSG    BOOT_TELEMETRY (t=1.35s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5415.5379] MSG    BOOT_TELEMETRY (t=1.45s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5415.6379] MSG    BOOT_TELEMETRY (t=1.55s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5415.7380] MSG    BOOT_TELEMETRY (t=1.65s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5415.8380] MSG    BOOT_TELEMETRY (t=1.75s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5415.9379] MSG    BOOT_TELEMETRY (t=1.85s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5416.0380] MSG    BOOT_TELEMETRY (t=1.95s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5416.1380] MSG    BOOT_TELEMETRY (t=2.05s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5416.2379] MSG    BOOT_TELEMETRY (t=2.15s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5416.3379] MSG    BOOT_TELEMETRY (t=2.25s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5416.4380] MSG    BOOT_TELEMETRY (t=2.35s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5416.5380] MSG    BOOT_TELEMETRY (t=2.45s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5416.6379] MSG    BOOT_TELEMETRY (t=2.55s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5416.7380] MSG    BOOT_TELEMETRY (t=2.65s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5416.8380] MSG    BOOT_TELEMETRY (t=2.75s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5416.9379] MSG    BOOT_TELEMETRY (t=2.85s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5417.0379] MSG    BOOT_TELEMETRY (t=2.95s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5417.1379] MSG    BOOT_TELEMETRY (t=3.05s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5417.2380] MSG    BOOT_TELEMETRY (t=3.15s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5417.3380] MSG    BOOT_TELEMETRY (t=3.25s): safety=DISARMED, PWM=[0.0,0.0], RPM=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5417.3381] MSG    XÁC MINH BOOT AN TOÀN THÀNH CÔNG! Baseline: X=0.000, Y=0.000
+[5417.3381] MSG    Giai đoạn 2: Gửi lệnh ARM và chờ xác nhận ACK + Telemetry ARMED...
+[5417.3381] TX >>> ARM\n
+[5417.3447] MSG    Đã nhận ACK ARM! | RAW: {"ack":"ARM","state":"ARMED"}
+[5417.4376] MSG    Đã nhận Telemetry ARMED! | RAW: {"safety":"ARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5417.4378] MSG    Giai đoạn 3: Bắt đầu phát lệnh V 0.05 0.0 (Max duration: 2.0s, Max dist: 0.1m)...
+[5417.4378] TX >>> V 0.05 0.0
+[5417.4464] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5417.5383] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":14,"r_pwm":14,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5417.5434] TX >>> V 0.05 0.0
+[5417.5525] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5417.6382] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":16,"r_pwm":16,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5417.6434] TX >>> V 0.05 0.0
+[5417.6525] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5417.7382] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":18,"r_pwm":18,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5417.7433] TX >>> V 0.05 0.0
+[5417.7527] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5417.8383] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":20,"r_pwm":20,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5417.8435] TX >>> V 0.05 0.0
+[5417.8526] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5417.9383] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":22,"r_pwm":22,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5417.9434] TX >>> V 0.05 0.0
+[5417.9525] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5418.0382] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":24,"r_pwm":24,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5418.0434] TX >>> V 0.05 0.0
+[5418.0525] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5418.1382] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":26,"r_pwm":26,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5418.1434] TX >>> V 0.05 0.0
+[5418.1525] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5418.2384] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":28,"r_pwm":28,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5418.2436] TX >>> V 0.05 0.0
+[5418.2526] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5418.3388] MSG    RUNNING: dist=0.0000m, RPM=[0.0,2.56], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":2.56,"l_pwm":30,"r_pwm":28,"x":0.000,"y":0.000,"th":0.003,"v":0.00,"w":0.05}
+[5418.3440] TX >>> V 0.05 0.0
+[5418.3527] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5418.4386] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":31,"r_pwm":31,"x":0.000,"y":0.000,"th":0.003,"v":0.00,"w":0.00}
+[5418.4437] TX >>> V 0.05 0.0
+[5418.4527] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5418.5387] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":33,"r_pwm":33,"x":0.000,"y":0.000,"th":0.003,"v":0.00,"w":0.00}
+[5418.5439] TX >>> V 0.05 0.0
+[5418.5527] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5418.6387] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":36,"r_pwm":35,"x":0.000,"y":0.000,"th":0.001,"v":0.00,"w":0.00}
+[5418.6438] TX >>> V 0.05 0.0
+[5418.6528] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5418.7386] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":37,"r_pwm":37,"x":0.000,"y":0.000,"th":0.001,"v":0.00,"w":0.00}
+[5418.7438] TX >>> V 0.05 0.0
+[5418.7527] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5418.8386] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":39,"r_pwm":39,"x":0.000,"y":0.000,"th":0.001,"v":0.00,"w":0.00}
+[5418.8437] TX >>> V 0.05 0.0
+[5418.8527] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5418.9387] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":41,"r_pwm":41,"x":0.000,"y":0.000,"th":0.001,"v":0.00,"w":0.00}
+[5418.9439] TX >>> V 0.05 0.0
+[5418.9526] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5419.0386] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":43,"r_pwm":43,"x":0.000,"y":0.000,"th":0.001,"v":0.00,"w":0.00}
+[5419.0438] TX >>> V 0.05 0.0
+[5419.0527] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5419.1386] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":45,"r_pwm":45,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5419.1438] TX >>> V 0.05 0.0
+[5419.1527] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5419.2385] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":47,"r_pwm":47,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5419.2437] TX >>> V 0.05 0.0
+[5419.2526] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5419.3385] MSG    RUNNING: dist=0.0000m, RPM=[0.0,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":49,"r_pwm":49,"x":0.000,"y":0.000,"th":0.000,"v":0.00,"w":0.00}
+[5419.3437] TX >>> V 0.05 0.0
+[5419.3528] MSG    RECV_NON_TELEMETRY_DURING_RUN | RAW: {"ack":"V 0.05 0.00 -> RPM 13.0 13.0"}
+[5419.4391] MSG    RUNNING: dist=0.0020m, RPM=[5.12,0.0], safety=ARMED | RAW: {"safety":"ARMED","mode":"PID","l_tgt":13.0,"r_tgt":13.0,"l_rpm":5.12,"r_rpm":0.00,"l_pwm":48,"r_pwm":51,"x":0.002,"y":-0.000,"th":-0.013,"v":0.01,"w":-0.10}
+[5419.4442] MSG    Giai đoạn 4: Dừng khẩn cấp và giải giáp (Lý do: NORMAL_DEADLINE_REACHED)...
+[5419.4443] TX >>> STOP\n
+[5419.4645] TX >>> STOP\n
+[5419.4848] TX >>> STOP\n
+[5419.5052] TX >>> DISARM\n
+[5419.5054] MSG    Giai đoạn 5: Xác minh trạng thái sau dừng (yêu cầu >= 3 mẫu DISARMED, RPM < 0.1 và Target=0.0)...
+[5419.5387] MSG    POST_STOP_TELEMETRY: safety=DISARMED, RPM=[0.0,0.0], TGT=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.002,"y":-0.000,"th":-0.013,"v":0.00,"w":0.00}
+[5419.6385] MSG    POST_STOP_TELEMETRY: safety=DISARMED, RPM=[0.0,0.0], TGT=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.002,"y":-0.000,"th":-0.013,"v":0.00,"w":0.00}
+[5419.7386] MSG    POST_STOP_TELEMETRY: safety=DISARMED, RPM=[0.0,0.0], TGT=[0.0,0.0] | RAW: {"safety":"DISARMED","mode":"PID","l_tgt":0.0,"r_tgt":0.0,"l_rpm":0.00,"r_rpm":0.00,"l_pwm":0,"r_pwm":0,"x":0.002,"y":-0.000,"th":-0.013,"v":0.00,"w":0.00}
+[5419.7387] MSG    XÁC NHẬN DỪNG AN TOÀN HOÀN TẤT VỚI BẰNG CHỨNG TELEMETRY VỮNG CHẮC!
+[5419.7388] MSG    === BÀI THỬ HOÀN TẤT ĐẠT CHUẨN: Motion=True, StopVerified=True ===

@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# ROS 2 build artifacts
+build/
+install/
+log/
+
+# Test & Run Logs
+logs/*.log
+!logs/.gitkeep
+
+# OS specific
+.DS_Store
+Thumbs.db

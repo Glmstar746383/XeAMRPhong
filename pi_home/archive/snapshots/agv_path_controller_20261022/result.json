@@ -1,0 +1,9 @@
+{
+  "pid": 7749,
+  "backup": "/home/khangho/agv_path_controller_20261022/backup",
+  "status": "APPLIED_DISARMED",
+  "hashes": {
+    "agv_unified_brain.py": "3ed5b521062684d0d5a8485485c90e321d1ce505bea84d359d803e39a8729970",
+    "agv_navigation.py": "6579c48a1d6265bf31f3b43892e91efb7507d0f7ec3b61c9af93a2e6296812e4"
+  }
+}

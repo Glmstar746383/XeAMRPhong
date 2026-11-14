@@ -1,0 +1,21 @@
+{
+  "checkpoint": "ai_local_planner\\checkpoints\\single_actor_context_residual_20261018\\retention_candidate.pth",
+  "training_steps": 0,
+  "level": 2,
+  "episodes": 100,
+  "seed_start": 12502000,
+  "domain_randomization": true,
+  "success_rate": 0.96,
+  "collision_rate": 0.04,
+  "timeout_rate": 0.0,
+  "mean_episode_steps": 223.03,
+  "mean_min_clearance_m": 0.4518182000249805,
+  "collision_seeds": [
+    12502013,
+    12502057,
+    12502069,
+    12502080
+  ],
+  "timeout_seeds": [],
+  "mean_reward": 277.56010043806765
+}

@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=RPLIDAR C1 SLAM
+Comment=Ứng dụng tạo bản đồ 2D Realtime bằng SLAM Toolbox (RPLIDAR C1)
+Exec=/home/khangho/rplidar_c1_test/desktop/run_slam_gui.sh
+Icon=preferences-system
+Path=/home/khangho/rplidar_c1_test
+Terminal=false
+StartupNotify=true
+Categories=Development;Engineering;Robotics;

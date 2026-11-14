@@ -1,0 +1,15 @@
+# ==============================================================================
+# lidar.yaml - Cấu hình tham số chuẩn cho RPLIDAR C1M1
+# Tần số Baudrate tiêu chuẩn của C1 là 460800 (khác biệt so với A1: 115200, A2/A3: 256000)
+# ==============================================================================
+
+sllidar_node:
+  ros__parameters:
+    channel_type: "serial"
+    serial_port: "/dev/rplidar_c1"      # Cổng do udev rule tạo ra hoặc truyền từ CLI
+    serial_baudrate: 460800             # Baudrate chuẩn của RPLIDAR C1
+    frame_id: "laser"                   # Frame cố định cho LaserScan
+    inverted: false                     # Đảo chiều quét (false: chuẩn)
+    angle_compensate: true              # Bù góc quét 360 độ đầy đủ
+    scan_mode: "Standard"               # Chế độ quét: Standard, DenseBoost, Sensitivity
+    scan_frequency: 10.0                # Tần số quay motor mục tiêu (Hz)

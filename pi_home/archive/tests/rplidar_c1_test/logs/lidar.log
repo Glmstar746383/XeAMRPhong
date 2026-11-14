@@ -1,0 +1,14 @@
+[INFO] [launch]: All log files can be found below /home/khangho/.ros/log/2026-11-02-15-07-02-298562-khang-1508
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [sllidar_node-1]: process started with pid [1533]
+[sllidar_node-1] [INFO] [1793606823.516521383] [sllidar_node]: SLLidar running on ROS2 package SLLidar.ROS2 SDK Version:1.0.1, SLLIDAR SDK Version:2.1.0
+[sllidar_node-1] [INFO] [1793606824.034937778] [sllidar_node]: SLLidar S/N: A915E18DC2E699D6C89792F453B6416E
+[sllidar_node-1] [INFO] [1793606824.035228586] [sllidar_node]: Firmware Ver: 1.02
+[sllidar_node-1] [INFO] [1793606824.035358025] [sllidar_node]: Hardware Rev: 18
+[sllidar_node-1] [INFO] [1793606824.038201688] [sllidar_node]: SLLidar health status : 0
+[sllidar_node-1] [INFO] [1793606824.038364370] [sllidar_node]: SLLidar health status : OK.
+[sllidar_node-1] [INFO] [1793606824.360476017] [sllidar_node]: current scan mode: Standard, sample rate: 5 Khz, max_distance: 16.0 m, scan frequency:10.0 Hz, 
+[sllidar_node-1] [INFO] [1793606982.465867196] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[sllidar_node-1] terminate called after throwing an instance of 'rclcpp::exceptions::RCLError'
+[sllidar_node-1]   what():  failed to create guard condition: the given context is not valid, either rcl_init() was not called or rcl_shutdown() was called., at ./src/rcl/guard_condition.c:67
+[ERROR] [sllidar_node-1]: process has died [pid 1533, exit code -9, cmd '/home/khangho/rplidar_c1_ws/install/sllidar_ros2/lib/sllidar_ros2/sllidar_node --ros-args -r __node:=sllidar_node --params-file /tmp/launch_params_s_jdwuo9'].

@@ -1,0 +1,10 @@
+{
+  "pid": 50209,
+  "backup": "/home/khangho/agv_scan_recovery_20261020_6bzCbH/backup",
+  "status": "APPLIED_DISARMED",
+  "hashes": {
+    "agv_command_session.py": "c94bfc754917015a34475d48fd62e89216f2783c01b8c83eb51f7f879f89f801",
+    "agv_unified_brain.py": "00abc9b31e5fdbc4ef41172390f187f53d712b12d511476dcc5581ad05210447",
+    "index_cyberpunk.html": "b0084e6c8977d39a246202117d255f9f28492eab01bfc1c4b332e1e172b72f08"
+  }
+}

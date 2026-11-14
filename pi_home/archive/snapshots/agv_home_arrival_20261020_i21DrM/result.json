@@ -1,0 +1,8 @@
+{
+  "pid": 72964,
+  "backup": "/home/khangho/agv_home_arrival_20261020_i21DrM/backup",
+  "status": "APPLIED_DISARMED",
+  "hashes": {
+    "agv_unified_brain.py": "775b03b47a51292d74e17b58284fded4782247dd2722c578e98b4053d25ad71e"
+  }
+}

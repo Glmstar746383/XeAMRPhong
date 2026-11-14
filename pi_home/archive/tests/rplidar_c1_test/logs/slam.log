@@ -1,0 +1,14 @@
+[INFO] [launch]: All log files can be found below /home/khangho/.ros/log/2026-11-02-15-07-02-135433-khang-1509
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [async_slam_toolbox_node-1]: process started with pid [1564]
+[async_slam_toolbox_node-1] [INFO] [1793606824.797715158] [slam_toolbox]: Node using stack size 40000000
+[async_slam_toolbox_node-1] [INFO] [1793606824.922179595] [slam_toolbox]: Configuring
+[async_slam_toolbox_node-1] [INFO] [1793606825.120389553] [slam_toolbox]: Using solver plugin solver_plugins::CeresSolver
+[async_slam_toolbox_node-1] [INFO] [1793606825.122038889] [slam_toolbox]: CeresSolver: Using SCHUR_JACOBI preconditioner.
+[INFO] [launch.user]: [LifecycleLaunch] Slamtoolbox node is activating.
+[async_slam_toolbox_node-1] [INFO] [1793606825.364014558] [slam_toolbox]: Activating
+[async_slam_toolbox_node-1] [WARN] [1793606826.627325129] [slam_toolbox]: maximum laser range setting (20.0 m) exceeds the capabilities of the used Lidar (16.0 m)
+[async_slam_toolbox_node-1] Registering sensor: [Custom Described Lidar]
+[async_slam_toolbox_node-1] [INFO] [1793606982.528926796] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[async_slam_toolbox_node-1] Unregistering sensor: Custom Described Lidar
+[INFO] [async_slam_toolbox_node-1]: process has finished cleanly [pid 1564]

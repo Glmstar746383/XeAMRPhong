@@ -1,0 +1,94 @@
+[
+  {
+    "checkpoint": "ai_local_planner\\checkpoints\\single_actor_slalom_master_20261018\\retention_candidate.pth",
+    "pilot": {
+      "2": {
+        "level": 2,
+        "episodes": 30,
+        "seed_start": 17602000,
+        "domain_randomization": true,
+        "success_rate": 0.9,
+        "collision_rate": 0.1,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 236.36666666666667,
+        "mean_min_clearance_m": 0.4428628920774506,
+        "collision_seeds": [
+          17602018,
+          17602021,
+          17602028
+        ],
+        "timeout_seeds": [],
+        "mean_reward": 262.1486321109259
+      },
+      "4": {
+        "level": 4,
+        "episodes": 30,
+        "seed_start": 17604000,
+        "domain_randomization": true,
+        "success_rate": 0.8666666666666667,
+        "collision_rate": 0.13333333333333333,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 349.23333333333335,
+        "mean_min_clearance_m": 0.45915277354546574,
+        "collision_seeds": [
+          17604014,
+          17604020,
+          17604021,
+          17604029
+        ],
+        "timeout_seeds": [],
+        "mean_reward": 274.06122273874246
+      }
+    }
+  },
+  {
+    "checkpoint": "ai_local_planner\\checkpoints\\single_actor_creep_l2_teacher_20261018\\retention_candidate.pth",
+    "pilot": {
+      "2": {
+        "level": 2,
+        "episodes": 30,
+        "seed_start": 17602000,
+        "domain_randomization": true,
+        "success_rate": 0.9,
+        "collision_rate": 0.1,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 236.86666666666667,
+        "mean_min_clearance_m": 0.4429064371158909,
+        "collision_seeds": [
+          17602018,
+          17602021,
+          17602028
+        ],
+        "timeout_seeds": [],
+        "mean_reward": 262.1374455157806
+      },
+      "4": {
+        "level": 4,
+        "episodes": 30,
+        "seed_start": 17604000,
+        "domain_randomization": true,
+        "success_rate": 0.6333333333333333,
+        "collision_rate": 0.3,
+        "timeout_rate": 0.06666666666666667,
+        "mean_episode_steps": 350.8333333333333,
+        "mean_min_clearance_m": 0.39178272607487535,
+        "collision_seeds": [
+          17604003,
+          17604006,
+          17604007,
+          17604010,
+          17604014,
+          17604020,
+          17604022,
+          17604027,
+          17604029
+        ],
+        "timeout_seeds": [
+          17604009,
+          17604013
+        ],
+        "mean_reward": 209.72840456015865
+      }
+    }
+  }
+]

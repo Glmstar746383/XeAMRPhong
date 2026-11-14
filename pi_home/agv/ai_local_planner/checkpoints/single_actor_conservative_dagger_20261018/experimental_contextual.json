@@ -1,0 +1,48 @@
+{
+  "model": "experimental_contextual.onnx",
+  "opset": 14,
+  "sha256": "72df6665721727effe83023926c329e290f88c71a187dc9f2a3f3b919312ba94",
+  "created_utc": "2026-10-18T01:53:05.905282+00:00",
+  "source_checkpoint": "ai_local_planner\\checkpoints\\single_actor_conservative_dagger_20261018\\retention_candidate.pth",
+  "training_steps": 0,
+  "curriculum_level": 5,
+  "checkpoint_metadata": {
+    "method": "context_residual_dagger_not_ppo",
+    "independently_gated": false,
+    "eligible_for_real_robot": false
+  },
+  "input": {
+    "name": "lidar_and_goal_state",
+    "shape": [
+      "N",
+      365
+    ],
+    "dtype": "float32",
+    "lidar_normalization": "clip((range_m-0.12)/11.88,0,1)",
+    "angles": "0..359 degrees, counterclockwise from forward"
+  },
+  "output": {
+    "name": "cmd_vel",
+    "shape": [
+      "N",
+      2
+    ],
+    "dtype": "float32",
+    "units": [
+      "m/s",
+      "rad/s"
+    ],
+    "v_range": [
+      0.0,
+      0.35
+    ],
+    "w_range": [
+      -1.5,
+      1.5
+    ]
+  },
+  "max_torch_onnx_error": 8.940696716308594e-07,
+  "pi4_latency_verified": false,
+  "real_robot_approved": false,
+  "deployment_note": "Training quality, real LiDAR alignment, independent E-stop, and Pi4 p99<2ms require separate validation"
+}

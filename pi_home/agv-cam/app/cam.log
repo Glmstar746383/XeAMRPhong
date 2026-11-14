@@ -1,0 +1,155 @@
+CAM SERVER on 8081 device=/dev/video0 ready=True
+Traceback (most recent call last):
+  File "/home/khangho/agv_cam_20261027/cam_stream.py", line 155, in <module>
+    main()
+  File "/home/khangho/agv_cam_20261027/cam_stream.py", line 148, in main
+    server = ThreadingHTTPServer(("0.0.0.0", PORT), Handler)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socketserver.py", line 457, in __init__
+    self.server_bind()
+  File "/usr/lib/python3.12/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/usr/lib/python3.12/socketserver.py", line 473, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+Traceback (most recent call last):
+  File "/home/khangho/agv_cam_20261027/cam_stream.py", line 155, in <module>
+    main()
+  File "/home/khangho/agv_cam_20261027/cam_stream.py", line 148, in main
+    server = ThreadingHTTPServer(("0.0.0.0", PORT), Handler)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socketserver.py", line 457, in __init__
+    self.server_bind()
+  File "/usr/lib/python3.12/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+  File "/usr/lib/python3.12/socketserver.py", line 473, in server_bind
+    self.socket.bind(self.server_address)
+OSError: [Errno 98] Address already in use
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+----------------------------------------
+Exception occurred during processing of request from ('192.168.1.77', 57560)
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/socketserver.py", line 692, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/usr/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/usr/lib/python3.12/socketserver.py", line 761, in __init__
+    self.handle()
+  File "/usr/lib/python3.12/http/server.py", line 436, in handle
+    self.handle_one_request()
+  File "/usr/lib/python3.12/http/server.py", line 424, in handle_one_request
+    method()
+  File "/home/khangho/agv_cam_20261027/cam_stream.py", line 232, in do_GET
+    self.wfile.write(frame)
+  File "/usr/lib/python3.12/socketserver.py", line 840, in write
+    self._sock.sendall(b)
+OSError: [Errno 101] Network is unreachable
+----------------------------------------
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+----------------------------------------
+Exception occurred during processing of request from ('192.168.1.77', 56532)
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/socketserver.py", line 692, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/usr/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/usr/lib/python3.12/socketserver.py", line 761, in __init__
+    self.handle()
+  File "/usr/lib/python3.12/http/server.py", line 438, in handle
+    self.handle_one_request()
+  File "/usr/lib/python3.12/http/server.py", line 404, in handle_one_request
+    self.raw_requestline = self.rfile.readline(65537)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+ConnectionResetError: [Errno 104] Connection reset by peer
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('10.95.109.179', 63041)
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/socketserver.py", line 692, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/usr/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/usr/lib/python3.12/socketserver.py", line 761, in __init__
+    self.handle()
+  File "/usr/lib/python3.12/http/server.py", line 438, in handle
+    self.handle_one_request()
+  File "/usr/lib/python3.12/http/server.py", line 404, in handle_one_request
+    self.raw_requestline = self.rfile.readline(65537)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+ConnectionResetError: [Errno 104] Connection reset by peer
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('10.95.109.179', 64820)
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/socketserver.py", line 692, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/usr/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/usr/lib/python3.12/socketserver.py", line 761, in __init__
+    self.handle()
+  File "/usr/lib/python3.12/http/server.py", line 438, in handle
+    self.handle_one_request()
+  File "/usr/lib/python3.12/http/server.py", line 404, in handle_one_request
+    self.raw_requestline = self.rfile.readline(65537)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+ConnectionResetError: [Errno 104] Connection reset by peer
+----------------------------------------
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True
+CAM SERVER on 8081 device=/dev/video0 ready=True

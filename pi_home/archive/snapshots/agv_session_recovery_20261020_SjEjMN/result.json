@@ -1,0 +1,9 @@
+{
+  "pid": 33763,
+  "backup": "/home/khangho/agv_session_recovery_20261020_SjEjMN/backup",
+  "status": "APPLIED_DISARMED",
+  "hashes": {
+    "agv_command_session.py": "df9e04047a0e78cb30ea79d7346ee85c3d3d048f1f5daca2b03dcb75861c4bea",
+    "index_cyberpunk.html": "a2105a3aae6dfe767cfe1189cf23593165e5f406528c966fa6e5f2f467ab5742"
+  }
+}

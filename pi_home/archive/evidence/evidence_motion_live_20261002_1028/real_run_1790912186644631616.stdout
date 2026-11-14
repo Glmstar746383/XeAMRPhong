@@ -1,0 +1,6 @@
+[EXECUTABLE START] Khởi tạo HardwareMotionRunner trên cổng /dev/ttyUSB0...
+{
+  "preflight_status": "PASS_PREFLIGHT_VERIFIED",
+  "status": "PASS_MOTION_VERIFIED",
+  "evidence_file": "/home/khangho/evidence_motion_live_20261002_1028/motion_evidence_1790912198344_19050.json"
+}

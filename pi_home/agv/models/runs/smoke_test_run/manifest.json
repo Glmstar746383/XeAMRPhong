@@ -1,0 +1,38 @@
+{
+  "run_id": "run_1791807720",
+  "timestamp": 1791807734.3304994,
+  "episodes": 10,
+  "seed": 42,
+  "threads": 2,
+  "bfs_baseline": {
+    "mean_coverage": 100.0,
+    "median_coverage": 100.0,
+    "mean_steps": 903.34
+  },
+  "eval_history": [
+    {
+      "episode": 5,
+      "env_steps": 17124,
+      "elapsed_sec": 48.93954801559448,
+      "eval_coverage": 15.871727661865004,
+      "eval_steps": 3411.6,
+      "success_ge_95": 0
+    },
+    {
+      "episode": 10,
+      "env_steps": 34264,
+      "elapsed_sec": 100.50769114494324,
+      "eval_coverage": 55.38351060586932,
+      "eval_steps": 3411.6,
+      "success_ge_95": 0
+    }
+  ],
+  "onnx_verification": {
+    "onnx_path": "models\\runs\\smoke_test_run\\coverage_model.onnx",
+    "file_size_bytes": 132717,
+    "sha256": "cd36a568398395eaa236e0fa9b87cbdc3aa964018831606a28ec01318e434804",
+    "max_abs_error": 1.52587890625e-05,
+    "argmax_disagreements": 0,
+    "status": "PASS"
+  }
+}

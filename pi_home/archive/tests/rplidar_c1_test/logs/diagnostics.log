@@ -1,0 +1,68 @@
+==================================================
+    BÁO CÁO CHẨN ĐOÁN HỆ THỐNG RPLIDAR C1 TEST   
+    Thời gian: 2026-09-15 04:09:38      
+==================================================
+
+[1. HỆ ĐIỀU HÀNH & KIẾN TRÚC]
+Host: khang
+Kernel: 6.8.0-1064-raspi
+Arch: aarch64
+Description:	Ubuntu 24.04.5 LTS
+
+[2. KIỂM TRA NGUỒN ĐIỆN & NHIỆT ĐỘ]
+Throttled status : Can't open device file: /dev/vcio
+Try creating a device file with: sudo mknod /dev/vcio c 100 0
+Core Temperature : Can't open device file: /dev/vcio
+Try creating a device file with: sudo mknod /dev/vcio c 100 0
+-> [WARNING] Phát hiện cảnh báo nguồn/nhiệt: Can't open device file: /dev/vcio
+Try creating a device file with: sudo mknod /dev/vcio c 100 0
+
+[3. MÔI TRƯỜNG ROS 2]
+ROS_DISTRO hiện tại: Chưa nạp
+Tìm thấy ROS 2 tại: /opt/ros/jazzy
+
+[4. PACKAGE DRIVER SLLIDAR_ROS2]
+Đã nạp workspace: /home/khangho/rplidar_c1_ws
+[PASS] Package sllidar_ros2: /home/khangho/rplidar_c1_ws/install/sllidar_ros2
+
+[5. KIỂM TRA RVIZ2]
+[PASS] RViz2 đã được cài đặt: /opt/ros/jazzy
+
+[6. THIẾT BỊ USB & CỔNG SERIAL]
+Danh sách USB liên quan đến UART/Serial:
+Bus 001 Device 003: ID 10c4:ea60 Silicon Labs CP210x UART Bridge
+
+Danh mục trong /dev/serial/by-id/:
+total 0
+drwxr-xr-x 2 root root 60 Sep  8 07:21 .
+drwxr-xr-x 4 root root 80 Sep  8 07:21 ..
+lrwxrwxrwx 1 root root 13 Sep  8 07:21 usb-Silicon_Labs_CP2102N_USB_to_UART_Bridge_Controller_76815f48566eef11bd64dec2c169b110-if00-port0 -> ../../ttyUSB0
+
+Kiểm tra symlink /dev/rplidar_c1:
+lrwxrwxrwx 1 root root 7 Sep 15 04:04 /dev/rplidar_c1 -> ttyUSB0
+
+[7. QUYỀN TRUY CẬP SERIAL]
+User: khangho
+Groups: khangho adm dialout cdrom sudo dip lxd
+[PASS] User thuộc nhóm dialout.
+
+[8. TIẾN TRÌNH DRIVER & RVIZ]
+Không có tiến trình sllidar_node hoặc rviz2 nào đang chạy.
+
+[9. NHẬT KÝ LOG GẦN NHẤT]
+--- 10 dòng cuối của driver.log ---
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [launch.user]: Khởi động RPLIDAR C1 trên cổng: /dev/rplidar_c1 với baudrate: 460800
+[INFO] [sllidar_node-1]: process started with pid [3414]
+[sllidar_node-1] [INFO] [1789420103.087595384] [sllidar_node]: SLLidar running on ROS2 package SLLidar.ROS2 SDK Version:1.0.1, SLLIDAR SDK Version:2.1.0
+[sllidar_node-1] [INFO] [1789420103.604710643] [sllidar_node]: SLLidar S/N: A915E18DC2E699D6C89792F453B6416E
+[sllidar_node-1] [INFO] [1789420103.604851476] [sllidar_node]: Firmware Ver: 1.02
+[sllidar_node-1] [INFO] [1789420103.604887273] [sllidar_node]: Hardware Rev: 18
+[sllidar_node-1] [INFO] [1789420103.607611865] [sllidar_node]: SLLidar health status : 0
+[sllidar_node-1] [INFO] [1789420103.607734161] [sllidar_node]: SLLidar health status : OK.
+[sllidar_node-1] [INFO] [1789420103.894744198] [sllidar_node]: current scan mode: Standard, sample rate: 5 Khz, max_distance: 16.0 m, scan frequency:10.0 Hz, 
+
+==================================================
+  Báo cáo chẩn đoán đã được lưu tại:
+    /home/khangho/rplidar_c1_test/logs/diagnostics.log
+==================================================

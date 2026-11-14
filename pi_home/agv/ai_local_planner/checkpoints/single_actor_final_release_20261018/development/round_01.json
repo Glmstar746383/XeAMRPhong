@@ -1,0 +1,92 @@
+{
+  "checkpoint": "ai_local_planner\\checkpoints\\single_actor_final_release_20261018\\development_round_01.pth",
+  "sha256": "2b538b98f3a33c46594aabcbadcda68f7f6926468981ce496e12ee15bbcdd86b",
+  "score": 7.25,
+  "levels": {
+    "1": {
+      "checkpoint": "ai_local_planner\\checkpoints\\single_actor_final_release_20261018\\development_round_01.pth",
+      "training_steps": 0,
+      "level": 1,
+      "episodes": 20,
+      "seed_start": 25001000,
+      "domain_randomization": true,
+      "success_rate": 1.0,
+      "collision_rate": 0.0,
+      "timeout_rate": 0.0,
+      "mean_episode_steps": 196.2,
+      "mean_min_clearance_m": 1.0,
+      "collision_seeds": [],
+      "timeout_seeds": [],
+      "mean_reward": 233.56598256809247
+    },
+    "2": {
+      "checkpoint": "ai_local_planner\\checkpoints\\single_actor_final_release_20261018\\development_round_01.pth",
+      "training_steps": 0,
+      "level": 2,
+      "episodes": 20,
+      "seed_start": 25002000,
+      "domain_randomization": true,
+      "success_rate": 1.0,
+      "collision_rate": 0.0,
+      "timeout_rate": 0.0,
+      "mean_episode_steps": 229.1,
+      "mean_min_clearance_m": 0.4640016771188444,
+      "collision_seeds": [],
+      "timeout_seeds": [],
+      "mean_reward": 286.8842678979306
+    },
+    "3": {
+      "checkpoint": "ai_local_planner\\checkpoints\\single_actor_final_release_20261018\\development_round_01.pth",
+      "training_steps": 0,
+      "level": 3,
+      "episodes": 20,
+      "seed_start": 25003000,
+      "domain_randomization": true,
+      "success_rate": 0.9,
+      "collision_rate": 0.1,
+      "timeout_rate": 0.0,
+      "mean_episode_steps": 224.3,
+      "mean_min_clearance_m": 0.2546920583865436,
+      "collision_seeds": [
+        25003001,
+        25003018
+      ],
+      "timeout_seeds": [],
+      "mean_reward": 175.95891579249763
+    },
+    "4": {
+      "checkpoint": "ai_local_planner\\checkpoints\\single_actor_final_release_20261018\\development_round_01.pth",
+      "training_steps": 0,
+      "level": 4,
+      "episodes": 20,
+      "seed_start": 25004000,
+      "domain_randomization": true,
+      "success_rate": 0.95,
+      "collision_rate": 0.05,
+      "timeout_rate": 0.0,
+      "mean_episode_steps": 303.9,
+      "mean_min_clearance_m": 0.40525493708835175,
+      "collision_seeds": [
+        25004010
+      ],
+      "timeout_seeds": [],
+      "mean_reward": 294.8555302775079
+    },
+    "5": {
+      "checkpoint": "ai_local_planner\\checkpoints\\single_actor_final_release_20261018\\development_round_01.pth",
+      "training_steps": 0,
+      "level": 5,
+      "episodes": 20,
+      "seed_start": 25005000,
+      "domain_randomization": true,
+      "success_rate": 1.0,
+      "collision_rate": 0.0,
+      "timeout_rate": 0.0,
+      "mean_episode_steps": 124.8,
+      "mean_min_clearance_m": 0.4056349388683789,
+      "collision_seeds": [],
+      "timeout_seeds": [],
+      "mean_reward": 163.39424132561152
+    }
+  }
+}

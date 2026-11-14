@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RPLIDAR C1M1 - Giám Sát Radar 360° & Trạm Điều Khiển</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #0a0d14;
+      --bg-surface: #121824;
+      --bg-card: #182030;
+      --border-subtle: #222d42;
+      --border-highlight: #334466;
+      
+      --accent-cyan: #00f0ff;
+      --accent-cyan-glow: rgba(0, 240, 255, 0.35);
+      --accent-green: #00ff88;
+      --accent-green-glow: rgba(0, 255, 136, 0.3);
+      --accent-yellow: #ffb700;
+      --accent-red: #ff3366;
+      --accent-red-glow: rgba(255, 51, 102, 0.4);
+      
+      --text-main: #f0f4fc;
+      --text-muted: #8899b5;
+      --text-dim: #50617a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(180deg, #161e2e 0%, #0e131d 100%);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .radar-icon {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--accent-cyan);
+      border-radius: 50%;
+      position: relative;
+      animation: pulse-ring 2s infinite ease-out;
+    }
+
+    .radar-icon::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      background: var(--accent-cyan);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.6); }
+      70% { box-shadow: 0 0 0 10px rgba(0, 240, 255, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0); }
+    }
+
+    .brand h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--text-main);
+    }
+
+    .brand span {
+      font-size: 0.78rem;
+      color: var(--accent-cyan);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      background: rgba(0, 240, 255, 0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 240, 255, 0.25);
+    }
+
+    .header-status {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .badge-status {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+    }
+
+    .status-safe {
+      background: rgba(0, 255, 136, 0.15);
+      border: 1px solid var(--accent-green);
+      color: var(--accent-green);
+    }
+
+    .status-warning {
+      background: rgba(255, 183, 0, 0.15);
+      border: 1px solid var(--accent-yellow);
+      color: var(--accent-yellow);
+    }
+
+    .status-danger {
+      background: rgba(255, 51, 102, 0.2);
+      border: 1px solid var(--accent-red);
+      color: var(--accent-red);
+      animation: alert-blink 0.8s infinite;
+    }
+
+    .status-offline {
+      background: rgba(136, 153, 181, 0.15);
+      border: 1px solid var(--text-dim);
+      color: var(--text-muted);
+    }
+
+    @keyframes alert-blink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.75; transform: scale(1.03); }
+    }
+
+    /* MAIN LAYOUT */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 18px;
+      padding: 18px;
+      max-width: 1600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* RADAR CONTAINER */
+    .radar-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 16px;
+      overflow: hidden;
+      box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.6);
+    }
+
+    .radar-toolbar {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .radar-toolbar > * {
+      pointer-events: auto;
+    }
+
+    .controls-group {
+      display: flex;
+      gap: 8px;
+      background: rgba(18, 24, 36, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 4px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .btn-tool {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-tool:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-tool.active {
+      color: var(--accent-cyan);
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+
+    #radarCanvas {
+      width: 100%;
+      height: 100%;
+      max-width: 720px;
+      max-height: 720px;
+      aspect-ratio: 1 / 1;
+      display: block;
+      border-radius: 50%;
+      filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.08));
+    }
+
+    /* SIDEBAR / METRICS */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* METRIC GRID */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .metric-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .metric-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .metric-unit {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-left: 2px;
+    }
+
+    /* 8 ZONES VISUALIZER */
+    .zones-table {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .zone-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg-card);
+      padding: 6px 10px;
+      border-radius: 6px;
+      border-left: 4px solid var(--accent-green);
+      font-size: 0.82rem;
+      font-family: 'JetBrains Mono', monospace;
+      transition: all 0.2s;
+    }
+
+    .zone-row.warning {
+      border-left-color: var(--accent-yellow);
+      background: rgba(255, 183, 0, 0.08);
+    }
+
+    .zone-row.danger {
+      border-left-color: var(--accent-red);
+      background: rgba(255, 51, 102, 0.12);
+    }
+
+    .zone-name {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .zone-dist {
+      font-weight: 700;
+    }
+
+    /* MIT APP INVENTOR QUICK INFO */
+    .mit-info-box {
+      background: rgba(0, 240, 255, 0.04);
+      border: 1px dashed rgba(0, 240, 255, 0.3);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .mit-info-box code {
+      color: var(--accent-cyan);
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-top: 4px;
+      word-break: break-all;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 992px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      #radarCanvas {
+        max-width: 520px;
+        max-height: 520px;
+      }
+    }
+  
+    /* CỤM ĐIỀU KHIỂN ROBOT AGV */
+    .control-box {
+      margin-top: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .dpad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      max-width: 260px;
+      margin: 10px auto 0;
+    }
+    .dpad-btn {
+      background: #1e293b;
+      border: 1px solid #334466;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: bold;
+      padding: 14px 0;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      transition: all 0.15s;
+    }
+    .dpad-btn:active, .dpad-btn.active-key {
+      background: var(--accent-cyan);
+      color: #000;
+      transform: scale(0.95);
+      box-shadow: 0 0 15px var(--accent-cyan-glow);
+    }
+    .dpad-stop {
+      background: #881337;
+      border-color: #be123c;
+      color: #fda4af;
+    }
+    .dpad-stop:active, .dpad-stop.active-key {
+      background: #e11d48;
+      color: #fff;
+    }
+    .dpad-sub {
+      font-size: 0.65rem;
+      font-weight: normal;
+      opacity: 0.8;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="brand">
+      <div class="radar-icon"></div>
+      <div>
+        <h1>RPLIDAR C1M1 RADAR TACTICAL</h1>
+      </div>
+      <span id="modeBadge">MOCK SIMULATION</span>
+    </div>
+
+    <div class="header-status">
+      <div id="safetyBadge" class="badge-status status-safe">
+        <span class="status-dot">●</span>
+        <span id="safetyText">AN TOÀN</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <!-- RADAR SCREEN -->
+    <section class="radar-panel">
+      <div class="radar-toolbar">
+        <div class="controls-group">
+          <span style="font-size:0.75rem; color:var(--text-muted); align-self:center; margin-right:4px;">Phạm vi:</span>
+          <button class="btn-tool" onclick="setRange(2)">2m</button>
+          <button class="btn-tool active" onclick="setRange(4)">4m</button>
+          <button class="btn-tool" onclick="setRange(6)">6m</button>
+          <button class="btn-tool" onclick="setRange(10)">10m</button>
+        </div>
+
+        <div class="controls-group">
+          <button id="btnSweep" class="btn-tool active" onclick="toggleSweep()">Tia Quét: Bật</button>
+          <button id="btnZones" class="btn-tool active" onclick="toggleZones()">Vùng: Bật</button>
+        </div>
+      </div>
+
+      <canvas id="radarCanvas" width="900" height="900"></canvas>
+    </section>
+
+    <!-- METRICS & SIDEBAR -->
+    <aside class="sidebar">
+      <!-- THÔNG SỐ VẬT CẢN GẦN NHẤT -->
+      <div class="card">
+        <div class="card-title">
+          <span>Vật cản gần nhất</span>
+          <span id="closestAngle" style="color:var(--accent-cyan); font-family:'JetBrains Mono';">0° (Trước)</span>
+        </div>
+        <div class="metric-grid">
+          <div class="metric-box">
+            <span class="metric-label">Khoảng cách</span>
+            <div class="metric-value" id="valClosestDist">--<span class="metric-unit">cm</span></div>
+          </div>
+          <div class="metric-box">
+            <span class="metric-label">Tần số quét</span>
+            <div class="metric-value" id="valHz">--<span class="metric-unit">Hz</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 VÙNG RADAR AGV -->
+      <div class="card">
+        <div class="card-title">
+          <span>Khoảng cách 8 Vùng (cm)</span>
+          <span style="font-size:0.72rem; color:var(--text-dim);">Dành cho MIT App</span>
+        </div>
+        <div class="zones-table" id="zonesList">
+          <div class="zone-row" id="row-front">
+            <span class="zone-name">▲ Phía Trước (Front)</span>
+            <span class="zone-dist" id="z-front">-- cm</span>
+          </div>
+          <div class="zone-row" id="row-front_right">
+            <span class="zone-name">↗ Trước Phải</span>
+            <span class="zone-dist" id="z-front_right">-- cm</span>
+          </div>
+          <div class="zone-row" id="row-right">
+            <span class="zone-name">▶ Bên Phải (Right)</span>
+            <span class="zone-dist" id="z-right">-- cm</span>
+          </div>
+          <div class="zone-row" id="row-back_right">
+            <span class="zone-name">↘ Sau Phải</span>
+            <span class="zone-dist" id="z-back_right">-- cm</span>
+          </div>
+          <div class="zone-row" id="row-back">
+            <span class="zone-name">▼ Phía Sau (Back)</span>
+            <span class="zone-dist" id="z-back">-- cm</span>
+          </div>
+          <div class="zone-row" id="row-back_left">
+            <span class="zone-name">↙ Sau Trái</span>
+            <span class="zone-dist" id="z-back_left">-- cm</span>
+          </div>
+          <div class="zone-row" id="row-left">
+            <span class="zone-name">◀ Bên Trái (Left)</span>
+            <span class="zone-dist" id="z-left">-- cm</span>
+          </div>
+          <div class="zone-row" id="row-front_left">
+            <span class="zone-name">↖ Trước Trái</span>
+            <span class="zone-dist" id="z-front_left">-- cm</span>
+          </div>
+        </div>
+      </div>
+
+      
+      <!-- BẢNG ĐIỀU KHIỂN XE AGV TRỰC TIẾP (WASD HOẶC BẤM CHUỘT) -->
+      <div class="control-box">
+        <div class="card-title" style="display:flex; justify-content:space-between; align-items:center;">
+          <span>🎮 Điều Khiển Xe Di Chuyển</span>
+          <span style="font-size:0.7rem; color:var(--accent-cyan);">Phím W-A-S-D hoặc Chuột</span>
+        
+        <!-- CỤM TỰ ĐỘNG NÉ VẬT CẢN & NÚT DỪNG KHẨN CẤP -->
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:12px;">
+          <button id="btn-auto-start" style="padding:12px; background:#065f46; border:2px solid #059669; border-radius:10px; color:#6ee7b7; font-weight:800; font-size:0.85rem; cursor:pointer;">
+            🚀 BẬT TỰ NÉ (CHẬM)
+          </button>
+          <button id="btn-emergency-stop" style="padding:12px; background:#991b1b; border:2px solid #dc2626; border-radius:10px; color:#fecaca; font-weight:900; font-size:0.85rem; cursor:pointer; box-shadow:0 0 15px rgba(239,68,68,0.4);">
+            🛑 DỪNG KHẨN CẤP
+          </button>
+        </div>
+
+        <div class="dpad-grid">
+          <button class="dpad-btn" id="btn-turn-left"><span>↺</span><span class="dpad-sub">Q (Xoay T)</span></button>
+          <button class="dpad-btn" id="btn-forward"><span>▲</span><span class="dpad-sub">W (Tiến)</span></button>
+          <button class="dpad-btn" id="btn-turn-right"><span>↻</span><span class="dpad-sub">E (Xoay P)</span></button>
+
+          <button class="dpad-btn" id="btn-left"><span>◄</span><span class="dpad-sub">A (Trái)</span></button>
+          <button class="dpad-btn dpad-stop" id="btn-stop"><span>🛑</span><span class="dpad-sub">Space (Dừng)</span></button>
+          <button class="dpad-btn" id="btn-right"><span>►</span><span class="dpad-sub">D (Phải)</span></button>
+
+          <div></div>
+          <button class="dpad-btn" id="btn-backward"><span>▼</span><span class="dpad-sub">S (Lùi)</span></button>
+          <div></div>
+        </div>
+      </div>
+
+      <!-- LINK ĐẾN MIT APP -->
+      <div class="card">
+        <div class="card-title">Kết Nối MIT App Inventor</div>
+        <div class="mit-info-box">
+          📱 <b>Xem trực tiếp trên App điện thoại:</b><br>
+          Kéo component <code>WebViewer</code> và nhập URL:<br>
+          <code id="appUrl">http://localhost:8080/radar</code>
+          <br><br>
+          ⚡ <b>Hoặc kéo Block đọc JSON 8 vùng:</b><br>
+          Dùng component <code>Web</code> gọi API:<br>
+          <code id="apiUrl">http://localhost:8080/api/zones</code>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    // CẤU HÌNH RADAR
+    let maxRange = 4.0; // mét
+    let showSweep = true;
+    let showZones = true;
+    let sweepAngle = 0;
+    
+    // Dữ liệu quét hiện thời
+    let scanData = {
+      ranges: new Array(360).fill(0),
+      zones: {},
+      min_dist_m: 9.99,
+      min_angle_deg: 0,
+      safety_status: "SAFE",
+      hz: 10.0,
+      mode: "mock"
+    };
+
+    const canvas = document.getElementById("radarCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Đổi phạm vi quét hiển thị
+    function setRange(r) {
+      maxRange = r;
+      document.querySelectorAll(".controls-group:first-child .btn-tool").forEach(b => {
+        b.classList.toggle("active", b.innerText === `${r}m`);
+      });
+    }
+
+    function toggleSweep() {
+      showSweep = !showSweep;
+      document.getElementById("btnSweep").innerText = `Tia Quét: ${showSweep ? 'Bật' : 'Tắt'}`;
+      document.getElementById("btnSweep").classList.toggle("active", showSweep);
+    }
+
+    function toggleZones() {
+      showZones = !showZones;
+      document.getElementById("btnZones").innerText = `Vùng: ${showZones ? 'Bật' : 'Tắt'}`;
+      document.getElementById("btnZones").classList.toggle("active", showZones);
+    }
+
+    // Tự động hiển thị IP thật cho MIT App
+    const host = window.location.hostname;
+    const port = window.location.port || '8080';
+    document.getElementById("appUrl").innerText = `http://${host}:${port}/radar`;
+    document.getElementById("apiUrl").innerText = `http://${host}:${port}/api/zones`;
+
+    // LẤY DỮ LIỆU TỪ SERVER BRIDGE (Polling 10 FPS)
+    async function fetchScanData() {
+      try {
+        const res = await fetch("/api/scan");
+        if (res.ok) {
+          const data = await res.json();
+          scanData = data;
+          updateUI(data);
+        }
+      } catch (err) {
+        console.warn("Mất kết nối server bridge:", err);
+      }
+    }
+    setInterval(fetchScanData, 100);
+
+    // CẬP NHẬT GIAO DIỆN SỐ LIỆU
+    function updateUI(data) {
+      // Cập nhật Mode
+      document.getElementById("modeBadge").innerText = data.mode === "ros2" ? "ROS 2 /scan LIVE" : "MOCK SIMULATION";
+      
+      // Trạng thái an toàn
+      const badge = document.getElementById("safetyBadge");
+      const text = document.getElementById("safetyText");
+      if (data.safety_status === "DANGER_STOP") {
+        badge.className = "badge-status status-danger";
+        text.innerText = "DỪNG KHẨN CẤP!";
+      } else if (data.safety_status === "WARNING") {
+        badge.className = "badge-status status-warning";
+        text.innerText = "CẢNH BÁO VA CHẠM";
+      } else {
+        badge.className = "badge-status status-safe";
+        text.innerText = "AN TOÀN";
+      }
+
+      // Thông số gần nhất
+      const cmVal = Math.round(data.min_dist_m * 100);
+      document.getElementById("valClosestDist").innerHTML = `${cmVal}<span class="metric-unit">cm</span>`;
+      document.getElementById("valHz").innerHTML = `${data.hz.toFixed(1)}<span class="metric-unit">Hz</span>`;
+      
+      const ang = data.min_angle_deg;
+      let dirName = "Trước";
+      if (ang >= 338 || ang < 23) dirName = "Trước";
+      else if (ang < 68) dirName = "Trước Phải";
+      else if (ang < 113) dirName = "Phải";
+      else if (ang < 158) dirName = "Sau Phải";
+      else if (ang < 203) dirName = "Sau";
+      else if (ang < 248) dirName = "Sau Trái";
+      else if (ang < 293) dirName = "Trái";
+      else dirName = "Trước Trái";
+      document.getElementById("closestAngle").innerText = `${ang}° (${dirName})`;
+
+      // Cập nhật bảng 8 vùng
+      if (data.zones) {
+        for (const [key, val] of Object.entries(data.zones)) {
+          const el = document.getElementById(`z-${key}`);
+          const row = document.getElementById(`row-${key}`);
+          if (el && row) {
+            el.innerText = `${val.dist_cm >= 999 ? '> 999' : val.dist_cm} cm`;
+            row.className = "zone-row";
+            if (val.status === "DANGER_STOP") row.classList.add("danger");
+            else if (val.status === "WARNING") row.classList.add("warning");
+          }
+        }
+      }
+    }
+
+    // VẼ RADAR CANVAS 60 FPS
+    function renderRadar() {
+      const w = canvas.width;
+      const h = canvas.height;
+      const cx = w / 2;
+      const cy = h / 2;
+      const rMax = w * 0.44;
+
+      // Xóa khung hình
+      ctx.fillStyle = "#0a0d14";
+      ctx.fillRect(0, 0, w, h);
+
+      // 1. Vẽ nền các vùng quạt (8 Sectors)
+      if (showZones && scanData.zones) {
+        const sectorAngles = [
+          { name: "front", start: -22.5, end: 22.5 },
+          { name: "front_right", start: 22.5, end: 67.5 },
+          { name: "right", start: 67.5, end: 112.5 },
+          { name: "back_right", start: 112.5, end: 157.5 },
+          { name: "back", start: 157.5, end: 202.5 },
+          { name: "back_left", start: 202.5, end: 247.5 },
+          { name: "left", start: 247.5, end: 292.5 },
+          { name: "front_left", start: 292.5, end: 337.5 }
+        ];
+
+        sectorAngles.forEach(sec => {
+          const zInfo = scanData.zones[sec.name];
+          if (zInfo && (zInfo.status === "WARNING" || zInfo.status === "DANGER_STOP")) {
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            // Quy đổi sang Canvas: 0° là phía trên (Front = -90° Canvas)
+            const a1 = (sec.start - 90) * Math.PI / 180;
+            const a2 = (sec.end - 90) * Math.PI / 180;
+            ctx.arc(cx, cy, rMax, a1, a2);
+            ctx.closePath();
+            ctx.fillStyle = zInfo.status === "DANGER_STOP" ? "rgba(255, 51, 102, 0.18)" : "rgba(255, 183, 0, 0.1)";
+            ctx.fill();
+          }
+        });
+      }
+
+      // 2. Vẽ các vòng tròn cự ly đồng tâm
+      const stepDist = maxRange <= 2 ? 0.5 : (maxRange <= 4 ? 1.0 : 2.0);
+      const ringCount = Math.floor(maxRange / stepDist);
+
+      ctx.lineWidth = 1;
+      for (let i = 1; i <= ringCount; i++) {
+        const curDist = i * stepDist;
+        const radius = (curDist / maxRange) * rMax;
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(0, 240, 255, 0.15)";
+        ctx.stroke();
+
+        // Ghi nhãn cự ly mét
+        ctx.fillStyle = "rgba(136, 153, 181, 0.6)";
+        ctx.font = "14px 'JetBrains Mono', monospace";
+        ctx.fillText(`${curDist.toFixed(1)}m`, cx + 8, cy - radius + 16);
+      }
+
+      // 3. Vòng tròn ngoài cùng
+      ctx.beginPath();
+      ctx.arc(cx, cy, rMax, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(0, 240, 255, 0.4)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // 4. Vẽ các trục góc (Chữ thập & Đường chéo 45°)
+      const angles = [0, 45, 90, 135, 180, 225, 270, 315];
+      ctx.lineWidth = 1;
+      angles.forEach(deg => {
+        const rad = (deg - 90) * Math.PI / 180;
+        const x2 = cx + Math.cos(rad) * rMax;
+        const y2 = cy + Math.sin(rad) * rMax;
+
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = (deg % 90 === 0) ? "rgba(0, 240, 255, 0.25)" : "rgba(0, 240, 255, 0.1)";
+        ctx.stroke();
+
+        // Nhãn góc độ bên ngoài
+        const lx = cx + Math.cos(rad) * (rMax + 24);
+        const ly = cy + Math.sin(rad) * (rMax + 24);
+        ctx.fillStyle = (deg === 0) ? "#00f0ff" : "rgba(136, 153, 181, 0.8)";
+        ctx.font = (deg === 0) ? "bold 14px 'JetBrains Mono'" : "12px 'JetBrains Mono'";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(deg === 0 ? "0° TRƯỚC" : (deg === 180 ? "180° SAU" : `${deg}°`), lx, ly);
+      });
+
+      // 5. Vẽ tia quét xoay tròn (Radar Sweep Line)
+      if (showSweep) {
+        sweepAngle = (sweepAngle + 2.5) % 360;
+        const sweepRad = (sweepAngle - 90) * Math.PI / 180;
+
+        // Quạt mờ quét sau kim
+        const grad = ctx.createRadialGradient(cx, cy, 10, cx, cy, rMax);
+        grad.addColorStop(0, "rgba(0, 240, 255, 0.3)");
+        grad.addColorStop(1, "rgba(0, 240, 255, 0.0)");
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.arc(cx, cy, rMax, sweepRad - 0.45, sweepRad);
+        ctx.closePath();
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.restore();
+
+        // Đường kim quét chính
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(sweepRad) * rMax, cy + Math.sin(sweepRad) * rMax);
+        ctx.strokeStyle = "#00f0ff";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      // 6. VẼ ĐÁM MÂY ĐIỂM LASER 360° THỜI GIAN THỰC
+      if (scanData.ranges && scanData.ranges.length > 0) {
+        for (let deg = 0; deg < 360; deg++) {
+          const d = scanData.ranges[deg];
+          if (d > 0.05 && d <= maxRange) {
+            const rad = (deg - 90) * Math.PI / 180;
+            const distPx = (d / maxRange) * rMax;
+            const px = cx + Math.cos(rad) * distPx;
+            const py = cy + Math.sin(rad) * distPx;
+
+            // Màu sắc theo khoảng cách an toàn:
+            // < 0.35m: Đỏ rực nguy hiểm
+            // 0.35m - 0.70m: Vàng cảnh báo
+            // > 0.70m: Xanh Cyan an toàn
+            ctx.beginPath();
+            ctx.arc(px, py, 3.2, 0, Math.PI * 2);
+            if (d <= 0.35) {
+              ctx.fillStyle = "#ff3366";
+              ctx.shadowColor = "#ff3366";
+              ctx.shadowBlur = 8;
+            } else if (d <= 0.70) {
+              ctx.fillStyle = "#ffb700";
+              ctx.shadowColor = "#ffb700";
+              ctx.shadowBlur = 5;
+            } else {
+              ctx.fillStyle = "#00f0ff";
+              ctx.shadowColor = "#00f0ff";
+              ctx.shadowBlur = 4;
+            }
+            ctx.fill();
+            ctx.shadowBlur = 0; // Reset shadow
+          }
+        }
+      }
+
+      // 7. Vẽ mô hình xe AGV ở tâm
+      ctx.save();
+      ctx.translate(cx, cy);
+      // Thân xe hình chữ nhật bo góc
+      ctx.fillStyle = "#1e293b";
+      ctx.strokeStyle = "#00f0ff";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(-16, -24, 32, 48, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      // Mũi tên định hướng về phía trước (Front)
+      ctx.fillStyle = "#00ff88";
+      ctx.beginPath();
+      ctx.moveTo(0, -18);
+      ctx.lineTo(-7, -8);
+      ctx.lineTo(7, -8);
+      ctx.closePath();
+      ctx.fill();
+
+      // Tâm laser
+      ctx.beginPath();
+      ctx.arc(0, 0, 4, 0, Math.PI * 2);
+      ctx.fillStyle = "#ff3366";
+      ctx.fill();
+      ctx.restore();
+
+      requestAnimationFrame(renderRadar);
+    }
+
+    // Bắt đầu vòng lặp vẽ 60 FPS
+    requestAnimationFrame(renderRadar);
+  
+    // =========================================================================
+    // ĐIỀU KHIỂN ROBOT AGV (CHUỘT + CẢM ỨNG + BÀN PHÍM WASD)
+    // =========================================================================
+    const ROBOT_SPEED = 120;
+    let moveTimer = null;
+    let activeCmd = null;
+
+    function sendRobot(cmd) {
+      fetch('/api/cmd?val=' + encodeURIComponent(cmd)).catch(()=>{});
+    }
+
+    function startDrive(cmd) {
+      activeCmd = cmd;
+      sendRobot(cmd);
+      if (moveTimer) clearInterval(moveTimer);
+      moveTimer = setInterval(() => {
+        if (activeCmd) sendRobot(activeCmd);
+      }, 150);
+    }
+
+    function stopDrive() {
+      activeCmd = null;
+      if (moveTimer) { clearInterval(moveTimer); moveTimer = null; }
+      sendRobot('STOP');
+      document.querySelectorAll('.dpad-btn').forEach(b => b.classList.remove('active-key'));
+    }
+
+    function bindDrive(btnId, cmd) {
+      const el = document.getElementById(btnId);
+      if (!el) return;
+      el.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        try { el.setPointerCapture(e.pointerId); } catch(err){}
+        el.classList.add('active-key');
+        startDrive(cmd);
+      });
+      const release = (e) => {
+        e.preventDefault();
+        try { el.releasePointerCapture(e.pointerId); } catch(err){}
+        el.classList.remove('active-key');
+        stopDrive();
+      };
+      el.addEventListener('pointerup', release);
+      el.addEventListener('pointercancel', release);
+    }
+
+    bindDrive('btn-forward', 'S ' + ROBOT_SPEED + ' ' + ROBOT_SPEED);
+    bindDrive('btn-backward', 'S -' + ROBOT_SPEED + ' -' + ROBOT_SPEED);
+    bindDrive('btn-left', 'S 0 ' + ROBOT_SPEED);
+    bindDrive('btn-right', 'S ' + ROBOT_SPEED + ' 0');
+    bindDrive('btn-turn-left', 'S -' + ROBOT_SPEED + ' ' + ROBOT_SPEED);
+    bindDrive('btn-turn-right', 'S ' + ROBOT_SPEED + ' -' + ROBOT_SPEED);
+    
+    document.getElementById('btn-stop')?.addEventListener('click', stopDrive);
+
+    const keyMap = {
+      'KeyW': 'S ' + ROBOT_SPEED + ' ' + ROBOT_SPEED,
+      'KeyS': 'S -' + ROBOT_SPEED + ' -' + ROBOT_SPEED,
+      'KeyA': 'S 0 ' + ROBOT_SPEED,
+      'KeyD': 'S ' + ROBOT_SPEED + ' 0',
+      'KeyQ': 'S -' + ROBOT_SPEED + ' ' + ROBOT_SPEED,
+      'KeyE': 'S ' + ROBOT_SPEED + ' -' + ROBOT_SPEED
+    };
+
+    window.addEventListener('keydown', (e) => {
+      if (e.repeat) return;
+      if (e.code === 'Space') {
+        e.preventDefault();
+        stopDrive();
+        return;
+      }
+      if (keyMap[e.code]) {
+        e.preventDefault();
+        startDrive(keyMap[e.code]);
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      if (keyMap[e.code] || e.code === 'Space') {
+        e.preventDefault();
+        stopDrive();
+      }
+    });
+
+  
+    // BẬT / TẮT TỰ ĐỘNG NÉ VẬT CẢN & DỪNG KHẨN CẤP
+    const btnAuto = document.getElementById('btn-auto-start');
+    const btnEStop = document.getElementById('btn-emergency-stop');
+    let isAutoRunning = false;
+
+    if (btnAuto) {
+      btnAuto.addEventListener('click', () => {
+        if (!isAutoRunning) {
+          fetch('/api/auto?act=START').then(r=>r.json()).then(d=>{
+            isAutoRunning = true;
+            btnAuto.innerText = '⏸ TẮT TỰ HÀNH';
+            btnAuto.style.background = '#d97706';
+            btnAuto.style.borderColor = '#f59e0b';
+            btnAuto.style.color = '#fff';
+          });
+        } else {
+          emergencyStopAll();
+        }
+      });
+    }
+
+    function emergencyStopAll() {
+      fetch('/api/auto?act=STOP').catch(()=>{});
+      fetch('/api/cmd?val=STOP').catch(()=>{});
+      isAutoRunning = false;
+      if (btnAuto) {
+        btnAuto.innerText = '🚀 BẬT TỰ NÉ (CHẬM)';
+        btnAuto.style.background = '#065f46';
+        btnAuto.style.borderColor = '#059669';
+        btnAuto.style.color = '#6ee7b7';
+      }
+    }
+
+    if (btnEStop) {
+      btnEStop.addEventListener('click', emergencyStopAll);
+    }
+
+  </script>
+</body>
+</html>

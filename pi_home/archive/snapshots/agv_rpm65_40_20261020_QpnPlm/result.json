@@ -1,0 +1,12 @@
+{
+  "pid": 100708,
+  "backup": "/home/khangho/agv_rpm65_40_20261020_QpnPlm/backup",
+  "status": "APPLIED_DISARMED",
+  "hashes": {
+    "agv_unified_brain.py": "29bb2c0e20adfe6a4bd415c237385e173be41a6f25ba7fa270639f5651c90e75",
+    "agv_command_session.py": "10095b4a6d6b2be8842411027f86c25b747a1f6128304a3145da7d3e24d4f42a",
+    "agv_navigation.py": "4bb8f8960886b0c710488b9057720b6eb97b606073537232704cfbb165468b66",
+    "index_cyberpunk.html": "1706cd5c891a2ab3287fa8a20cf5900f8d28ede1d66761ced81967d056eb4520",
+    "agv_speed_profile.py": "0c0fb3ffd46dc5478bc69099e36f1667e2e84d2681f0f6ecfc50d0277d348b5f"
+  }
+}

@@ -1,0 +1,30 @@
+# ==============================================================================
+# robot.yaml - Cấu hình vị trí LiDAR và thông số robot vi sai
+# ==============================================================================
+
+# 1. Tọa độ lắp đặt RPLIDAR C1 tương đối với tâm robot (base_link)
+lidar_transform:
+  parent_frame: "base_link"
+  child_frame: "laser"
+  x: 0.0          # Cự ly dọc trục X (tiến/lùi) so với tâm robot (mét)
+  y: 0.0          # Cự ly dọc trục Y (trái/phải) so với tâm robot (mét)
+  z: 0.10         # Chiều cao LiDAR so với mặt đất hoặc mặt sàn robot (mét)
+  roll: 0.0       # Góc nghiêng roll (radian)
+  pitch: 0.0      # Góc nghiêng pitch (radian)
+  yaw: 0.0        # Góc xoay hướng đầu laser (0.0 = đầu cáp hướng về sau, tia 0° hướng trước)
+
+# 2. Thông số hình học và encoder của robot vi sai (khi gắn thêm bánh xe)
+differential_drive:
+  wheel_radius: 0.0325          # Bán kính bánh xe (32.5 mm -> bánh xe đường kính 65 mm)
+  wheel_separation: 0.180       # Khoảng cách giữa 2 tâm bánh xe trái và phải (180 mm)
+  ticks_per_revolution: 1320    # Số xung encoder cho một vòng quay bánh xe
+  gear_ratio: 1.0               # Tỷ số truyền động hộp số
+  left_wheel_sign: 1            # Chiều quay bánh trái (1: thuận, -1: nghịch)
+  right_wheel_sign: 1           # Chiều quay bánh phải (1: thuận, -1: nghịch)
+
+# 3. Tên chuẩn các hệ quy chiếu (TF frames)
+frames:
+  map_frame: "map"
+  odom_frame: "odom"
+  base_frame: "base_link"
+  laser_frame: "laser"

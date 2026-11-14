@@ -1,0 +1,8 @@
+{
+  "pid": 3740,
+  "backup": "/home/khangho/agv_steering_fix_20261022/backup",
+  "status": "APPLIED_DISARMED",
+  "hashes": {
+    "agv_unified_brain.py": "f829f13e9701f125ef2b69dfcecbe9fc594f7ca36374291d10637424cde0b737"
+  }
+}

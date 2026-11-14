@@ -1,0 +1,9 @@
+[INFO] [launch]: All log files can be found below /home/khangho/.ros/log/2026-10-03-01-26-28-513548-khang-27614
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [async_slam_toolbox_node-1]: process started with pid [27637]
+[async_slam_toolbox_node-1] [INFO] [1790965590.007633811] [slam_toolbox]: Node using stack size 40000000
+[async_slam_toolbox_node-1] [INFO] [1790965590.191359902] [slam_toolbox]: Configuring
+[async_slam_toolbox_node-1] [INFO] [1790965590.228921435] [slam_toolbox]: Using solver plugin solver_plugins::CeresSolver
+[INFO] [launch.user]: [LifecycleLaunch] Slamtoolbox node is activating.
+[async_slam_toolbox_node-1] [INFO] [1790965590.347329911] [slam_toolbox]: Activating
+[async_slam_toolbox_node-1] Registering sensor: [Custom Described Lidar]

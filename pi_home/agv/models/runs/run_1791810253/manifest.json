@@ -1,0 +1,18 @@
+{
+  "run_id": "run_1791810253",
+  "timestamp": 1791810270.5455215,
+  "requested_episodes": 20000,
+  "completed_episodes": 494,
+  "seed": 42,
+  "threads": 2,
+  "is_smoke": false,
+  "run_mode": "scratch",
+  "resume_from": null,
+  "status": "INTERRUPTED",
+  "bfs_baseline": {
+    "mean_coverage": 100.0,
+    "median_coverage": 100.0,
+    "mean_steps": 903.34
+  },
+  "eval_history": []
+}

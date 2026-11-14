@@ -1,0 +1,9 @@
+{
+  "pid": 42895,
+  "backup": "/home/khangho/agv_frontier_fix_20261020_VuPPMb/backup",
+  "status": "APPLIED_DISARMED",
+  "hashes": {
+    "agv_unified_brain.py": "101044bb9eab30996bdb43687054afbc9b0e9c3a2d6e838c055f9d51a5f1450b",
+    "agv_navigation.py": "65059fcabeefcbbb6a5326dd781433e2d23a6f1ded9ed5e8de6df8832dc70c9a"
+  }
+}

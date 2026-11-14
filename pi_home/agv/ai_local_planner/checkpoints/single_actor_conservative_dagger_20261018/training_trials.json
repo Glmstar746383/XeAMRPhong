@@ -1,0 +1,220 @@
+[
+  {
+    "round": 1,
+    "collect": {
+      "level": 4,
+      "stage": "context_1",
+      "episodes": 90,
+      "frames": 25815,
+      "success_rate": 0.9333333333333333,
+      "collision_rate": 0.06666666666666667,
+      "fraction_disagreement_gt_015": 0.5143908580282781,
+      "fraction_weighted": 0.694751113693589,
+      "perturbation_probability": 0.15,
+      "teacher_rollout_fraction": 0.22537284524501258,
+      "mean_teacher_normalized_speed": 0.5404337644577026,
+      "mean_student_normalized_speed": 0.5683055520057678
+    },
+    "train": {
+      "updates": 650,
+      "batch_size": 256,
+      "mean_loss_over_sampled_steps": 0.12291020212265161,
+      "last_sampled_loss": 0.11674608290195465
+    },
+    "pilot_score": -1.4839999999999998,
+    "pilot_not_acceptance": {
+      "1": {
+        "level": 1,
+        "episodes": 20,
+        "seed_start": 12901000,
+        "domain_randomization": true,
+        "success_rate": 1.0,
+        "collision_rate": 0.0,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 165.6,
+        "mean_min_clearance_m": 1.0,
+        "collision_seeds": [],
+        "timeout_seeds": [],
+        "mean_reward": 219.3617299183978
+      },
+      "2": {
+        "level": 2,
+        "episodes": 20,
+        "seed_start": 12902000,
+        "domain_randomization": true,
+        "success_rate": 0.9,
+        "collision_rate": 0.1,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 219.0,
+        "mean_min_clearance_m": 0.42671302149050333,
+        "collision_seeds": [
+          12902000,
+          12902018
+        ],
+        "timeout_seeds": [],
+        "mean_reward": 263.51328792956224
+      },
+      "3": {
+        "level": 3,
+        "episodes": 20,
+        "seed_start": 12903000,
+        "domain_randomization": true,
+        "success_rate": 1.0,
+        "collision_rate": 0.0,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 223.6,
+        "mean_min_clearance_m": 0.2615524653562809,
+        "collision_seeds": [],
+        "timeout_seeds": [],
+        "mean_reward": 200.62136131604294
+      },
+      "4": {
+        "level": 4,
+        "episodes": 20,
+        "seed_start": 12904000,
+        "domain_randomization": true,
+        "success_rate": 0.4,
+        "collision_rate": 0.15,
+        "timeout_rate": 0.45,
+        "mean_episode_steps": 443.75,
+        "mean_min_clearance_m": 0.4709140957812056,
+        "collision_seeds": [
+          12904001,
+          12904003,
+          12904014
+        ],
+        "timeout_seeds": [
+          12904002,
+          12904004,
+          12904006,
+          12904007,
+          12904009,
+          12904011,
+          12904012,
+          12904013,
+          12904019
+        ],
+        "mean_reward": 208.37581532566452
+      },
+      "5": {
+        "level": 5,
+        "episodes": 20,
+        "seed_start": 12905000,
+        "domain_randomization": true,
+        "success_rate": 1.0,
+        "collision_rate": 0.0,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 128.9,
+        "mean_min_clearance_m": 0.4014916498617362,
+        "collision_seeds": [],
+        "timeout_seeds": [],
+        "mean_reward": 163.18950891058518
+      }
+    },
+    "checkpoint": "ai_local_planner\\checkpoints\\single_actor_conservative_dagger_20261018\\candidate_round_1.pth"
+  },
+  {
+    "round": 2,
+    "collect": {
+      "level": 4,
+      "stage": "context_2",
+      "episodes": 110,
+      "frames": 49285,
+      "success_rate": 0.5909090909090909,
+      "collision_rate": 0.045454545454545456,
+      "fraction_disagreement_gt_015": 0.7148219539413615,
+      "fraction_weighted": 0.7976666328497515,
+      "perturbation_probability": 0.15,
+      "teacher_rollout_fraction": 0.12803084102668155,
+      "mean_teacher_normalized_speed": 0.11165889352560043,
+      "mean_student_normalized_speed": 0.04691285640001297
+    },
+    "train": {
+      "updates": 650,
+      "batch_size": 256,
+      "mean_loss_over_sampled_steps": 0.15468227891967848,
+      "last_sampled_loss": 0.12644296884536743
+    },
+    "pilot_score": -0.6060000000000002,
+    "pilot_not_acceptance": {
+      "1": {
+        "level": 1,
+        "episodes": 20,
+        "seed_start": 13001000,
+        "domain_randomization": true,
+        "success_rate": 1.0,
+        "collision_rate": 0.0,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 178.85,
+        "mean_min_clearance_m": 1.0,
+        "collision_seeds": [],
+        "timeout_seeds": [],
+        "mean_reward": 233.5533245845054
+      },
+      "2": {
+        "level": 2,
+        "episodes": 20,
+        "seed_start": 13002000,
+        "domain_randomization": true,
+        "success_rate": 1.0,
+        "collision_rate": 0.0,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 222.2,
+        "mean_min_clearance_m": 0.4576239271557675,
+        "collision_seeds": [],
+        "timeout_seeds": [],
+        "mean_reward": 287.59777144502766
+      },
+      "3": {
+        "level": 3,
+        "episodes": 20,
+        "seed_start": 13003000,
+        "domain_randomization": true,
+        "success_rate": 1.0,
+        "collision_rate": 0.0,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 218.9,
+        "mean_min_clearance_m": 0.2794013203763631,
+        "collision_seeds": [],
+        "timeout_seeds": [],
+        "mean_reward": 203.50899656282377
+      },
+      "4": {
+        "level": 4,
+        "episodes": 20,
+        "seed_start": 13004000,
+        "domain_randomization": true,
+        "success_rate": 0.7,
+        "collision_rate": 0.3,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 247.95,
+        "mean_min_clearance_m": 0.3895314906594287,
+        "collision_seeds": [
+          13004002,
+          13004007,
+          13004009,
+          13004011,
+          13004018,
+          13004019
+        ],
+        "timeout_seeds": [],
+        "mean_reward": 237.6263556101996
+      },
+      "5": {
+        "level": 5,
+        "episodes": 20,
+        "seed_start": 13005000,
+        "domain_randomization": true,
+        "success_rate": 1.0,
+        "collision_rate": 0.0,
+        "timeout_rate": 0.0,
+        "mean_episode_steps": 127.45,
+        "mean_min_clearance_m": 0.40672574912247283,
+        "collision_seeds": [],
+        "timeout_seeds": [],
+        "mean_reward": 163.13513357701788
+      }
+    },
+    "checkpoint": "ai_local_planner\\checkpoints\\single_actor_conservative_dagger_20261018\\candidate_round_2.pth"
+  }
+]

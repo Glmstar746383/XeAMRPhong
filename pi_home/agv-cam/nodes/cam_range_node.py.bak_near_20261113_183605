@@ -1,0 +1,275 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Node ROS 2: do khoang cach vat can tu camera da hieu chuan.
+
+Phat:
+  /cam_range     sensor_msgs/Float32         khoang cach (m); 9.9 = duong trong
+  /cam_obstacle  geometry_msgs/PointStamped  x = lech ngang (m), y = khoang cach (m)
+
+Chay:
+  python3 cam_range_node.py \
+      --calib ~/camera_calib.json \
+      --bg ~/floor_ref.jpg \
+      --cam-height 0.12 \
+      --source http://127.0.0.1:8081/snapshot.jpg
+
+Nguyen ly:
+  - Anh nen = anh san trong luc hieu chuan (khong co vat can)
+  - Vung tim = dai giua anh, tu duoi duong chan troi v0 tro xuong
+  - Diem tiep xuc = hang pixel thap nhat co chenh lech so voi nen
+  - d = A / (v - v0)        (tu camera_calib.json)
+  - X = (u - cx) * d / fx   voi fx = A / cam_height
+"""
+import argparse
+import json
+import os
+import sys
+import time
+import urllib.request
+
+import cv2
+import numpy as np
+
+try:
+    import rclpy
+    from rclpy.node import Node
+    from rclpy.executors import ExternalShutdownException
+    from std_msgs.msg import Float32
+    from geometry_msgs.msg import PointStamped
+    HAVE_ROS = True
+except Exception:
+    HAVE_ROS = False
+
+
+CLEAR_VALUE = 9.9
+
+
+class RangeModel:
+    def __init__(self, path, cam_height=None):
+        with open(path, "r", encoding="utf-8") as fh:
+            d = json.load(fh)
+        m = d.get("range_model")
+        if not m:
+            raise RuntimeError("file calib chua co range_model - hay hieu chuan truoc")
+        self.A = float(m["A"])
+        self.v0 = float(m["v0"])
+        self.rms = float(m.get("rms", 0.0))
+        lo_hi = m.get("valid_range_m") or [0.3, 3.0]
+        self.lo, self.hi = float(lo_hi[0]), float(lo_hi[1])
+
+        samples = d.get("samples") or []
+        self.cx = (float(np.mean([s["u"] for s in samples])) if samples
+                   else float(d.get("image_size", [640, 480])[0]) / 2.0)
+
+        h = cam_height if cam_height else float(d.get("cam_height_m") or 0)
+        self.fx = (self.A / h) if h > 1e-6 else 0.0
+
+    def distance(self, v_px):
+        den = v_px - self.v0
+        if den <= 0.5:
+            return None
+        return self.A / den
+
+    def lateral(self, u_px, d):
+        if self.fx <= 1e-6 or d is None:
+            return 0.0
+        return (u_px - self.cx) * d / self.fx
+
+
+class FrameGrabber:
+    def __init__(self, source):
+        self.source = source
+        self.cap = None
+        if not source.startswith("http"):
+            self.cap = cv2.VideoCapture(int(source) if source.isdigit() else source,
+                                        cv2.CAP_V4L2)
+            if not self.cap.isOpened():
+                self.cap = cv2.VideoCapture(source)
+            self.cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*"MJPG"))
+
+    def read(self):
+        if self.cap is not None:
+            ok, frame = self.cap.read()
+            return frame if ok else None
+        try:
+            with urllib.request.urlopen(self.source, timeout=3) as r:
+                raw = r.read()
+            return cv2.imdecode(np.frombuffer(raw, np.uint8), cv2.IMREAD_COLOR)
+        except Exception:
+            return None
+
+
+def detect_contact(gray, bg_gray, roi_x0, roi_x1, v_min, v_max, thr, min_col):
+    """Tra ve (u, v) cua diem tiep xuc gan nhat, hoac None.
+
+    Do theo tung cot: cot nao co du min_col pixel chenh lech thi lay hang thap
+    nhat cua cot do. Phu hop voi vat thon / o xa (hang tiep xuc chi vai pixel).
+    """
+    h, w = gray.shape[:2]
+    x0, x1 = int(roi_x0 * w), int(roi_x1 * w)
+    v_lo, v_hi = max(0, int(v_min)), min(h, int(v_max))
+    if x1 - x0 < 5 or v_hi - v_lo < 5:
+        return None
+
+    diff = cv2.GaussianBlur(cv2.absdiff(gray, bg_gray), (5, 5), 0)
+    mask = diff > thr
+    mask[:v_lo, :] = False
+    mask[v_hi:, :] = False
+    mask[:, :x0] = False
+    mask[:, x1:] = False
+
+    sub = mask[v_lo:v_hi, x0:x1]
+    counts = sub.sum(axis=0)
+    rows = np.arange(v_lo, v_hi, dtype=np.int32)[:, None]
+    lowest = np.where(sub, rows, -1).max(axis=0)
+
+    good = (counts >= min_col) & (lowest > 0)
+    if int(good.sum()) < 3:
+        return None
+
+    ys = lowest[good]
+    v = float(np.percentile(ys, 20))
+    xs = np.arange(x0, x1)[good]
+    sel = np.abs(ys - v) <= 6
+    u = float(xs[sel].mean()) if sel.any() else float(xs.mean())
+    return u, v
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--calib", default=os.path.expanduser("~/camera_calib.json"))
+    ap.add_argument("--bg", default=os.path.expanduser("~/floor_ref.jpg"))
+    ap.add_argument("--source", default="http://127.0.0.1:8081/snapshot.jpg")
+    ap.add_argument("--cam-height", type=float, default=0.0,
+                    help="chieu cao camera so voi san (m), de tinh lech ngang X")
+    ap.add_argument("--hz", type=float, default=10.0)
+    ap.add_argument("--roi", default="0.35,0.65", help="dai ngang tim vat (ti le anh)")
+    ap.add_argument("--thr", type=int, default=28, help="nguong chenh lech 0-255")
+    ap.add_argument("--min-col", type=int, default=6,
+                    help="so pixel doc toi thieu trong 1 cot")
+    ap.add_argument("--debug", default="", help="ghi anh chan doan ra file nay (JPG)")
+    args = ap.parse_args()
+
+    if not os.path.exists(args.calib):
+        sys.exit("Khong thay file hieu chuan: %s" % args.calib)
+    if not os.path.exists(args.bg):
+        sys.exit("Khong thay anh nen: %s" % args.bg)
+
+    model = RangeModel(args.calib, args.cam_height)
+    print("[cam_range] A=%.1f v0=%.1f rms=%.3f cx=%.1f fx=%.1f valid=%.2f-%.2f m"
+          % (model.A, model.v0, model.rms, model.cx, model.fx, model.lo, model.hi))
+
+    bg_raw = cv2.imread(args.bg, cv2.IMREAD_GRAYSCALE)
+    if bg_raw is None:
+        sys.exit("Khong doc duoc anh nen: %s" % args.bg)
+
+    grabber = FrameGrabber(args.source)
+    rx0, rx1 = [float(v) for v in args.roi.split(",")]
+    state = {"bg": None, "last": None}
+
+    def step():
+        frame = grabber.read()
+        if frame is None:
+            state["last"] = None
+            return CLEAR_VALUE, 0.0, None, None, None
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        gray = cv2.GaussianBlur(gray, (5, 5), 0)
+        bg = state["bg"]
+        if bg is None or bg.shape != gray.shape:
+            bg = cv2.resize(bg_raw, (gray.shape[1], gray.shape[0]))
+            bg = cv2.GaussianBlur(bg, (5, 5), 0)
+            state["bg"] = bg
+
+        hit = detect_contact(gray, bg, rx0, rx1, model.v0 + 3,
+                             gray.shape[0] - 2, args.thr, args.min_col)
+        if hit is None:
+            state["last"] = None
+            return CLEAR_VALUE, 0.0, None, None, gray
+
+        u, v = hit
+        d = model.distance(v)
+        if d is None or d < model.lo * 0.6 or d > model.hi * 1.4:
+            state["last"] = None
+            return CLEAR_VALUE, 0.0, None, None, gray
+        x = model.lateral(u, d)
+        state["last"] = (d, x, u, v)
+        return d, x, u, v, gray
+
+    if HAVE_ROS:
+        rclpy.init()
+        node = Node("cam_range")
+        pub_r = node.create_publisher(Float32, "/cam_range", 10)
+        pub_p = node.create_publisher(PointStamped, "/cam_obstacle", 10)
+
+        def on_timer():
+            if not rclpy.ok():
+                return
+            try:
+                d, x, u, v, gray = step()
+            except Exception:
+                return
+            msg = Float32()
+            msg.data = float(d)
+            try:
+                pub_r.publish(msg)
+            except Exception:
+                return
+            if u is not None:
+                p = PointStamped()
+                p.header.stamp = node.get_clock().now().to_msg()
+                p.header.frame_id = "base_footprint"
+                p.point.x = float(x)
+                p.point.y = float(d)
+                p.point.z = 0.0
+                try:
+                    pub_p.publish(p)
+                except Exception:
+                    return
+            if args.debug and gray is not None:
+                dbg = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
+                if v is not None:
+                    cv2.circle(dbg, (int(u), int(v)), 6, (0, 255, 0), 2)
+                    cv2.putText(dbg, "%.2fm x=%.2fm" % (d, x), (10, 30),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+                else:
+                    cv2.putText(dbg, "clear", (10, 30),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 200, 255), 2)
+                cv2.imwrite(args.debug, dbg)
+
+        node.create_timer(1.0 / max(1.0, args.hz), on_timer)
+        print("[cam_range] publish /cam_range, /cam_obstacle @ %.1f Hz" % args.hz)
+        try:
+            rclpy.spin(node)
+        except (KeyboardInterrupt, ExternalShutdownException):
+            pass
+        except Exception:
+            # RCLError khi context da shutdown (SIGTERM) - khong phai loi that
+            pass
+        finally:
+            try:
+                node.destroy_node()
+            except Exception:
+                pass
+            if rclpy.ok():
+                rclpy.shutdown()
+        return
+
+    print("[cam_range] khong co rclpy -> in ra man hinh")
+    period = 1.0 / max(1.0, args.hz)
+    try:
+        while True:
+            t0 = time.time()
+            d, x, u, v, _ = step()
+            if u is None:
+                print("d=clear")
+            else:
+                print("d=%.3f m  x=%+.3f m  (u=%.0f v=%.0f)" % (d, x, u, v))
+            rest = period - (time.time() - t0)
+            if rest > 0:
+                time.sleep(rest)
+    except KeyboardInterrupt:
+        pass
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,1 @@
+/home/khangho/rplidar_c1_ws/src/sllidar_ros2/launch/sllidar_a2m12_launch .py

@@ -1,0 +1,8 @@
+{
+  "pid": 5552,
+  "backup": "/home/khangho/agv_deadlock_fix_20261022/backup",
+  "status": "APPLIED_DISARMED",
+  "hashes": {
+    "agv_unified_brain.py": "3afc9e19be4db0642edc34df342f7d6b49bb931055fb6f1aba40d8a8ed804adc"
+  }
+}

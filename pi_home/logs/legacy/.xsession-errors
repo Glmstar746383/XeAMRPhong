@@ -1,0 +1,656 @@
+Xsession: X session started for khangho at Sun Sep 13 23:43:37 +07 2026
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+dbus-update-activation-environment: setting DISPLAY=:10.0
+localuser:khangho being added to access control list
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+/home/khangho/.xsession: line 1: startxfce4: command not found
+Xsession: X session started for khangho at Sun Sep 13 23:44:41 +07 2026
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+dbus-update-activation-environment: setting DISPLAY=:10.0
+localuser:khangho being added to access control list
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+/home/khangho/.xsession: line 1: startxfce4: command not found
+Xsession: X session started for khangho at Sun Sep 13 23:53:47 +07 2026
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+dbus-update-activation-environment: setting DISPLAY=:10.0
+localuser:khangho being added to access control list
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+dbus-update-activation-environment: setting USER=khangho
+dbus-update-activation-environment: setting XDG_SESSION_TYPE=x11
+dbus-update-activation-environment: setting HOME=/home/khangho
+dbus-update-activation-environment: setting XRDP_PULSE_SINK_SOCKET=xrdp_chansrv_audio_out_socket_10
+dbus-update-activation-environment: setting XRDP_PULSE_SOURCE_SOCKET=xrdp_chansrv_audio_in_socket_10
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+dbus-update-activation-environment: setting PULSE_SCRIPT=/etc/xrdp/pulse/default.pa
+dbus-update-activation-environment: setting LOGNAME=khangho
+dbus-update-activation-environment: setting XDG_SESSION_CLASS=user
+dbus-update-activation-environment: setting PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+dbus-update-activation-environment: setting XRDP_SOCKET_PATH=/run/xrdp/sockdir
+dbus-update-activation-environment: setting XDG_RUNTIME_DIR=/run/user/1000
+dbus-update-activation-environment: setting DISPLAY=:10.0
+dbus-update-activation-environment: setting LANG=C.UTF-8
+dbus-update-activation-environment: setting UID=1000
+dbus-update-activation-environment: setting SHELL=/bin/bash
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+dbus-update-activation-environment: setting XRDP_SESSION=1
+dbus-update-activation-environment: setting GPG_AGENT_INFO=/run/user/1000/gnupg/S.gpg-agent:0:1
+dbus-update-activation-environment: setting PWD=/home/khangho
+dbus-update-activation-environment: setting XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+/home/khangho/.xsession: line 1: startxfce4: command not found
+Xsession: X session started for khangho at Sun Sep 13 23:54:13 +07 2026
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+dbus-update-activation-environment: setting DISPLAY=:10.0
+localuser:khangho being added to access control list
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+dbus-update-activation-environment: setting USER=khangho
+dbus-update-activation-environment: setting XDG_SESSION_TYPE=x11
+dbus-update-activation-environment: setting HOME=/home/khangho
+dbus-update-activation-environment: setting XRDP_PULSE_SINK_SOCKET=xrdp_chansrv_audio_out_socket_10
+dbus-update-activation-environment: setting XRDP_PULSE_SOURCE_SOCKET=xrdp_chansrv_audio_in_socket_10
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+dbus-update-activation-environment: setting PULSE_SCRIPT=/etc/xrdp/pulse/default.pa
+dbus-update-activation-environment: setting LOGNAME=khangho
+dbus-update-activation-environment: setting XDG_SESSION_CLASS=user
+dbus-update-activation-environment: setting PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+dbus-update-activation-environment: setting XRDP_SOCKET_PATH=/run/xrdp/sockdir
+dbus-update-activation-environment: setting XDG_RUNTIME_DIR=/run/user/1000
+dbus-update-activation-environment: setting DISPLAY=:10.0
+dbus-update-activation-environment: setting LANG=C.UTF-8
+dbus-update-activation-environment: setting UID=1000
+dbus-update-activation-environment: setting SHELL=/bin/bash
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+dbus-update-activation-environment: setting XRDP_SESSION=1
+dbus-update-activation-environment: setting GPG_AGENT_INFO=/run/user/1000/gnupg/S.gpg-agent:0:1
+dbus-update-activation-environment: setting PWD=/home/khangho
+dbus-update-activation-environment: setting XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+/home/khangho/.xsession: line 1: startxfce4: command not found
+Xsession: X session started for khangho at Mon Sep 14 00:06:31 +07 2026
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+dbus-update-activation-environment: setting DISPLAY=:10.0
+localuser:khangho being added to access control list
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+dbus-update-activation-environment: setting USER=khangho
+dbus-update-activation-environment: setting XDG_SESSION_TYPE=x11
+dbus-update-activation-environment: setting HOME=/home/khangho
+dbus-update-activation-environment: setting XRDP_PULSE_SINK_SOCKET=xrdp_chansrv_audio_out_socket_10
+dbus-update-activation-environment: setting XRDP_PULSE_SOURCE_SOCKET=xrdp_chansrv_audio_in_socket_10
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+dbus-update-activation-environment: setting PULSE_SCRIPT=/etc/xrdp/pulse/default.pa
+dbus-update-activation-environment: setting LOGNAME=khangho
+dbus-update-activation-environment: setting XDG_SESSION_CLASS=user
+dbus-update-activation-environment: setting PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+dbus-update-activation-environment: setting XRDP_SOCKET_PATH=/run/xrdp/sockdir
+dbus-update-activation-environment: setting XDG_RUNTIME_DIR=/run/user/1000
+dbus-update-activation-environment: setting DISPLAY=:10.0
+dbus-update-activation-environment: setting LANG=C.UTF-8
+dbus-update-activation-environment: setting UID=1000
+dbus-update-activation-environment: setting SHELL=/bin/bash
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+dbus-update-activation-environment: setting XRDP_SESSION=1
+dbus-update-activation-environment: setting GPG_AGENT_INFO=/run/user/1000/gnupg/S.gpg-agent:0:1
+dbus-update-activation-environment: setting PWD=/home/khangho
+dbus-update-activation-environment: setting XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+/usr/bin/startxfce4: X server already running on display :10.0
+/usr/bin/iceauth:  creating new authority file /run/user/1000/ICEauthority
+xfce4-session-Message: 00:06:32.889: SSH authentication agent is already running
+gpg-agent: a gpg-agent is already running - not starting a new one
+
+(xfwm4:10016): xfwm4-WARNING **: 00:06:35.729: Another compositing manager is running on screen 0
+pw-cli not found, exiting
+
+(polkit-gnome-authentication-agent-1:10056): GLib-CRITICAL **: 00:06:37.110: g_variant_new_string: assertion 'string != NULL' failed
+
+(polkit-gnome-authentication-agent-1:10056): polkit-gnome-1-WARNING **: 00:06:37.112: Failed to register client: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SessionManager was not provided by any .service files
+Xlib:  extension "DPMS" missing on display ":10.0".
+
+(xfce4-power-manager:10059): xfce4-power-manager-WARNING **: 00:06:37.190: Monitor is not DPMS capable
+xfce4-panel-Message: 00:06:37.494: Plugin "(null)-7" was not found and has been removed from the configuration
+
+(xfce4-power-manager:10059): xfce4-power-manager-WARNING **: 00:06:37.781: Unable to inhibit systemd sleep: GDBus.Error:org.freedesktop.DBus.Error.AccessDenied: Permission denied
+
+** (xfpm-power-backlight-helper:10146): WARNING **: 00:06:37.795: failed to find any devices: Error opening directory ?/sys/class/backlight?: No such file or directory
+
+** (xfpm-power-backlight-helper:10165): WARNING **: 00:06:39.134: failed to find any devices: Error opening directory ?/sys/class/backlight?: No such file or directory
+
+** (wrapper-2.0:10090): WARNING **: 00:06:39.303: Binding 'XF86AudioMicMute' failed!
+
+(wrapper-2.0:10090): pulseaudio-plugin-WARNING **: 00:06:39.304: Could not have grabbed volume control keys. Is another volume control application (xfce4-volumed) running?
+
+(wrapper-2.0:10092): xfce4-power-manager-plugin-WARNING **: 00:06:39.374: Xfce4-power-manager: The panel plugin is present, so the tray icon gets disabled.
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.747: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.748: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.749: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.750: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.752: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.753: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.754: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.769: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.770: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.771: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.772: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.773: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.774: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.774: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.777: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.777: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.778: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.779: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.779: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.780: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.780: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.788: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.790: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.793: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.794: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.796: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.797: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.797: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.806: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.806: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.807: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.807: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.808: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.808: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.808: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.812: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.812: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.813: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.813: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.813: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.814: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.814: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.818: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.818: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.818: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.819: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.819: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.820: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.820: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.825: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.826: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.826: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.827: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.827: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.828: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.828: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.832: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.833: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.833: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.834: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.835: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.835: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.836: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.841: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.841: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.842: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.843: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.843: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.844: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.844: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.849: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.849: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.850: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.851: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.851: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.852: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.852: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.858: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.859: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.859: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.860: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.861: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.861: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:08:21.862: Binding 'XF86AudioLowerVolume' failed!
+
+(Thunar:10037): GLib-GIO-CRITICAL **: 00:31:39.426: GFileInfo created without standard::size
+
+(Thunar:10037): GLib-GIO-CRITICAL **: 00:31:39.427: file ../../../gio/gfileinfo.c: line 1845 (g_file_info_get_size): should not be reached
+
+(Thunar:10037): GLib-GIO-CRITICAL **: 00:31:39.463: GFileInfo created without standard::size
+
+(Thunar:10037): GLib-GIO-CRITICAL **: 00:31:39.463: file ../../../gio/gfileinfo.c: line 1845 (g_file_info_get_size): should not be reached
+
+(Thunar:10037): GLib-GIO-CRITICAL **: 00:31:39.620: GFileInfo created without standard::size
+
+(Thunar:10037): GLib-GIO-CRITICAL **: 00:31:39.620: file ../../../gio/gfileinfo.c: line 1845 (g_file_info_get_size): should not be reached
+
+(xfdesktop:10047): Gtk-CRITICAL **: 00:31:52.580: gtk_widget_set_visible: assertion 'GTK_IS_WIDGET (widget)' failed
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.790: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.791: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.791: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.792: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.792: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.793: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.794: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.801: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.802: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.802: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.803: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.805: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.806: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.807: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.811: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.811: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.811: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.812: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.812: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.812: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.813: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.815: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.816: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.816: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.816: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.817: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.817: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.818: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.820: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.820: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.820: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.821: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.821: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.821: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.821: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.824: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.824: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.824: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.825: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.825: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.825: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.825: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.828: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.828: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.829: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.829: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.829: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.830: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.830: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.832: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.832: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.833: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.833: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.833: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.834: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.834: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.836: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.837: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.837: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.837: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.838: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.838: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.838: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.840: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.841: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.841: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.841: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.842: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.842: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.842: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.844: Binding 'XF86AudioNext' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.845: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.845: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.845: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.846: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.846: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:10090): WARNING **: 00:43:09.846: Binding 'XF86AudioLowerVolume' failed!
+Xsession: X session started for khangho at Mon Sep 14 10:11:58 +07 2026
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+dbus-update-activation-environment: setting DISPLAY=:10.0
+localuser:khangho being added to access control list
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+dbus-update-activation-environment: setting USER=khangho
+dbus-update-activation-environment: setting XDG_SESSION_TYPE=x11
+dbus-update-activation-environment: setting HOME=/home/khangho
+dbus-update-activation-environment: setting XRDP_PULSE_SINK_SOCKET=xrdp_chansrv_audio_out_socket_10
+dbus-update-activation-environment: setting XRDP_PULSE_SOURCE_SOCKET=xrdp_chansrv_audio_in_socket_10
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+dbus-update-activation-environment: setting PULSE_SCRIPT=/etc/xrdp/pulse/default.pa
+dbus-update-activation-environment: setting LOGNAME=khangho
+dbus-update-activation-environment: setting XDG_SESSION_CLASS=user
+dbus-update-activation-environment: setting PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+dbus-update-activation-environment: setting XRDP_SOCKET_PATH=/run/xrdp/sockdir
+dbus-update-activation-environment: setting XDG_RUNTIME_DIR=/run/user/1000
+dbus-update-activation-environment: setting DISPLAY=:10.0
+dbus-update-activation-environment: setting LANG=C.UTF-8
+dbus-update-activation-environment: setting UID=1000
+dbus-update-activation-environment: setting SHELL=/bin/bash
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+dbus-update-activation-environment: setting XRDP_SESSION=1
+dbus-update-activation-environment: setting GPG_AGENT_INFO=/run/user/1000/gnupg/S.gpg-agent:0:1
+dbus-update-activation-environment: setting PWD=/home/khangho
+dbus-update-activation-environment: setting XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+/usr/bin/startxfce4: X server already running on display :10.0
+/usr/bin/iceauth:  creating new authority file /run/user/1000/ICEauthority
+xfce4-session-Message: 10:12:02.738: SSH authentication agent is already running
+gpg-agent: a gpg-agent is already running - not starting a new one
+
+(xfwm4:1500): xfwm4-WARNING **: 10:12:04.660: Unsupported GL renderer (llvmpipe (LLVM 20.1.2, 128 bits)).
+pw-cli not found, exiting
+Xlib:  extension "DPMS" missing on display ":10.0".
+
+(xfce4-power-manager:1552): xfce4-power-manager-WARNING **: 10:12:06.134: Monitor is not DPMS capable
+
+(polkit-gnome-authentication-agent-1:1549): GLib-CRITICAL **: 10:12:06.174: g_variant_new_string: assertion 'string != NULL' failed
+
+(polkit-gnome-authentication-agent-1:1549): polkit-gnome-1-WARNING **: 10:12:06.177: Failed to register client: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SessionManager was not provided by any .service files
+
+(xfce4-power-manager:1552): xfce4-power-manager-WARNING **: 10:12:06.726: Unable to inhibit systemd sleep: GDBus.Error:org.freedesktop.DBus.Error.AccessDenied: Permission denied
+
+** (xfpm-power-backlight-helper:1632): WARNING **: 10:12:06.746: failed to find any devices: Error opening directory ?/sys/class/backlight?: No such file or directory
+
+** (xfpm-power-backlight-helper:1654): WARNING **: 10:12:08.160: failed to find any devices: Error opening directory ?/sys/class/backlight?: No such file or directory
+
+** (wrapper-2.0:1584): WARNING **: 10:12:08.317: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:1584): WARNING **: 10:12:08.319: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:1584): WARNING **: 10:12:08.320: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:1584): WARNING **: 10:12:08.320: Binding 'XF86AudioMicMute' failed!
+
+(wrapper-2.0:1584): pulseaudio-plugin-WARNING **: 10:12:08.321: Could not have grabbed volume control keys. Is another volume control application (xfce4-volumed) running?
+
+** (wrapper-2.0:1584): WARNING **: 10:12:08.321: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:1584): WARNING **: 10:12:08.322: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:1584): WARNING **: 10:12:08.323: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:1584): WARNING **: 10:12:08.324: Binding 'XF86AudioNext' failed!
+
+(wrapper-2.0:1584): pulseaudio-plugin-WARNING **: 10:12:08.324: Could not have grabbed multimedia control keys.
+libEGL warning: DRI3 error: Could not get DRI3 device
+libEGL warning: Ensure your X server supports DRI3 to get accelerated rendering
+Xsession: X session started for khangho at Thu Sep 17 22:43:07 +07 2026
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+dbus-update-activation-environment: setting DISPLAY=:10.0
+localuser:khangho being added to access control list
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+dbus-update-activation-environment: setting USER=khangho
+dbus-update-activation-environment: setting XDG_SESSION_TYPE=x11
+dbus-update-activation-environment: setting HOME=/home/khangho
+dbus-update-activation-environment: setting XRDP_PULSE_SINK_SOCKET=xrdp_chansrv_audio_out_socket_10
+dbus-update-activation-environment: setting XRDP_PULSE_SOURCE_SOCKET=xrdp_chansrv_audio_in_socket_10
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+dbus-update-activation-environment: setting PULSE_SCRIPT=/etc/xrdp/pulse/default.pa
+dbus-update-activation-environment: setting LOGNAME=khangho
+dbus-update-activation-environment: setting XDG_SESSION_CLASS=user
+dbus-update-activation-environment: setting PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+dbus-update-activation-environment: setting XRDP_SOCKET_PATH=/run/xrdp/sockdir
+dbus-update-activation-environment: setting XDG_RUNTIME_DIR=/run/user/1000
+dbus-update-activation-environment: setting DISPLAY=:10.0
+dbus-update-activation-environment: setting LANG=C.UTF-8
+dbus-update-activation-environment: setting UID=1000
+dbus-update-activation-environment: setting SHELL=/bin/bash
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+dbus-update-activation-environment: setting XRDP_SESSION=1
+dbus-update-activation-environment: setting GPG_AGENT_INFO=/run/user/1000/gnupg/S.gpg-agent:0:1
+dbus-update-activation-environment: setting PWD=/home/khangho
+dbus-update-activation-environment: setting XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+/usr/bin/startxfce4: X server already running on display :10.0
+/usr/bin/iceauth:  creating new authority file /run/user/1000/ICEauthority
+xfce4-session-Message: 22:43:11.694: SSH authentication agent is already running
+gpg-agent: a gpg-agent is already running - not starting a new one
+
+(xfwm4:6803): xfwm4-WARNING **: 22:43:13.421: Unsupported GL renderer (llvmpipe (LLVM 20.1.2, 128 bits)).
+pw-cli not found, exiting
+
+(polkit-gnome-authentication-agent-1:6853): GLib-CRITICAL **: 22:43:14.880: g_variant_new_string: assertion 'string != NULL' failed
+
+(polkit-gnome-authentication-agent-1:6853): polkit-gnome-1-WARNING **: 22:43:14.883: Failed to register client: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SessionManager was not provided by any .service files
+Xlib:  extension "DPMS" missing on display ":10.0".
+
+(xfce4-power-manager:6861): xfce4-power-manager-WARNING **: 22:43:14.929: Monitor is not DPMS capable
+
+(xfce4-power-manager:6861): xfce4-power-manager-WARNING **: 22:43:15.479: Unable to inhibit systemd sleep: GDBus.Error:org.freedesktop.DBus.Error.AccessDenied: Permission denied
+
+** (xfpm-power-backlight-helper:6934): WARNING **: 22:43:15.501: failed to find any devices: Error opening directory ?/sys/class/backlight?: No such file or directory
+
+** (xfpm-power-backlight-helper:6956): WARNING **: 22:43:16.869: failed to find any devices: Error opening directory ?/sys/class/backlight?: No such file or directory
+
+** (wrapper-2.0:6888): WARNING **: 22:43:17.145: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:6888): WARNING **: 22:43:17.148: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:6888): WARNING **: 22:43:17.151: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:6888): WARNING **: 22:43:17.152: Binding 'XF86AudioMicMute' failed!
+
+(wrapper-2.0:6888): pulseaudio-plugin-WARNING **: 22:43:17.152: Could not have grabbed volume control keys. Is another volume control application (xfce4-volumed) running?
+
+** (wrapper-2.0:6888): WARNING **: 22:43:17.152: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:6888): WARNING **: 22:43:17.153: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:6888): WARNING **: 22:43:17.153: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:6888): WARNING **: 22:43:17.154: Binding 'XF86AudioNext' failed!
+
+(wrapper-2.0:6888): pulseaudio-plugin-WARNING **: 22:43:17.154: Could not have grabbed multimedia control keys.
+/home/khangho/rplidar_c1_test/desktop/run_slam_gui.sh: line 43: 13645 Aborted                 (core dumped) python3 "$ROOT_DIR/app/slam_gui.py" >> "$GUI_LOG" 2>&1
+Xsession: X session started for khangho at Tue Sep 29 21:26:51 +07 2026
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+dbus-update-activation-environment: setting DISPLAY=:10.0
+localuser:khangho being added to access control list
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+dbus-update-activation-environment: setting USER=khangho
+dbus-update-activation-environment: setting XDG_SESSION_TYPE=x11
+dbus-update-activation-environment: setting HOME=/home/khangho
+dbus-update-activation-environment: setting XRDP_PULSE_SINK_SOCKET=xrdp_chansrv_audio_out_socket_10
+dbus-update-activation-environment: setting XRDP_PULSE_SOURCE_SOCKET=xrdp_chansrv_audio_in_socket_10
+dbus-update-activation-environment: setting DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+dbus-update-activation-environment: setting PULSE_SCRIPT=/etc/xrdp/pulse/default.pa
+dbus-update-activation-environment: setting LOGNAME=khangho
+dbus-update-activation-environment: setting XDG_SESSION_CLASS=user
+dbus-update-activation-environment: setting PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+dbus-update-activation-environment: setting XRDP_SOCKET_PATH=/run/xrdp/sockdir
+dbus-update-activation-environment: setting XDG_RUNTIME_DIR=/run/user/1000
+dbus-update-activation-environment: setting DISPLAY=:10.0
+dbus-update-activation-environment: setting LANG=C.UTF-8
+dbus-update-activation-environment: setting UID=1000
+dbus-update-activation-environment: setting SHELL=/bin/bash
+dbus-update-activation-environment: setting QT_ACCESSIBILITY=1
+dbus-update-activation-environment: setting XRDP_SESSION=1
+dbus-update-activation-environment: setting GPG_AGENT_INFO=/run/user/1000/gnupg/S.gpg-agent:0:1
+dbus-update-activation-environment: setting PWD=/home/khangho
+dbus-update-activation-environment: setting XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+/usr/bin/startxfce4: X server already running on display :10.0
+/usr/bin/iceauth:  creating new authority file /run/user/1000/ICEauthority
+xfce4-session-Message: 21:26:56.223: SSH authentication agent is already running
+gpg-agent: a gpg-agent is already running - not starting a new one
+
+(xfwm4:1282): xfwm4-WARNING **: 21:26:57.882: Unsupported GL renderer (llvmpipe (LLVM 20.1.2, 128 bits)).
+pw-cli not found, exiting
+
+(polkit-gnome-authentication-agent-1:1339): GLib-CRITICAL **: 21:26:59.609: g_variant_new_string: assertion 'string != NULL' failed
+
+(polkit-gnome-authentication-agent-1:1339): polkit-gnome-1-WARNING **: 21:26:59.614: Failed to register client: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.gnome.SessionManager was not provided by any .service files
+Xlib:  extension "DPMS" missing on display ":10.0".
+
+(xfce4-power-manager:1342): xfce4-power-manager-WARNING **: 21:26:59.680: Monitor is not DPMS capable
+
+(xfce4-power-manager:1342): xfce4-power-manager-WARNING **: 21:27:00.345: Unable to inhibit systemd sleep: GDBus.Error:org.freedesktop.DBus.Error.AccessDenied: Permission denied
+
+** (xfpm-power-backlight-helper:1417): WARNING **: 21:27:00.371: failed to find any devices: Error opening directory ?/sys/class/backlight?: No such file or directory
+
+** (xfpm-power-backlight-helper:1444): WARNING **: 21:27:01.431: failed to find any devices: Error opening directory ?/sys/class/backlight?: No such file or directory
+
+** (wrapper-2.0:1368): WARNING **: 21:27:01.926: Binding 'XF86AudioLowerVolume' failed!
+
+** (wrapper-2.0:1368): WARNING **: 21:27:01.940: Binding 'XF86AudioRaiseVolume' failed!
+
+** (wrapper-2.0:1368): WARNING **: 21:27:01.943: Binding 'XF86AudioMute' failed!
+
+** (wrapper-2.0:1368): WARNING **: 21:27:01.945: Binding 'XF86AudioMicMute' failed!
+
+(wrapper-2.0:1368): pulseaudio-plugin-WARNING **: 21:27:01.945: Could not have grabbed volume control keys. Is another volume control application (xfce4-volumed) running?
+
+** (wrapper-2.0:1368): WARNING **: 21:27:01.946: Binding 'XF86AudioPlay' failed!
+
+** (wrapper-2.0:1368): WARNING **: 21:27:01.946: Binding 'XF86AudioStop' failed!
+
+** (wrapper-2.0:1368): WARNING **: 21:27:01.947: Binding 'XF86AudioPrev' failed!
+
+** (wrapper-2.0:1368): WARNING **: 21:27:01.947: Binding 'XF86AudioNext' failed!
+
+(wrapper-2.0:1368): pulseaudio-plugin-WARNING **: 21:27:01.947: Could not have grabbed multimedia control keys.

@@ -1,0 +1,9 @@
+{
+  "pid": 60929,
+  "backup": "/home/khangho/agv_standstill_fix_20261020_EMvGBg/backup",
+  "status": "APPLIED_DISARMED",
+  "hashes": {
+    "agv_unified_brain.py": "6cf44eaa15be3aa6454ca718ceb0e475c5f47e0517a41c745740ec8d71718733",
+    "agv_navigation.py": "92dfe09706f0da23be47fb7facdf5621af13c7a7bc82011fa97d2bbc3da5c9a0"
+  }
+}

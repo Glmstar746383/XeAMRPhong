@@ -1,0 +1,168 @@
+Reading package lists...
+Building dependency tree...
+Reading state information...
+git is already the newest version (1:2.43.0-1ubuntu7.3).
+curl is already the newest version (8.5.0-2ubuntu10.13).
+wget is already the newest version (1.21.4-1ubuntu4.5).
+htop is already the newest version (3.3.0-4build1).
+tmux is already the newest version (3.4-1ubuntu0.1).
+nano is already the newest version (7.2-2ubuntu0.2).
+nano set to manually installed.
+vim is already the newest version (2:9.1.0016-1ubuntu7.20).
+jq is already the newest version (1.7.1-3ubuntu0.24.04.2).
+jq set to manually installed.
+usbutils is already the newest version (1:017-3build1).
+pciutils is already the newest version (1:3.10.0-2build1).
+screen is already the newest version (4.9.1-1ubuntu1).
+python3 is already the newest version (3.12.3-0ubuntu2.1).
+python3-serial is already the newest version (3.5-2).
+python3-serial set to manually installed.
+The following additional packages will be installed:
+  cmake-data dpkg-dev g++-13 g++-13-aarch64-linux-gnu g++-aarch64-linux-gnu
+  gcc-13 gcc-13-aarch64-linux-gnu gcc-aarch64-linux-gnu libasan8 libatomic1
+  libblas3 libc-dev-bin libc6-dev libcc1-0 libcrypt-dev libdpkg-perl
+  libexpat1-dev libgcc-13-dev libgfortran5 libgomp1 libhwasan0 libitm1
+  libjs-jquery libjs-sphinxdoc libjs-underscore libjsoncpp25 liblapack3
+  liblsan0 libpkgconf3 libpython3-dev libpython3.12-dev librhash0
+  libstdc++-13-dev libtsan2 libubsan1 linux-libc-dev lto-disabled-list pkgconf
+  pkgconf-bin python3-pip-whl python3-setuptools-whl python3-wheel
+  python3.12-dev python3.12-venv rpcsvc-proto zlib1g-dev
+Suggested packages:
+  cmake-doc cmake-format elpa-cmake-mode ninja-build debian-keyring gcc-13-doc
+  gcc-multilib manpages-dev autoconf automake libtool flex bison gdb gcc-doc
+  gcc-13-locales gdb-aarch64-linux-gnu glibc-doc bzr libstdc++-13-doc make-doc
+  gfortran python3-pytest
+Recommended packages:
+  fakeroot libalgorithm-merge-perl manpages-dev libc-devtools
+  libfile-fcntllock-perl javascript-common lrzsz
+The following NEW packages will be installed:
+  build-essential cmake cmake-data dpkg-dev g++ g++-13
+  g++-13-aarch64-linux-gnu g++-aarch64-linux-gnu gcc gcc-13
+  gcc-13-aarch64-linux-gnu gcc-aarch64-linux-gnu libasan8 libatomic1 libblas3
+  libc-dev-bin libc6-dev libcc1-0 libcrypt-dev libdpkg-perl libexpat1-dev
+  libgcc-13-dev libgfortran5 libgomp1 libhwasan0 libitm1 libjs-jquery
+  libjs-sphinxdoc libjs-underscore libjsoncpp25 liblapack3 liblsan0
+  libpkgconf3 libpython3-dev libpython3.12-dev librhash0 libstdc++-13-dev
+  libtsan2 libubsan1 linux-libc-dev lto-disabled-list make minicom net-tools
+  pkg-config pkgconf pkgconf-bin python3-dev python3-numpy python3-pip
+  python3-pip-whl python3-setuptools-whl python3-venv python3-wheel
+  python3.12-dev python3.12-venv rpcsvc-proto tree zlib1g-dev
+0 upgraded, 59 newly installed, 0 to remove and 0 not upgraded.
+Inst libc-dev-bin (2.39-0ubuntu8.9 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst linux-libc-dev (6.8.0-139.139 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst libcrypt-dev (1:4.4.36-4build1 Ubuntu:24.04/noble [arm64])
+Inst rpcsvc-proto (1.4.2-0ubuntu7 Ubuntu:24.04/noble [arm64])
+Inst libc6-dev (2.39-0ubuntu8.9 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst libcc1-0 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst libgomp1 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst libitm1 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst libatomic1 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst libasan8 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst liblsan0 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst libtsan2 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst libubsan1 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst libhwasan0 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst libgcc-13-dev (13.3.0-6ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst gcc-13-aarch64-linux-gnu (13.3.0-6ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst gcc-13 (13.3.0-6ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst gcc-aarch64-linux-gnu (4:13.2.0-7ubuntu1 Ubuntu:24.04/noble [arm64])
+Inst gcc (4:13.2.0-7ubuntu1 Ubuntu:24.04/noble [arm64])
+Inst libstdc++-13-dev (13.3.0-6ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst g++-13-aarch64-linux-gnu (13.3.0-6ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst g++-13 (13.3.0-6ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst g++-aarch64-linux-gnu (4:13.2.0-7ubuntu1 Ubuntu:24.04/noble [arm64])
+Inst g++ (4:13.2.0-7ubuntu1 Ubuntu:24.04/noble [arm64])
+Inst make (4.3-4.1build2 Ubuntu:24.04/noble [arm64])
+Inst libdpkg-perl (1.22.6ubuntu6.6 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [all])
+Inst lto-disabled-list (47 Ubuntu:24.04/noble [all])
+Inst dpkg-dev (1.22.6ubuntu6.6 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [all])
+Inst build-essential (12.10ubuntu1 Ubuntu:24.04/noble [arm64])
+Inst libjsoncpp25 (1.9.5-6build1 Ubuntu:24.04/noble [arm64])
+Inst librhash0 (1.4.3-3build1 Ubuntu:24.04/noble [arm64])
+Inst cmake-data (3.28.3-1build7 Ubuntu:24.04/noble [all])
+Inst cmake (3.28.3-1build7 Ubuntu:24.04/noble [arm64])
+Inst libblas3 (3.12.0-3build1.1 Ubuntu:24.04/noble-updates [arm64])
+Inst libexpat1-dev (2.6.1-2ubuntu0.4 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst libgfortran5 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst libjs-jquery (3.6.1+dfsg+~3.5.14-1 Ubuntu:24.04/noble [all])
+Inst libjs-underscore (1.13.4~dfsg+~1.11.4-3 Ubuntu:24.04/noble [all])
+Inst libjs-sphinxdoc (7.2.6-6 Ubuntu:24.04/noble [all])
+Inst liblapack3 (3.12.0-3build1.1 Ubuntu:24.04/noble-updates [arm64])
+Inst libpkgconf3 (1.8.1-2build1 Ubuntu:24.04/noble [arm64])
+Inst zlib1g-dev (1:1.3.dfsg-3.1ubuntu2.2 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst libpython3.12-dev (3.12.3-1ubuntu0.17 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst libpython3-dev (3.12.3-0ubuntu2.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst minicom (2.9-4 Ubuntu:24.04/noble [arm64])
+Inst net-tools (2.10-0.1ubuntu4.4 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst pkgconf-bin (1.8.1-2build1 Ubuntu:24.04/noble [arm64])
+Inst pkgconf (1.8.1-2build1 Ubuntu:24.04/noble [arm64])
+Inst pkg-config (1.8.1-2build1 Ubuntu:24.04/noble [arm64])
+Inst python3.12-dev (3.12.3-1ubuntu0.17 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst python3-dev (3.12.3-0ubuntu2.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst python3-numpy (1:1.26.4+ds-6ubuntu1 Ubuntu:24.04/noble [arm64])
+Inst python3-wheel (0.42.0-2 Ubuntu:24.04/noble [all])
+Inst python3-pip (24.0+dfsg-1ubuntu1.3 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [all])
+Inst python3-pip-whl (24.0+dfsg-1ubuntu1.3 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [all])
+Inst python3-setuptools-whl (68.1.2-2ubuntu1.2 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [all])
+Inst python3.12-venv (3.12.3-1ubuntu0.17 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst python3-venv (3.12.3-0ubuntu2.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Inst tree (2.1.1-2ubuntu3.24.04.2 Ubuntu:24.04/noble-updates [arm64])
+Conf libc-dev-bin (2.39-0ubuntu8.9 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf linux-libc-dev (6.8.0-139.139 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf libcrypt-dev (1:4.4.36-4build1 Ubuntu:24.04/noble [arm64])
+Conf rpcsvc-proto (1.4.2-0ubuntu7 Ubuntu:24.04/noble [arm64])
+Conf libc6-dev (2.39-0ubuntu8.9 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf libcc1-0 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf libgomp1 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf libitm1 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf libatomic1 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf libasan8 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf liblsan0 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf libtsan2 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf libubsan1 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf libhwasan0 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf libgcc-13-dev (13.3.0-6ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf gcc-13-aarch64-linux-gnu (13.3.0-6ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf gcc-13 (13.3.0-6ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf gcc-aarch64-linux-gnu (4:13.2.0-7ubuntu1 Ubuntu:24.04/noble [arm64])
+Conf gcc (4:13.2.0-7ubuntu1 Ubuntu:24.04/noble [arm64])
+Conf libstdc++-13-dev (13.3.0-6ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf g++-13-aarch64-linux-gnu (13.3.0-6ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf g++-13 (13.3.0-6ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf g++-aarch64-linux-gnu (4:13.2.0-7ubuntu1 Ubuntu:24.04/noble [arm64])
+Conf g++ (4:13.2.0-7ubuntu1 Ubuntu:24.04/noble [arm64])
+Conf make (4.3-4.1build2 Ubuntu:24.04/noble [arm64])
+Conf libdpkg-perl (1.22.6ubuntu6.6 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [all])
+Conf lto-disabled-list (47 Ubuntu:24.04/noble [all])
+Conf dpkg-dev (1.22.6ubuntu6.6 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [all])
+Conf build-essential (12.10ubuntu1 Ubuntu:24.04/noble [arm64])
+Conf libjsoncpp25 (1.9.5-6build1 Ubuntu:24.04/noble [arm64])
+Conf librhash0 (1.4.3-3build1 Ubuntu:24.04/noble [arm64])
+Conf cmake-data (3.28.3-1build7 Ubuntu:24.04/noble [all])
+Conf cmake (3.28.3-1build7 Ubuntu:24.04/noble [arm64])
+Conf libblas3 (3.12.0-3build1.1 Ubuntu:24.04/noble-updates [arm64])
+Conf libexpat1-dev (2.6.1-2ubuntu0.4 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf libgfortran5 (14.2.0-4ubuntu2~24.04.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf libjs-jquery (3.6.1+dfsg+~3.5.14-1 Ubuntu:24.04/noble [all])
+Conf libjs-underscore (1.13.4~dfsg+~1.11.4-3 Ubuntu:24.04/noble [all])
+Conf libjs-sphinxdoc (7.2.6-6 Ubuntu:24.04/noble [all])
+Conf liblapack3 (3.12.0-3build1.1 Ubuntu:24.04/noble-updates [arm64])
+Conf libpkgconf3 (1.8.1-2build1 Ubuntu:24.04/noble [arm64])
+Conf zlib1g-dev (1:1.3.dfsg-3.1ubuntu2.2 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf libpython3.12-dev (3.12.3-1ubuntu0.17 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf libpython3-dev (3.12.3-0ubuntu2.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf minicom (2.9-4 Ubuntu:24.04/noble [arm64])
+Conf net-tools (2.10-0.1ubuntu4.4 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf pkgconf-bin (1.8.1-2build1 Ubuntu:24.04/noble [arm64])
+Conf pkgconf (1.8.1-2build1 Ubuntu:24.04/noble [arm64])
+Conf pkg-config (1.8.1-2build1 Ubuntu:24.04/noble [arm64])
+Conf python3.12-dev (3.12.3-1ubuntu0.17 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf python3-dev (3.12.3-0ubuntu2.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf python3-numpy (1:1.26.4+ds-6ubuntu1 Ubuntu:24.04/noble [arm64])
+Conf python3-wheel (0.42.0-2 Ubuntu:24.04/noble [all])
+Conf python3-pip (24.0+dfsg-1ubuntu1.3 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [all])
+Conf python3-pip-whl (24.0+dfsg-1ubuntu1.3 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [all])
+Conf python3-setuptools-whl (68.1.2-2ubuntu1.2 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [all])
+Conf python3.12-venv (3.12.3-1ubuntu0.17 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf python3-venv (3.12.3-0ubuntu2.1 Ubuntu:24.04/noble-updates, Ubuntu:24.04/noble-security [arm64])
+Conf tree (2.1.1-2ubuntu3.24.04.2 Ubuntu:24.04/noble-updates [arm64])

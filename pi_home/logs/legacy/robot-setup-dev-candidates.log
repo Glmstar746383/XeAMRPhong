@@ -1,0 +1,209 @@
+git:
+  Installed: 1:2.43.0-1ubuntu7.3
+  Candidate: 1:2.43.0-1ubuntu7.3
+  Version table:
+ *** 1:2.43.0-1ubuntu7.3 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble-updates/main arm64 Packages
+        500 http://ports.ubuntu.com/ubuntu-ports noble-security/main arm64 Packages
+        100 /var/lib/dpkg/status
+     1:2.43.0-1ubuntu7 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+curl:
+  Installed: 8.5.0-2ubuntu10.13
+  Candidate: 8.5.0-2ubuntu10.13
+  Version table:
+ *** 8.5.0-2ubuntu10.13 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble-updates/main arm64 Packages
+        500 http://ports.ubuntu.com/ubuntu-ports noble-security/main arm64 Packages
+        100 /var/lib/dpkg/status
+     8.5.0-2ubuntu10 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+wget:
+  Installed: 1.21.4-1ubuntu4.5
+  Candidate: 1.21.4-1ubuntu4.5
+  Version table:
+ *** 1.21.4-1ubuntu4.5 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble-updates/main arm64 Packages
+        500 http://ports.ubuntu.com/ubuntu-ports noble-security/main arm64 Packages
+        100 /var/lib/dpkg/status
+     1.21.4-1ubuntu4 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+build-essential:
+  Installed: (none)
+  Candidate: 12.10ubuntu1
+  Version table:
+     12.10ubuntu1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+cmake:
+  Installed: (none)
+  Candidate: 3.28.3-1build7
+  Version table:
+     3.28.3-1build7 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+g++:
+  Installed: (none)
+  Candidate: 4:13.2.0-7ubuntu1
+  Version table:
+     4:13.2.0-7ubuntu1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+gcc:
+  Installed: (none)
+  Candidate: 4:13.2.0-7ubuntu1
+  Version table:
+     4:13.2.0-7ubuntu1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+make:
+  Installed: (none)
+  Candidate: 4.3-4.1build2
+  Version table:
+     4.3-4.1build2 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+pkg-config:
+  Installed: (none)
+  Candidate: 1.8.1-2build1
+  Version table:
+     1.8.1-2build1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+htop:
+  Installed: 3.3.0-4build1
+  Candidate: 3.3.0-4build1
+  Version table:
+ *** 3.3.0-4build1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+        100 /var/lib/dpkg/status
+tmux:
+  Installed: 3.4-1ubuntu0.1
+  Candidate: 3.4-1ubuntu0.1
+  Version table:
+ *** 3.4-1ubuntu0.1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble-updates/main arm64 Packages
+        100 /var/lib/dpkg/status
+     3.4-1build1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+tree:
+  Installed: (none)
+  Candidate: 2.1.1-2ubuntu3.24.04.2
+  Version table:
+     2.1.1-2ubuntu3.24.04.2 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble-updates/universe arm64 Packages
+     2.1.1-2ubuntu3 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/universe arm64 Packages
+nano:
+  Installed: 7.2-2ubuntu0.2
+  Candidate: 7.2-2ubuntu0.2
+  Version table:
+ *** 7.2-2ubuntu0.2 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble-updates/main arm64 Packages
+        500 http://ports.ubuntu.com/ubuntu-ports noble-security/main arm64 Packages
+        100 /var/lib/dpkg/status
+     7.2-2build1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+vim:
+  Installed: 2:9.1.0016-1ubuntu7.20
+  Candidate: 2:9.1.0016-1ubuntu7.20
+  Version table:
+ *** 2:9.1.0016-1ubuntu7.20 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble-updates/main arm64 Packages
+        500 http://ports.ubuntu.com/ubuntu-ports noble-security/main arm64 Packages
+        100 /var/lib/dpkg/status
+     2:9.1.0016-1ubuntu7 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+jq:
+  Installed: 1.7.1-3ubuntu0.24.04.2
+  Candidate: 1.7.1-3ubuntu0.24.04.2
+  Version table:
+ *** 1.7.1-3ubuntu0.24.04.2 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble-updates/main arm64 Packages
+        500 http://ports.ubuntu.com/ubuntu-ports noble-security/main arm64 Packages
+        100 /var/lib/dpkg/status
+     1.7.1-3build1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+net-tools:
+  Installed: (none)
+  Candidate: 2.10-0.1ubuntu4.4
+  Version table:
+     2.10-0.1ubuntu4.4 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble-updates/main arm64 Packages
+        500 http://ports.ubuntu.com/ubuntu-ports noble-security/main arm64 Packages
+     2.10-0.1ubuntu4 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+usbutils:
+  Installed: 1:017-3build1
+  Candidate: 1:017-3build1
+  Version table:
+ *** 1:017-3build1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+        100 /var/lib/dpkg/status
+pciutils:
+  Installed: 1:3.10.0-2build1
+  Candidate: 1:3.10.0-2build1
+  Version table:
+ *** 1:3.10.0-2build1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+        100 /var/lib/dpkg/status
+minicom:
+  Installed: (none)
+  Candidate: 2.9-4
+  Version table:
+     2.9-4 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/universe arm64 Packages
+screen:
+  Installed: 4.9.1-1ubuntu1
+  Candidate: 4.9.1-1ubuntu1
+  Version table:
+ *** 4.9.1-1ubuntu1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble-updates/main arm64 Packages
+        500 http://ports.ubuntu.com/ubuntu-ports noble-security/main arm64 Packages
+        100 /var/lib/dpkg/status
+     4.9.1-1build1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+python3:
+  Installed: 3.12.3-0ubuntu2.1
+  Candidate: 3.12.3-0ubuntu2.1
+  Version table:
+ *** 3.12.3-0ubuntu2.1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble-updates/main arm64 Packages
+        500 http://ports.ubuntu.com/ubuntu-ports noble-security/main arm64 Packages
+        100 /var/lib/dpkg/status
+     3.12.3-0ubuntu1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+python3-pip:
+  Installed: (none)
+  Candidate: 24.0+dfsg-1ubuntu1.3
+  Version table:
+     24.0+dfsg-1ubuntu1.3 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble-updates/universe arm64 Packages
+        500 http://ports.ubuntu.com/ubuntu-ports noble-security/universe arm64 Packages
+     24.0+dfsg-1ubuntu1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/universe arm64 Packages
+python3-venv:
+  Installed: (none)
+  Candidate: 3.12.3-0ubuntu2.1
+  Version table:
+     3.12.3-0ubuntu2.1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble-updates/universe arm64 Packages
+        500 http://ports.ubuntu.com/ubuntu-ports noble-security/universe arm64 Packages
+     3.12.3-0ubuntu1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/universe arm64 Packages
+python3-dev:
+  Installed: (none)
+  Candidate: 3.12.3-0ubuntu2.1
+  Version table:
+     3.12.3-0ubuntu2.1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble-updates/main arm64 Packages
+        500 http://ports.ubuntu.com/ubuntu-ports noble-security/main arm64 Packages
+     3.12.3-0ubuntu1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+python3-serial:
+  Installed: 3.5-2
+  Candidate: 3.5-2
+  Version table:
+ *** 3.5-2 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages
+        100 /var/lib/dpkg/status
+python3-numpy:
+  Installed: (none)
+  Candidate: 1:1.26.4+ds-6ubuntu1
+  Version table:
+     1:1.26.4+ds-6ubuntu1 500
+        500 http://ports.ubuntu.com/ubuntu-ports noble/main arm64 Packages

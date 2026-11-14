@@ -1,0 +1,6 @@
+[INFO] [launch]: All log files can be found below /home/khangho/.ros/log/2026-10-20-10-14-09-816920-khang-3214
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [sllidar_node-1]: process started with pid [3234]
+[sllidar_node-1] [INFO] [1792466050.259026182] [sllidar_node]: SLLidar running on ROS2 package SLLidar.ROS2 SDK Version:1.0.1, SLLIDAR SDK Version:2.1.0
+[sllidar_node-1] [ERROR] [1792466052.764923292] [sllidar_node]: Error, operation time out. SL_RESULT_OPERATION_TIMEOUT! 
+[ERROR] [sllidar_node-1]: process has died [pid 3234, exit code 255, cmd '/home/khangho/rplidar_c1_ws/install/sllidar_ros2/lib/sllidar_ros2/sllidar_node --ros-args -r __node:=sllidar_node --params-file /tmp/launch_params_v02hfmgc'].

@@ -1,0 +1,8 @@
+{
+  "pid": 70562,
+  "backup": "/home/khangho/agv_escape_latch_fix_20261020_hobubY/backup",
+  "status": "APPLIED_DISARMED",
+  "hashes": {
+    "agv_unified_brain.py": "bd532a14d7faf723dbc9c517e1f989555a9fc208a2da3e4ab074c95789b75543"
+  }
+}

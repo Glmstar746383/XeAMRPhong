@@ -1,0 +1,288 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""Lop chan vat can bang camera, bo tro cho LiDAR 2D.
+
+LiDAR 2D chi quet mot mat phang o do cao cua no, nen vat thap hon (day dien,
+canh hop, chan ban, mep tha dam) nam duoi mat phang quet se khong thay.
+Camera da hieu chuan do khoang cach toi diem tiep xuc san, lap day diem mu do.
+
+Nguyen tac an toan:
+  - Chi chan chieu TIEN (v > 0). Lui / quay khong bi anh huong.
+  - Du lieu cu qua timeout_s -> BO QUA camera (fail-open), LiDAR van chay.
+  - Tre 15 cm giua nguong chan va nguong nha (hysteresis) de khong rung.
+  - Chi chan khi vat nam trong hanh lang than xe (|x| <= half_w).
+  - Khong bao gio tu ARM, khong tu chay.
+
+Phat ra tu cam_range_node.py:
+  /cam_range     sensor_msgs/Float32         (m); 9.9 = duong trong
+  /cam_obstacle  geometry_msgs/PointStamped  x = lech ngang, y = khoang cach
+"""
+
+import json
+import math
+import os
+import time
+
+CLEAR_VALUE = 9.9
+
+
+class CamAvoid:
+    def __init__(self, enabled=True, stop_m=0.30, clear_m=0.45, half_w=0.25,
+                 timeout_s=2.0, config_path=None, bg_max_diff=20.0):
+        self.enabled = bool(enabled)
+        self.stop_m = float(stop_m)
+        self.clear_m = float(clear_m)
+        self.half_w = float(half_w)
+        self.timeout_s = float(timeout_s)
+        self.bg_max_diff = float(bg_max_diff)
+        self.config_path = config_path
+
+        self.d = None          # khoang cach moi nhat (m)
+        self.x = 0.0           # lech ngang moi nhat (m)
+        self.mono = 0.0        # thoi diem nhan
+        self.blocked = False   # trang thai co tre (hysteresis)
+        self.reason = None
+        self.block_count = 0   # so lan lien tiep bi chan
+        self.bg_diff = None    # do lech trung binh giua anh nen va hien tai
+        self.bg_mono = 0.0
+        self.stable_count = 0  # so khung lien tiep thay cung mot vat
+        self.stable_mono = 0.0
+        self.last_block_mono = 0.0
+
+        self._load()
+
+    # ---------------- cau hinh ----------------
+    def _load(self):
+        if not self.config_path or not os.path.exists(self.config_path):
+            return
+        try:
+            with open(self.config_path, "r", encoding="utf-8") as fh:
+                c = json.load(fh)
+            self.enabled = bool(c.get("enabled", self.enabled))
+            self.stop_m = float(c.get("stop_m", self.stop_m))
+            self.clear_m = float(c.get("clear_m", self.clear_m))
+            self.half_w = float(c.get("half_w", self.half_w))
+            self.timeout_s = float(c.get("timeout_s", self.timeout_s))
+        except Exception:
+            pass
+
+    def persist_config(self):
+        if not self.config_path:
+            return
+        try:
+            os.makedirs(os.path.dirname(self.config_path), exist_ok=True)
+            with open(self.config_path, "w", encoding="utf-8") as fh:
+                json.dump({"enabled": self.enabled, "stop_m": self.stop_m,
+                           "clear_m": self.clear_m, "half_w": self.half_w,
+                           "timeout_s": self.timeout_s}, fh, indent=2)
+        except Exception:
+            pass
+
+    # ---------------- nap du lieu ----------------
+    def feed_range(self, d, now=None):
+        now = time.monotonic() if now is None else now
+        try:
+            d = float(d)
+        except (TypeError, ValueError):
+            return
+        if not math.isfinite(d) or d <= 0:
+            return
+        self.d = d
+        if d >= CLEAR_VALUE - 0.5:
+            self.x = 0.0
+        self.mono = now
+        # do on dinh: vat phai duoc thay lien tuc vai khung
+        if self._is_clear(d) or d > max(0.60, self.stop_m * 1.5):
+            self.stable_count = 0
+        else:
+            if now - self.stable_mono <= 0.40:
+                self.stable_count += 1
+            else:
+                self.stable_count = 1
+            self.stable_mono = now
+
+    def feed_bg(self, v, now=None):
+        now = time.monotonic() if now is None else now
+        try:
+            v = float(v)
+        except (TypeError, ValueError):
+            return
+        if math.isfinite(v):
+            self.bg_diff = v
+            self.bg_mono = now
+
+    def feed_obstacle(self, x, d=None, now=None):
+        now = time.monotonic() if now is None else now
+        try:
+            x = float(x)
+        except (TypeError, ValueError):
+            return
+        if not math.isfinite(x):
+            return
+        self.x = x
+        if d is not None:
+            try:
+                dd = float(d)
+                if math.isfinite(dd) and dd > 0:
+                    self.d = dd
+                    self.mono = now
+            except (TypeError, ValueError):
+                pass
+
+    # ---------------- danh gia ----------------
+    def bg_stale(self, now=None):
+        """Nen lech qua nhieu => camera khong dang tin (xe da doi cho)."""
+        now = time.monotonic() if now is None else now
+        if self.bg_diff is None or not self.bg_mono:
+            return False
+        if now - self.bg_mono > 5.0:
+            return False
+        return self.bg_diff > self.bg_max_diff
+
+    def age(self, now=None):
+        now = time.monotonic() if now is None else now
+        return None if not self.mono else now - self.mono
+
+    def _is_clear(self, d):
+        return d is None or not math.isfinite(d) or d >= CLEAR_VALUE - 0.5
+
+    def contact(self, now=None):
+        """Tra (d, x) neu camera dang thay mot vat that, on dinh va nen khop."""
+        now = time.monotonic() if now is None else now
+        if not self.enabled or self.bg_stale(now):
+            return None
+        if not self.mono or (now - self.mono) > self.timeout_s:
+            return None
+        if self._is_clear(self.d):
+            return None
+        if self.stable_count < 5:          # ~0.5 giay o 10 Hz
+            return None
+        if self.d > max(0.60, self.stop_m * 1.5):
+            return None
+        return (float(self.d), float(self.x))
+
+    def gate(self, v, now=None):
+        """Tra ve (allow, reason, info)."""
+        now = time.monotonic() if now is None else now
+        info = {"enabled": self.enabled, "d": self.d, "x": self.x,
+                "age_s": (round(self.age(now), 3) if self.mono else None),
+                "stop_m": self.stop_m, "clear_m": self.clear_m,
+                "half_w": self.half_w}
+
+        if not self.enabled:
+            self.blocked, self.reason, self.block_count = False, None, 0
+            info["status"] = "DISABLED"
+            return True, None, info
+
+        try:
+            v = float(v)
+        except (TypeError, ValueError):
+            return True, None, info
+
+        # chi ap dung cho chieu tien
+        if not math.isfinite(v) or v <= 0.005:
+            self.blocked, self.reason, self.block_count = False, None, 0
+            info["status"] = "NOT_FORWARD"
+            return True, None, info
+
+        if self.bg_stale(now):
+            # Anh nen khong con khop voi khung hinh: bo qua camera de khong
+            # chan nham. LiDAR van la nguon chinh. UI se canh bao chup lai nen.
+            self.blocked, self.reason, self.block_count = False, None, 0
+            info["status"] = "BG_STALE"
+            info["bg_diff"] = round(self.bg_diff, 1)
+            return True, None, info
+
+        age = self.age(now)
+        if age is None or age > self.timeout_s:
+            self.blocked, self.reason, self.block_count = False, None, 0
+            info["status"] = "NO_DATA"
+            return True, None, info
+
+        if self._is_clear(self.d):
+            self.blocked, self.reason, self.block_count = False, None, 0
+            info["status"] = "CLEAR"
+            return True, None, info
+
+        lateral_ok = abs(self.x) <= self.half_w
+        threshold = self.clear_m if self.blocked else self.stop_m
+        if lateral_ok and self.d <= threshold:
+            self.blocked = True
+            self.reason = "CAM_OBSTACLE"
+            self.block_count += 1
+            self.last_block_mono = now
+            info["status"] = "BLOCKED"
+            return False, "CAM_OBSTACLE", info
+
+        self.blocked, self.reason = False, None
+        self.block_count = 0
+        info["status"] = "CLEAR"
+        return True, None, info
+
+    def gate_cmd(self, cmd, now=None):
+        """Chan lenh 'V v w' / 'M l r' neu camera thay vat can thap phia truoc."""
+        clean = (cmd or "").strip()
+        v = None
+        if clean.startswith("V "):
+            parts = clean.split()
+            if len(parts) >= 2:
+                try:
+                    v = float(parts[1])
+                except ValueError:
+                    v = None
+        elif clean.startswith("M "):
+            parts = clean.split()
+            if len(parts) >= 3:
+                try:
+                    v = (float(parts[1]) + float(parts[2])) / 2.0
+                except ValueError:
+                    v = None
+        if v is None:
+            return True, None, {"status": "NOT_APPLICABLE"}
+        return self.gate(v, now)
+
+    def simulate(self, v, d, x=0.0):
+        """Kiem tra logic khong can phan cung (d=None -> dung gia tri hien tai)."""
+        sd, sx, sm = self.d, self.x, self.mono
+        try:
+            if d is not None:
+                self.d = float(d)
+                self.x = float(x)
+                self.mono = time.monotonic()
+            allow, reason, info = self.gate(v)
+        finally:
+            self.d, self.x, self.mono = sd, sx, sm
+        info["simulated_d"] = d
+        info["simulated_x"] = x
+        return allow, reason, info
+
+    def reset(self):
+        self.blocked = False
+        self.reason = None
+        self.block_count = 0
+
+    def snapshot(self):
+        now = time.monotonic()
+        fresh = bool(self.mono) and (now - self.mono) <= self.timeout_s
+        obstacle = bool(fresh and self.enabled and not self._is_clear(self.d)
+                        and abs(self.x) <= self.half_w and self.d <= self.stop_m
+                        and not self.bg_stale(now))
+        return {
+            "enabled": self.enabled,
+            "stop_m": self.stop_m,
+            "clear_m": self.clear_m,
+            "half_w": self.half_w,
+            "timeout_s": self.timeout_s,
+            "d": self.d,
+            "x": self.x,
+            "age_s": (round(self.age(now), 3) if self.mono else None),
+            "blocked": self.blocked,
+            "obstacle": obstacle,
+            "reason": self.reason,
+            "block_count": self.block_count,
+            "stable_count": self.stable_count,
+            "bg_diff": (round(self.bg_diff, 1)
+                        if (self.bg_mono and now - self.bg_mono <= 5.0) else None),
+            "bg_ok": not self.bg_stale(now),
+            "bg_max_diff": self.bg_max_diff,
+        }

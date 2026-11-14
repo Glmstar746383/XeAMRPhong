@@ -1,0 +1,9 @@
+Get:1 https://pkgs.tailscale.com/stable/ubuntu noble InRelease
+Get:2 http://packages.ros.org/ros2/ubuntu noble InRelease [4676 B]
+Hit:3 http://ports.ubuntu.com/ubuntu-ports noble InRelease
+Hit:4 http://ports.ubuntu.com/ubuntu-ports noble-updates InRelease
+Get:5 http://packages.ros.org/ros2/ubuntu noble/main Sources [2164 kB]
+Hit:6 http://ports.ubuntu.com/ubuntu-ports noble-security InRelease
+Get:7 http://packages.ros.org/ros2/ubuntu noble/main arm64 Packages [2032 kB]
+Fetched 4208 kB in 23s (185 kB/s)
+Reading package lists...

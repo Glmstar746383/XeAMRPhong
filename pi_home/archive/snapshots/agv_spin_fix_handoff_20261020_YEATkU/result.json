@@ -1,0 +1,8 @@
+{
+  "pid": 115752,
+  "backup": "/home/khangho/agv_spin_fix_handoff_20261020_YEATkU/backup",
+  "status": "APPLIED_DISARMED",
+  "hashes": {
+    "agv_unified_brain.py": "13c6e72060d2fd15a124b8926b5e115860cb391866aaea6c8772af5b6a5a04ed"
+  }
+}
