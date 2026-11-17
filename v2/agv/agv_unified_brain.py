@@ -308,6 +308,7 @@ class AGVROSNode(Node):
             self.create_subscription(PointStamped, '/cam_obstacle', self.cam_obstacle_cb, 10,
                                      **kw_sensors)
             self.create_subscription(Float32, '/cam_bg_diff', self.cam_bg_cb, 10, **kw_sensors)
+            self.create_subscription(Float32, '/cam_bg_frac', self.cam_bg_frac_cb, 10, **kw_sensors)
             self.pub_cam_capture = self.create_publisher(Empty, '/cam_capture_bg', 10)
             self.get_logger().info(
                 'CAMERA AVOID: /cam_range + /cam_obstacle (enabled=%s, stop=%.2fm)'
@@ -430,7 +431,9 @@ class AGVROSNode(Node):
         if cm is None or not cm.enabled:
             return False
         fresh = cm.mono and (time.monotonic() - cm.mono) <= 3.0
-        if fresh and cm.bg_diff is not None and cm.bg_diff <= cm.bg_max_diff:
+        bg_ok = ((cm.bg_diff is None or cm.bg_diff <= cm.bg_max_diff) and
+                 (cm.bg_frac is None or cm.bg_frac <= cm.bg_frac_max))
+        if fresh and bg_ok:
             return False          # nen con tot, khong can chup
         front = self._front_min_range(20.0)
         if front < 0.90:
@@ -449,6 +452,12 @@ class AGVROSNode(Node):
     def cam_bg_cb(self, msg):
         try:
             self.cam_avoid.feed_bg(float(msg.data))
+        except Exception:
+            pass
+
+    def cam_bg_frac_cb(self, msg):
+        try:
+            self.cam_avoid.feed_bg_frac(float(msg.data))
         except Exception:
             pass
 
@@ -514,20 +523,31 @@ class AGVROSNode(Node):
         return True
 
     def _cam_gate_cmd(self, clean, autonomous=False):
-        """Tra ve ly do chan neu camera thay vat can thap phia truoc, nguoc lai None."""
+        """Vat nho -> 'CAM_WAIT' (dung cho). Vat to -> 'CAM_OBSTACLE' (chuyen huong ne)."""
         cm = getattr(self, 'cam_avoid', None)
         if cm is None or not cm.enabled:
             return None
         allow, reason, info = cm.gate_cmd(clean)
         if allow:
             return None
+        d = info.get('d')
+        width = info.get('width_m')
         try:
-            self.control._event('cam_block', cmd=clean, d=info.get('d'), x=info.get('x'),
-                                age_s=info.get('age_s'), block_count=cm.block_count)
+            self.control._event('cam_block', cmd=clean, d=d, x=info.get('x'),
+                                age_s=info.get('age_s'), reason=reason,
+                                obj_class=info.get('class'), width_m=width,
+                                block_count=cm.block_count)
         except Exception:
             pass
+        if reason == 'CAM_WAIT':
+            with state.lock:
+                state.explore_phase = ('CAMERA: CHỜ VẬT CẢN NHỎ (%.2f m) — lấy vật ra để tiếp tục'
+                                       % (d if d is not None else -1.0))
+            return 'CAM_WAIT'
         with state.lock:
-            state.explore_phase = 'CAMERA: vat can thap phia truoc (%.2f m)' % (info.get('d') or -1.0)
+            state.explore_phase = ('CAMERA: vật cản lớn%s (%.2f m) — chuyển hướng né'
+                                   % ('' if width is None else ' ~%.2f m' % width,
+                                      d if d is not None else -1.0))
         if autonomous and cm.block_count >= 5 and getattr(self, 'goal', None) is not None:
             try:
                 self._exclude_goal(time.monotonic(), failed=True, reason='CAM_OBSTACLE')
@@ -535,7 +555,7 @@ class AGVROSNode(Node):
                 pass
             self.goal = None
             cm.block_count = 0
-        return reason or 'CAM_OBSTACLE'
+        return 'CAM_OBSTACLE'
 
     def send_cmd(self, cmd_str, autonomous=False, planned_turn=False):
         clean = cmd_str.strip()
@@ -582,15 +602,27 @@ class AGVROSNode(Node):
                     state.explore_phase = 'DAO ĐỘNG TẠI CHỖ: đã dừng 2 giây'
                 return True, 'OSCILLATION_STOP'
         cam_reason = self._cam_gate_cmd(clean, autonomous)
+        if cam_reason == 'CAM_WAIT':
+            # Vat NHO: dung han tai cho, khong quay, khong bo muc tieu.
+            try:
+                self.control.drive('V 0.000 0.000', autonomous=autonomous)
+            except Exception:
+                pass
+            return True, 'CAM_WAIT'
         if cam_reason:
-            # Vat can thap chan chieu TIEN, nhung van phai cho quay tai cho
-            # de xe tim huong vong thay vi dung im.
+            # Vat TO: chan chieu TIEN, van cho quay tai cho de tim huong vong.
             keep_w = 0.0
             if clean.startswith('V '):
                 try:
                     keep_w = float(clean.split()[2])
                 except (IndexError, ValueError):
                     keep_w = 0.0
+            if abs(keep_w) < 0.05:
+                # Khong tu xoay lung tung: quay ve phia nguoc vat can.
+                try:
+                    keep_w = 0.6 if float(self.cam_avoid.x or 0.0) >= 0 else -0.6
+                except Exception:
+                    keep_w = 0.6
             try:
                 self.control.drive('V 0.000 %.3f' % keep_w, autonomous=autonomous)
             except Exception:
@@ -1594,7 +1626,7 @@ class AGVROSNode(Node):
         if not finite(v) or v <= 0:return failed('INVALID_TWIST')
         is_op = getattr(self, 'control', None) is not None and not getattr(self.control, 'strict_preflight', True)
         with state.lock:
-            epoch=(state.map_version,state.map_frame,state.body_radius_m,state.wall_margin_m,state.scan_mono)
+            epoch=(state.map_frame,state.body_radius_m,state.wall_margin_m)
             bounds=state.body_bounds_m
             points=list(state.ranges)
             max_age = max(.65, getattr(self, 'scan_max_age_s', .25)) if is_op else getattr(self, 'scan_max_age_s', .25)
@@ -1642,7 +1674,7 @@ class AGVROSNode(Node):
                 radius = grid.radius+padding+d*math.sin(math.radians(.5))
                 if any(math.hypot(px-x,py-y) <= radius for x,y in centres):return failed('SCAN_BODY_CLEARANCE')
         with state.lock:
-            valid=(epoch==(state.map_version,state.map_frame,state.body_radius_m,state.wall_margin_m,state.scan_mono)
+            valid=(epoch==(state.map_frame,state.body_radius_m,state.wall_margin_m)
                     and -0.10 <= time.monotonic()-state.scan_mono <= max_age
                     and 0 <= time.monotonic()-state.map_mono <= 5.0)
         return True if valid else failed('INPUT_CHANGED_DURING_SWEEP')
@@ -1652,7 +1684,7 @@ class AGVROSNode(Node):
         if grid is None or pose is None:return False
         max_map_age = 5.0
         with state.lock:
-            epoch=(state.map_version,state.map_frame,state.body_radius_m,state.body_bounds_m,state.wall_margin_m,state.scan_mono)
+            epoch=(state.map_frame,state.body_radius_m,state.body_bounds_m,state.wall_margin_m)
             bounds=state.body_bounds_m
             points=list(state.ranges)
             is_op = getattr(self, 'control', None) is not None and not getattr(self.control, 'strict_preflight', True)
@@ -1682,7 +1714,7 @@ class AGVROSNode(Node):
                 gap=math.hypot(px,py)-d*math.sin(math.radians(.5))
                 if gap<=body_margin+padding:return False
             with state.lock:
-                return (epoch==(state.map_version,state.map_frame,state.body_radius_m,state.body_bounds_m,state.wall_margin_m,state.scan_mono)
+                return (epoch==(state.map_frame,state.body_radius_m,state.body_bounds_m,state.wall_margin_m)
                         and -0.10 <= time.monotonic()-state.scan_mono <= max_age
                         and 0 <= time.monotonic()-state.map_mono <= max_map_age)
         if bounds is not None:
@@ -1713,7 +1745,7 @@ class AGVROSNode(Node):
             else:
                 if distances[-1] <= distances[0] + .0001: return False
         with state.lock:
-            return (epoch==(state.map_version,state.map_frame,state.body_radius_m,state.body_bounds_m,state.wall_margin_m,state.scan_mono)
+            return (epoch==(state.map_frame,state.body_radius_m,state.body_bounds_m,state.wall_margin_m)
                     and -0.10 <= time.monotonic()-state.scan_mono <= max_age
                     and 0 <= time.monotonic()-state.map_mono <= max_map_age)
 
@@ -2108,6 +2140,32 @@ class AGVROSNode(Node):
             if not blockers:
                 self.send_cmd('V 0.000 0.000', autonomous=True)
             return not blockers,('STARTED' if not blockers else 'EXPLICIT_ARM_FRESH_MAP_TF_AND_BODY_RADIUS_REQUIRED'),blockers,snapshot
+    def _cam_wait_step(self, wait):
+        """Dung han cho vat can nho duoc lay di; nhiem vu van giu nguyen."""
+        now = time.monotonic()
+        if getattr(self, '_cam_wait_since', None) is None:
+            self._cam_wait_since = now - float(wait.get('wait_s') or 0.0)
+            self._cam_wait_log = 0.0
+        d = wait.get('d')
+        waited = now - self._cam_wait_since
+        if wait.get('stale'):
+            phase = 'CHỜ VẬT CẢN: mất dữ liệu camera — giữ xe dừng an toàn'
+        else:
+            phase = ('CHỜ VẬT CẢN NHỎ %.2f m — lấy vật ra để tiếp tục (%.0fs)'
+                     % (d if d is not None else -1.0, waited))
+        with state.lock:
+            state.explore_phase = phase
+        # V 0 0 giu session + watchdog, khong dung STOP (tranh disarm/mat nhiem vu)
+        self.send_cmd('V 0.000 0.000', autonomous=True)
+        if now - getattr(self, '_cam_wait_log', 0.0) >= 5.0:
+            self._cam_wait_log = now
+            try:
+                self.get_logger().warn(phase)
+                self.control._event('cam_wait', d=d, elapsed_s=round(waited, 1),
+                                    stale=bool(wait.get('stale')))
+            except Exception:
+                pass
+
     def _hold(self, phase):
         with state.lock: state.explore_phase = phase
         # V0 keeps a valid explicit session without asserting physical STOP.
@@ -2295,6 +2353,9 @@ class AGVROSNode(Node):
                         self._dyn_version += 1
                 return
             hit = cm.contact(now)
+            if hit is not None and cm.classify()[0] == 'small':
+                # Vat NHO: chi dung cho, khong dan vao map (se duoc lay di).
+                hit = None
             if hit is not None:
                 pose = self._pose_map()
                 if pose is not None:
@@ -2496,13 +2557,19 @@ class AGVROSNode(Node):
 
         # camera: vat thap duoi mat phang quet
         cam_block = False
+        cam_wait = False
         cm = getattr(self, 'cam_avoid', None)
         if cm is not None and cm.enabled:
             try:
-                allow, _, _ = cm.gate(0.12)
+                allow, reason, _info = cm.gate(0.12)
                 cam_block = not allow
+                cam_wait = (reason == 'CAM_WAIT')
             except Exception:
                 cam_block = False
+        if cam_wait:
+            self.send_cmd('V 0.000 0.000', autonomous=True)
+            self._hold('CHỜ VẬT CẢN NHỎ — lấy vật ra để tiếp tục')
+            return False
 
         target_yaw = math.atan2(dy, dx)
         err = (target_yaw - pose[2] + math.pi) % (2 * math.pi) - math.pi
@@ -2912,6 +2979,16 @@ class AGVROSNode(Node):
         self._ai1_w = None
         if not auto:
             return
+        # Vat can NHO truoc mat: dung han, giu nguyen nhiem vu, cho lay di.
+        try:
+            cm0 = getattr(self, 'cam_avoid', None)
+            wait = cm0.wait_state() if (cm0 is not None and cm0.enabled) else None
+        except Exception:
+            wait = None
+        if wait:
+            self._cam_wait_step(wait)
+            return
+        self._cam_wait_since = None
         is_op = getattr(self, 'control', None) is not None and not getattr(self.control, 'strict_preflight', True)
         pose = self._pose_map()
         if pose is None:
@@ -3906,6 +3983,8 @@ class WebHandler(BaseHTTPRequestHandler):
                     cm.half_w = max(0.02, min(1.00, float(params['half_w'][0])))
                 if 'timeout_s' in params:
                     cm.timeout_s = max(0.2, min(10.0, float(params['timeout_s'][0])))
+                if 'small_max_m' in params:
+                    cm.small_max_m = max(0.02, min(0.60, float(params['small_max_m'][0])))
             except (ValueError, TypeError):
                 self._json(400, {'status': 'FAILED', 'reason': 'INVALID_VALUE'})
                 return
@@ -3936,10 +4015,11 @@ class WebHandler(BaseHTTPRequestHandler):
                 v = float(params.get('v', ['0.12'])[0])
                 d = float(params['d'][0]) if 'd' in params else None
                 x = float(params.get('x', ['0.0'])[0])
+                sup = int(float(params['support'][0])) if 'support' in params else None
             except (ValueError, TypeError):
                 self._json(400, {'status': 'FAILED', 'reason': 'INVALID_VALUE'})
                 return
-            allow, reason, info = ros_node.cam_avoid.simulate(v, d, x)
+            allow, reason, info = ros_node.cam_avoid.simulate(v, d, x, sup)
             payload = {'ok': True, 'allow': allow, 'reason': reason}
             payload.update(info)
             self._json(200, payload)

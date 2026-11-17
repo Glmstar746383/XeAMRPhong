@@ -3,5 +3,7 @@
   "stop_m": 0.3,
   "clear_m": 0.45,
   "half_w": 0.25,
-  "timeout_s": 2.0
+  "timeout_s": 2.0,
+  "small_max_m": 0.15,
+  "bg_frac_max": 0.2
 }

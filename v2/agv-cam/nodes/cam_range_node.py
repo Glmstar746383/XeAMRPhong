@@ -4,7 +4,10 @@
 
 Phat:
   /cam_range     sensor_msgs/Float32         khoang cach (m); 9.9 = duong trong
-  /cam_obstacle  geometry_msgs/PointStamped  x = lech ngang (m), y = khoang cach (m)
+  /cam_obstacle  geometry_msgs/PointStamped  x = lech ngang (m), y = khoang cach (m),
+                                             z = do rong cum (pixel)
+  /cam_bg_diff   sensor_msgs/Float32         do lech trung binh so voi nen (0..255)
+  /cam_bg_frac   sensor_msgs/Float32         ti le cot ROI khac nen (0..1)
 
 Chay:
   python3 cam_range_node.py \
@@ -13,12 +16,11 @@ Chay:
       --cam-height 0.12 \
       --source http://127.0.0.1:8081/snapshot.jpg
 
-Nguyen ly:
-  - Anh nen = anh san trong luc hieu chuan (khong co vat can)
-  - Vung tim = dai giua anh, tu duoi duong chan troi v0 tro xuong
-  - Diem tiep xuc = hang pixel thap nhat co chenh lech so voi nen
-  - d = A / (v - v0)        (tu camera_calib.json)
-  - X = (u - cx) * d / fx   voi fx = A / cam_height
+V2.1: phat hien theo CUM 2D (connected components) thay vi tung cot:
+  - loai cum cham mep ROI
+  - yeu cau kich thuoc toi thieu (min-w/min-h/min-area) -> khong bat vach gach
+  - kiem tra mau (V/S) de loai phan chieu tren san bong
+  - giu diem tiep xuc = day cum; lech ngang = tam cum
 """
 import argparse
 import json
@@ -99,11 +101,19 @@ class FrameGrabber:
             return None
 
 
-def detect_contact(gray, bg_gray, roi_x0, roi_x1, v_min, v_max, thr, min_col):
-    """Tra ve (u, v) cua diem tiep xuc gan nhat, hoac None.
+def detect_obstacle(gray, bg_gray, frame_bgr, bg_bgr,
+                    roi_x0, roi_x1, v_min, v_max, thr,
+                    min_w=10, min_h=8, min_area=120,
+                    edge_px=3, color_dv=25.0, color_ds=20.0,
+                    strong_diff=55.0, model=None, half_w=0.0,
+                    min_obj_m=0.012):
+    """Tim cum vat can 2D gan nhat trong ROI.
 
-    Do theo tung cot: cot nao co du min_col pixel chenh lech thi lay hang thap
-    nhat cua cot do. Phu hop voi vat thon / o xa (hang tiep xuc chi vai pixel).
+    ROI hinh thang (V2.2): moi hang chi lay u trong hanh lang than xe
+    |X| <= half_w => o 0,3 m phu rong ~ +-0,25 m thay vi +-0,06 m nhu ROI chu nhat.
+    Neu model=None hoac half_w=0 thi giu ROI chu nhat roi_x0..roi_x1.
+
+    Tra (u, v, width_px, area) hoac None.
     """
     h, w = gray.shape[:2]
     x0, x1 = int(roi_x0 * w), int(roi_x1 * w)
@@ -112,40 +122,95 @@ def detect_contact(gray, bg_gray, roi_x0, roi_x1, v_min, v_max, thr, min_col):
         return None
 
     diff = cv2.GaussianBlur(cv2.absdiff(gray, bg_gray), (5, 5), 0)
-    mask = diff > thr
-    mask[:v_lo, :] = False
-    mask[v_hi:, :] = False
-    mask[:, :x0] = False
-    mask[:, x1:] = False
+    mask = (diff > thr).astype(np.uint8) * 255
+    mask[:v_lo, :] = 0
+    mask[v_hi:, :] = 0
 
-    sub = mask[v_lo:v_hi, x0:x1]
-    counts = sub.sum(axis=0)
-    rows = np.arange(v_lo, v_hi, dtype=np.int32)[:, None]
-    lowest = np.where(sub, rows, -1).max(axis=0)
+    trapezoid = bool(model is not None and half_w and half_w > 0.01 and
+                     getattr(model, "fx", 0.0) > 1.0)
+    if trapezoid:
+        rows = np.arange(h, dtype=np.float32)
+        den = rows - float(model.v0)
+        with np.errstate(divide="ignore", invalid="ignore"):
+            d_rows = np.where(den > 0.5, float(model.A) / np.maximum(den, 1e-3), np.inf)
+            half_px = np.where(np.isfinite(d_rows),
+                               float(half_w) * float(model.fx) / np.maximum(d_rows, 1e-3),
+                               0.0)
+        u_lo = np.clip(float(model.cx) - half_px, 0, w)
+        u_hi = np.clip(float(model.cx) + half_px, 0, w)
+        cols = np.arange(w, dtype=np.float32)[None, :]
+        allow = (cols >= u_lo[:, None]) & (cols <= u_hi[:, None])
+        mask[~allow] = 0
+    else:
+        mask[:, :x0] = 0
+        mask[:, x1:] = 0
 
-    good = (counts >= min_col) & (lowest > 0)
-    if int(good.sum()) < 3:
+    # open: diet vach gach / nhieu 1-2 pixel; close: lien ket vat bi dut
+    m = cv2.morphologyEx(mask, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+    m = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8))
+
+    n, labels, stats, _ = cv2.connectedComponentsWithStats(m, 8)
+    if n <= 1:
         return None
 
-    ys = lowest[good]
-    xs = np.arange(x0, x1)[good]
+    hsv = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2HSV).astype(np.int16)
+    hsv_bg = cv2.cvtColor(bg_bgr, cv2.COLOR_BGR2HSV).astype(np.int16)
 
-    # Uu tien vat GAN nhat: v cang lon = cang gan. Tim cum cot co cung
-    # do cao tiep xuc, bat dau tu cum gan nhat, bo qua cum qua nho (nhieu).
-    order = np.argsort(ys)[::-1]
-    for idx in order:
-        v_try = float(ys[idx])
-        sel = np.abs(ys - v_try) <= 8.0
-        if int(sel.sum()) >= 8:
-            v = float(np.median(ys[sel]))
-            u = float(xs[sel].mean())
-            return u, v, int(sel.sum())
+    best = None
+    for i in range(1, n):
+        bx, by, bw, bh, area = stats[i]
+        if area < min_area or bw < min_w or bh < min_h:
+            continue
+        if bx <= edge_px or bx + bw >= w - edge_px:
+            continue          # cum cham mep ANH: khong du thong tin
+        v = by + bh - 1
+        if v < v_lo or v >= v_hi:
+            continue
+        if v >= v_hi - 3:
+            continue          # cham day dai = vat sat hon min_range/bong than xe
 
-    # Du phong: khong co cum nao du lon -> giu cach cu (xa nhat)
-    v = float(np.percentile(ys, 20))
-    sel = np.abs(ys - v) <= 6
-    u = float(xs[sel].mean()) if sel.any() else float(xs.mean())
-    return u, v, int(sel.sum())
+        if model is not None:
+            d_here = model.distance(v)
+            if d_here is None:
+                continue
+            if d_here < model.lo * 0.6 or d_here > model.hi * 1.4:
+                continue
+            if model.fx > 1.0:
+                width_m = float(bw) * d_here / float(model.fx)
+                if width_m < float(min_obj_m):
+                    continue  # qua hep: van san / duong chi tiet, khong phai vat
+            if trapezoid:
+                x_center = model.lateral(bx + bw / 2.0, d_here)
+                if abs(x_center) > float(half_w) + 0.02:
+                    continue  # tam vat ngoai hanh lang than xe
+
+        comp = labels == i
+        dv = float(np.mean(np.abs(hsv[:, :, 2][comp] - hsv_bg[:, :, 2][comp])))
+        ds = float(np.mean(np.abs(hsv[:, :, 1][comp] - hsv_bg[:, :, 1][comp])))
+        dg = float(np.mean(diff[comp]))
+        # Phan chieu tren san bong giu nguyen mau va do sang thap -> loai.
+        # Vat that co chenh sang manh (bong/khung) thi giu du mau giong.
+        if dv < color_dv and ds < color_ds and dg < strong_diff:
+            continue
+
+        if best is None or v > best[1]:
+            best = (bx + bw / 2.0, v, bw, area)
+
+    return best
+
+
+def detect_contact(gray, bg_gray, roi_x0, roi_x1, v_min, v_max, thr, min_col):
+    """Tuong thich nguoc: chi dung gray (khong kiem tra mau)."""
+    bgr = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
+    bg_bgr = cv2.cvtColor(bg_gray, cv2.COLOR_GRAY2BGR)
+    hit = detect_obstacle(gray, bg_gray, bgr, bg_bgr, roi_x0, roi_x1,
+                          v_min, v_max, thr, min_w=max(6, int(min_col)),
+                          min_h=max(4, int(min_col)), min_area=40,
+                          edge_px=2, color_dv=1e9, color_ds=1e9)
+    if hit is None:
+        return None
+    u, v, width, _ = hit
+    return u, v, int(width)
 
 
 def main():
@@ -159,7 +224,23 @@ def main():
     ap.add_argument("--roi", default="0.35,0.65", help="dai ngang tim vat (ti le anh)")
     ap.add_argument("--thr", type=int, default=28, help="nguong chenh lech 0-255")
     ap.add_argument("--min-col", type=int, default=6,
-                    help="so pixel doc toi thieu trong 1 cot")
+                    help="(tuong thich) so pixel doc toi thieu")
+    ap.add_argument("--min-w", type=int, default=10, help="do rong cum toi thieu (pixel)")
+    ap.add_argument("--min-h", type=int, default=10, help="chieu cao cum toi thieu (pixel)")
+    ap.add_argument("--min-area", type=int, default=200, help="dien tich cum toi thieu")
+    ap.add_argument("--edge-px", type=int, default=3, help="bo qua cum cham mep anh")
+    ap.add_argument("--half-w", type=float, default=0.25,
+                    help="nua hanh lang than xe (m) cho ROI hinh thang; 0 = ROI chu nhat")
+    ap.add_argument("--min-obj-m", type=float, default=0.020,
+                    help="be rong toi thieu cua vat that (m); nho hon = nhieu san")
+    ap.add_argument("--min-range", type=float, default=0.25,
+                    help="bo qua vung sat hon min_range (m): chan xe, bong/van san")
+    ap.add_argument("--max-range", type=float, default=0.80,
+                    help="chi tim vat trong khoang min_range..max_range (m)")
+    ap.add_argument("--color-dv", type=float, default=25.0,
+                    help="nguong chenh do sang V de coi la vat that")
+    ap.add_argument("--color-ds", type=float, default=20.0,
+                    help="nguong chenh bao hoa S de coi la vat that")
     ap.add_argument("--debug", default="", help="ghi anh chan doan ra file nay (JPG)")
     args = ap.parse_args()
 
@@ -173,12 +254,13 @@ def main():
           % (model.A, model.v0, model.rms, model.cx, model.fx, model.lo, model.hi))
 
     bg_raw = cv2.imread(args.bg, cv2.IMREAD_GRAYSCALE)
-    if bg_raw is None:
+    bg_raw_bgr = cv2.imread(args.bg, cv2.IMREAD_COLOR)
+    if bg_raw is None or bg_raw_bgr is None:
         sys.exit("Khong doc duoc anh nen: %s" % args.bg)
 
     grabber = FrameGrabber(args.source)
     rx0, rx1 = [float(v) for v in args.roi.split(",")]
-    state = {"bg": None, "last": None}
+    state = {"bg": None, "bg_bgr": None, "last": None}
 
     def step():
         frame = grabber.read()
@@ -188,10 +270,13 @@ def main():
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(gray, (5, 5), 0)
         bg = state["bg"]
+        bg_bgr = state["bg_bgr"]
         if bg is None or bg.shape != gray.shape:
             bg = cv2.resize(bg_raw, (gray.shape[1], gray.shape[0]))
             bg = cv2.GaussianBlur(bg, (5, 5), 0)
+            bg_bgr = cv2.resize(bg_raw_bgr, (gray.shape[1], gray.shape[0]))
             state["bg"] = bg
+            state["bg_bgr"] = bg_bgr
 
         # can bang sang toan cuc: bu thay doi anh sang ngay/dem, auto-exposure
         try:
@@ -204,14 +289,21 @@ def main():
         except Exception:
             pass
 
-        hit = detect_contact(gray, bg, rx0, rx1, model.v0 + 3,
-                             gray.shape[0] - 2, args.thr, args.min_col)
+        v_bottom = int(model.v0 + model.A / max(0.05, args.min_range))
+        v_bottom = max(int(model.v0) + 10, min(gray.shape[0] - 2, v_bottom))
+        v_top = int(model.v0 + model.A / max(args.min_range + 0.05, args.max_range))
+        v_top = max(int(model.v0) + 3, min(v_bottom - 10, v_top))
+        hit = detect_obstacle(gray, bg, frame, bg_bgr, rx0, rx1, v_top,
+                              v_bottom, args.thr, args.min_w, args.min_h,
+                              args.min_area, args.edge_px, args.color_dv,
+                              args.color_ds, model=model, half_w=args.half_w,
+                              min_obj_m=args.min_obj_m)
         if hit is None:
             state["last"] = None
             state["support"] = 0
             return CLEAR_VALUE, 0.0, None, None, gray
 
-        u, v, support = hit
+        u, v, support, _area = hit
         state["support"] = support
         d = model.distance(v)
         if d is None or d < model.lo * 0.6 or d > model.hi * 1.4:
@@ -228,6 +320,7 @@ def main():
         pub_r = node.create_publisher(Float32, "/cam_range", 10)
         pub_p = node.create_publisher(PointStamped, "/cam_obstacle", 10)
         pub_bg = node.create_publisher(Float32, "/cam_bg_diff", 10)
+        pub_frac = node.create_publisher(Float32, "/cam_bg_frac", 10)
         pub_sup = node.create_publisher(Float32, "/cam_support", 10)
 
         def on_capture(_msg):
@@ -240,6 +333,7 @@ def main():
                 g = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 g = cv2.GaussianBlur(g, (5, 5), 0)
                 state["bg"] = g
+                state["bg_bgr"] = cv2.resize(frame, (g.shape[1], g.shape[0]))
                 try:
                     cv2.imwrite(args.bg, frame)
                 except Exception:
@@ -283,11 +377,23 @@ def main():
                     state["n_frame"] = n_frame
                     if n_frame % 10 == 1:
                         h, w = gray.shape[:2]
-                        d_roi = cv2.absdiff(gray, state["bg"])[int(model.v0) + 3:,
-                                                                  int(0.35 * w):int(0.65 * w)]
+                        bg = state["bg"]
+                        x0, x1 = int(0.35 * w), int(0.65 * w)
+                        # Chi do trong dai an toan 0.20-0.60 m: dong do phia xa
+                        # (nguoi di lai, do dac) khong lam sai chi so nen.
+                        v_top = int(round(model.v0 + model.A / 0.60))
+                        v_bot = int(round(model.v0 + model.A / 0.20))
+                        v_top = max(int(model.v0) + 3, min(h - 3, v_top))
+                        v_bot = max(v_top + 2, min(h - 2, v_bot))
+                        d_roi = cv2.absdiff(gray, bg)[v_top:v_bot, x0:x1]
                         m = Float32()
                         m.data = float(d_roi.mean())
                         pub_bg.publish(m)
+                        # ti le PIXEL khac nen trong dai an toan (0..1)
+                        frac = float((d_roi > args.thr).mean())
+                        f = Float32()
+                        f.data = frac
+                        pub_frac.publish(f)
                 except Exception:
                     pass
             if args.debug and gray is not None:

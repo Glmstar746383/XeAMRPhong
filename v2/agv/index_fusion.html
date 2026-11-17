@@ -37,8 +37,10 @@
   canvas{display:block;width:100%;height:auto;background:#050a11;border-radius:6px;cursor:crosshair}
   .camWrap{position:relative;background:#000;border-radius:6px;overflow:hidden}
   #cam{width:100%;display:block;aspect-ratio:4/3;object-fit:contain;background:#000}
+  .camTrap{position:absolute;inset:0;width:100%;height:100%;background:transparent;
+           border-radius:0;cursor:default;pointer-events:none;z-index:1}
   .camOverlay{position:absolute;left:8px;top:8px;padding:4px 8px;border-radius:6px;
-              background:rgba(5,10,17,.75);border:1px solid var(--line);font-size:12px}
+              background:rgba(5,10,17,.75);border:1px solid var(--line);font-size:12px;z-index:2}
   .camOverlay b{font-size:16px}
   .readout{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
   @media(max-width:520px){.readout{grid-template-columns:repeat(2,1fr)}}
@@ -124,6 +126,7 @@
     <div class="body">
       <div class="camWrap">
         <img id="cam" alt="camera stream">
+        <canvas id="camTrap" class="camTrap"></canvas>
         <div class="camOverlay" id="camOverlay">--</div>
       </div>
       <div class="readout">
@@ -209,12 +212,14 @@
       <div class="row"><span>Nhả trên (m)</span><input type="range" id="sClear" min="0.15" max="1.20" step="0.01"><span id="vClear">0.45</span></div>
       <div class="row"><span>Nửa bề ngang (m)</span><input type="range" id="sHalf" min="0.05" max="0.60" step="0.01"><span id="vHalf">0.25</span></div>
       <div class="row"><span>Timeout (s)</span><input type="range" id="sTo" min="0.3" max="5" step="0.1"><span id="vTo">2.0</span></div>
+      <div class="row"><span>Vật nhỏ &lt; (m)</span><input type="range" id="sSmall" min="0.03" max="0.50" step="0.01"><span id="vSmall">0.15</span></div>
       <div class="btns two" style="margin-top:6px">
         <button id="bApplyCam" class="primary">Áp dụng</button>
         <button id="bReloadCam">Tải lại</button>
       </div>
       <button id="bCaptureBg" style="width:100%;margin-top:6px">CHỤP LẠI NỀN SÀN</button>
-      <div class="hint" style="margin-top:3px">Đặt xe đứng yên, trước mặt trống ≥ 1 m, rồi bấm. Dùng khi đổi chỗ chạy.</div>
+      <div class="hint" style="margin-top:3px">Đặt xe đứng yên, trước mặt trống ≥ 1 m, rồi bấm. Dùng khi đổi chỗ chạy.
+        <br>Vật nhỏ (dưới ngưỡng) → xe dừng chờ lấy ra; vật to → tự chuyển hướng né.</div>
       <div class="row" style="margin-top:10px"><span>Test logic (m)</span>
         <input type="number" id="testD" value="0.2" step="0.05" min="0.05" max="2">
         <button id="bTest" style="padding:5px 9px">Thử</button></div>
@@ -479,16 +484,20 @@ async function tick(){
   const cam = t.camera || {};
   const fresh = cam.age_s !== null && cam.age_s !== undefined && cam.age_s <= (cam.timeout_s || 2);
   const camHit = !!(cam.blocked || cam.obstacle);
+  const camWait = !!cam.waiting;
   const bgStale = (cam.bg_diff !== null && cam.bg_diff !== undefined &&
                    cam.bg_diff > (cam.bg_max_diff || 20));
-  cls($('cCam'), cam.enabled ? (bgStale ? 'warn' : (fresh ? 'on' : 'warn')) : null);
-  $('cCam').textContent = cam.enabled ? (bgStale ? 'CAMERA LỆCH NỀN' : (fresh ? 'CAMERA OK' : 'CAMERA TRỄ')) : 'CAMERA TẮT';
+  cls($('cCam'), cam.enabled ? ((camWait || bgStale) ? 'warn' : (fresh ? 'on' : 'warn')) : null);
+  $('cCam').textContent = cam.enabled ? (camWait ? 'CHỜ VẬT CẢN'
+      : (bgStale ? 'CAMERA LỆCH NỀN' : (fresh ? 'CAMERA OK' : 'CAMERA TRỄ'))) : 'CAMERA TẮT';
   if(bgStale){
     cls($('cAvoid'), 'warn');
     $('cAvoid').textContent = 'BỎ QUA CAM';
   } else {
-    cls($('cAvoid'), cam.enabled ? (camHit ? 'bad' : 'on') : null);
-    $('cAvoid').textContent = cam.enabled ? (camHit ? 'CÓ VẬT CẢN' : 'SẴN SÀNG') : 'TẮT';
+    cls($('cAvoid'), cam.enabled ? (camWait ? 'warn' : (camHit ? 'bad' : 'on')) : null);
+    $('cAvoid').textContent = cam.enabled
+        ? (camWait ? 'ĐANG CHỜ' : (camHit ? ((cam.class === 'small') ? 'VẬT NHỎ' : 'VẬT TO') : 'SẴN SÀNG'))
+        : 'TẮT';
   }
 
   lastPose = (mi.robot_pose && mi.robot_pose.length === 3) ? mi.robot_pose : null;
@@ -514,7 +523,9 @@ async function tick(){
   $('camAge').textContent = fmt(cam.age_s, 2) + ' s';
   cls($('camAge'), fresh ? 'ok' : 'warn');
   $('camOverlay').innerHTML = clear ? 'CAM: <b>trống</b>'
-      : ('CAM: <b>' + fmt(cam.d,2) + ' m</b>' + (blockedNow ? ' · CHẶN' : ''));
+      : ('CAM: <b>' + fmt(cam.d,2) + ' m</b>' +
+         (camWait ? ' · CHỜ LẤY VẬT' : (blockedNow ? ' · CHẶN' : '')));
+  drawCamTrap(cam);
 
   const bgd = cam.bg_diff;
   if(bgd !== null && bgd !== undefined && bgd > 20){
@@ -566,6 +577,99 @@ async function tick(){
   drawRadar(t);
 }
 
+/* ---------- hinh thang hanh lang tren anh camera ---------- */
+const CAM_CAL = {A:54.8849, v0:177.811, cx:320.17, fx:457.4, W:640, H:480};
+
+function camU(x, d){ return CAM_CAL.cx + x * CAM_CAL.fx / d; }
+function camV(d){ return CAM_CAL.v0 + CAM_CAL.A / d; }
+
+function drawCamTrap(cam){
+  const cv = $('camTrap');
+  if(!cv) return;
+  const wrap = cv.parentElement;
+  const W = wrap.clientWidth || 0;
+  if(W < 60) return;
+  const H = Math.round(W * 3 / 4);
+  if(cv.width !== W || cv.height !== H){ cv.width = W; cv.height = H; }
+  const ctx = cv.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+  const sx = W / CAM_CAL.W, sy = H / CAM_CAL.H;
+  const X = u => u * sx, Y = v => v * sy;
+  const hw = Math.max(0.05, Math.min(0.60, Number(cam.half_w || 0.25)));
+  const bands = [
+    {a:0.25, b:0.30, fill:'rgba(255,59,59,.22)',   line:'#ff3b3b', label:'0.30'},
+    {a:0.30, b:0.45, fill:'rgba(255,152,0,.16)',   line:'#ff9800', label:'0.45'},
+    {a:0.45, b:0.60, fill:'rgba(255,235,59,.14)',  line:'#ffeb3b', label:'0.60'},
+    {a:0.60, b:0.80, fill:'rgba(74,222,128,.14)',  line:'#4ade80', label:'0.80'}
+  ];
+  function quad(d1, d2){
+    const p = [[camU(-hw,d1),camV(d1)], [camU(-hw,d2),camV(d2)],
+               [camU(hw,d2),camV(d2)],  [camU(hw,d1),camV(d1)]];
+    ctx.beginPath();
+    ctx.moveTo(X(p[0][0]), Y(p[0][1]));
+    for(let i=1;i<p.length;i++) ctx.lineTo(X(p[i][0]), Y(p[i][1]));
+    ctx.closePath();
+  }
+  // to mau tung dai khoang cach
+  bands.forEach(function(b){
+    quad(b.a, b.b); ctx.fillStyle = b.fill; ctx.fill();
+  });
+  // vien hinh thang
+  quad(0.25, 0.80);
+  ctx.strokeStyle = 'rgba(255,235,59,.95)';
+  ctx.lineWidth = 2; ctx.stroke();
+  // vach ngang moi 5 cm (soi)
+  ctx.strokeStyle = 'rgba(255,255,255,.16)'; ctx.lineWidth = 1;
+  for(let d = 0.30; d < 0.799; d += 0.05){
+    const v = camV(d);
+    ctx.beginPath();
+    ctx.moveTo(X(camU(-hw*0.55, d)), Y(v));
+    ctx.lineTo(X(camU(hw*0.55, d)), Y(v));
+    ctx.stroke();
+  }
+  // vach + nhan khoang cach
+  ctx.font = '11px system-ui,sans-serif';
+  ctx.textBaseline = 'middle';
+  bands.forEach(function(b){
+    const v = camV(b.b);
+    ctx.beginPath();
+    ctx.moveTo(X(camU(-hw, b.b)), Y(v));
+    ctx.lineTo(X(camU(hw, b.b)), Y(v));
+    ctx.strokeStyle = b.line; ctx.lineWidth = 2; ctx.stroke();
+    const tw = ctx.measureText(b.label + 'm').width;
+    const lx = Math.min(X(camU(hw, b.b)) + 6, W - tw - 8);
+    const ly = Math.max(Y(v), 9);
+    ctx.fillStyle = 'rgba(5,10,17,.62)';
+    ctx.fillRect(lx - 3, ly - 8, tw + 6, 16);
+    ctx.fillStyle = b.line;
+    ctx.fillText(b.label + 'm', lx, ly + 1);
+  });
+  // vat dang thay (diem tiep xuc)
+  const dd = Number(cam.d), xx = Number(cam.x);
+  if(isFinite(dd) && dd > 0.05 && dd < 5 && isFinite(xx)){
+    const u = camU(Math.max(-0.8, Math.min(0.8, xx)), dd);
+    const v = camV(dd);
+    const col = dd <= (cam.stop_m || 0.30) ? '#ff3b3b'
+              : dd <= (cam.clear_m || 0.45) ? '#ff9800' : '#4ade80';
+    ctx.strokeStyle = col; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(X(u), Y(v), 10, 0, Math.PI*2); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(X(u)-15, Y(v)); ctx.lineTo(X(u)+15, Y(v));
+    ctx.moveTo(X(u), Y(v)-15); ctx.lineTo(X(u), Y(v)+15);
+    ctx.stroke();
+    const tag = fmt(dd, 2) + ' m' + (cam.class === 'small' ? ' · NHỎ'
+                 : (cam.class === 'large' ? ' · TO' : ''));
+    ctx.font = 'bold 12px system-ui,sans-serif';
+    const tw = ctx.measureText(tag).width;
+    const tx = Math.min(Math.max(X(u) - tw/2, 4), Math.max(4, W - tw - 8));
+    const ty = Math.max(Y(v) - 28, 12);
+    ctx.fillStyle = 'rgba(5,10,17,.78)';
+    ctx.fillRect(tx - 4, ty - 9, tw + 8, 18);
+    ctx.fillStyle = col;
+    ctx.fillText(tag, tx, ty + 1);
+  }
+}
+
 async function loadCam(){
   const j = await api('/api/cam');
   if(j.status !== 'ok') return;
@@ -574,6 +678,7 @@ async function loadCam(){
   $('sClear').value = j.clear_m; $('vClear').textContent = Number(j.clear_m).toFixed(2);
   $('sHalf').value = j.half_w;   $('vHalf').textContent = Number(j.half_w).toFixed(2);
   $('sTo').value = j.timeout_s;  $('vTo').textContent = Number(j.timeout_s).toFixed(1);
+  $('sSmall').value = j.small_max_m; $('vSmall').textContent = Number(j.small_max_m).toFixed(2);
 }
 
 $('bArm').onclick = function(){ send('ARM', 'ARM'); };
@@ -639,7 +744,7 @@ document.querySelectorAll('.pad button').forEach(function(btn){
   btn.addEventListener('pointercancel', stop);
 });
 
-['sStop','sClear','sHalf','sTo'].forEach(function(id){
+['sStop','sClear','sHalf','sTo','sSmall'].forEach(function(id){
   $(id).addEventListener('input', function(){
     $('v'+id.slice(1)).textContent = Number($(id).value).toFixed(id==='sTo'?1:2);
   });
@@ -648,7 +753,8 @@ document.querySelectorAll('.pad button').forEach(function(btn){
 $('bApplyCam').onclick = async function(){
   const q = new URLSearchParams({ enabled: $('camEnabled').checked ? 1 : 0,
     stop_m: $('sStop').value, clear_m: $('sClear').value,
-    half_w: $('sHalf').value, timeout_s: $('sTo').value });
+    half_w: $('sHalf').value, timeout_s: $('sTo').value,
+    small_max_m: $('sSmall').value });
   const j = await api('/api/cam_config?' + q.toString());
   logLine('Cấu hình camera → ' + (j.status||j.error||'?'));
 };

@@ -175,25 +175,35 @@ X = (u - cx) · d / fx     lệch ngang
 
 Hai lớp bù:
 1. Cân bằng sáng toàn cục (0,75–1,35) trước khi so sánh.
-2. `bg_diff` > 20 → bỏ qua camera, **trừ khi** vật rộng ≥ 12 cột và ≤ 0,35 m (vẫn chặn).
+2. Tỉ lệ pixel khác nền trong dải an toàn 0,20–0,60 m > 20 % → bỏ qua camera
+   (fail-open), trừ khi đang chờ vật nhỏ. (Trước V2.1 dùng mean diff > 20 nên
+   nền lệch 19,8 vẫn bị coi là "OK".)
 
 ---
 
 ## 8. Quy tắc tránh vật cản (kết hợp LiDAR + camera)
 
+> **Cập nhật V2.1 (17/11/2026):** camera không còn "vừa thấy là né". Vật **nhỏ** thì
+> **dừng chờ lấy đi rồi tự tiếp tục**; vật **to** mới chuyển hướng né (giống logic LiDAR cũ).
+> Chi tiết: `docs/CAMERA-CHO-NE.md`.
+
 | Quy tắc | Giá trị |
 |---|---|
-| Camera chỉ chặn **chiều tiến**; quay tại chỗ vẫn cho phép | — |
+| Phân loại vật | rộng **< 0,15 m = NHỎ**, ≥ 0,15 m = TO (rộng = số pixel × d / fx) |
+| Vật NHỎ | **dừng hẳn** `V 0 0`, giữ nguyên nhiệm vụ, chờ lấy đi; tự chạy tiếp khi d > 0,45 m |
+| Vật TO | chặn chiều tiến + quay tại chỗ né, ghi chấm vật cản động; 5 lần → đổi mục tiêu |
+| Camera chỉ chặn **chiều tiến**; quay/lùi vẫn cho phép | — |
 | Ngưỡng chặn | d < 0,30 m |
 | Ngưỡng nhả (hysteresis) | d > 0,45 m |
 | Hành lang thân xe | \|X\| ≤ 0,25 m |
-| Mất dữ liệu camera | > 2,0 s → bỏ qua (fail-open) |
-| Nền lệch | bg_diff > 20 → bỏ qua, trừ vật to + rất gần |
-| Vật cản động ghi vào map | chấm bán kính 0,08 m, TTL 60 s, chỉ khi d ≤ 0,45 m và cách xe ≥ 0,25 m |
+| Mất dữ liệu camera | > 2,0 s → bỏ qua (fail-open); **trừ khi đang CHỜ vật nhỏ → vẫn dừng** |
+| Nền lệch | > 20 % pixel khác nền trong dải 0,20–0,60 m → bỏ qua (fail-open) |
+| Phát hiện vật | cụm 2D: rộng ≥ 20 mm, cao ≥ 10 px, diện tích ≥ 200 px, không chạm mép ảnh, phải khác màu (ΔV ≥ 25 hoặc ΔS ≥ 20) |
+| Vùng phát hiện | 0,22–0,80 m; ROI **hình thang** theo `half_w` (±0,25 m ở mọi khoảng cách) |
+| Vật cản động ghi vào map | chấm bán kính 0,08 m, TTL 60 s; **bỏ qua vật NHỎ** (sẽ được lấy đi) |
 | Nền lệch → xoá hết dấu động | tránh "xác ma" trên bản đồ |
-| Chọn vật | cụm cột **gần nhất** (≥ 8 cột, ±8 px) |
 | Chụp nền nóng | topic `/cam_capture_bg`, < 1 s, không restart |
-| Tự chụp nền khi ARM | nếu bg_diff > 20 **và** LiDAR trước trống ≥ 0,9 m |
+| Tự chụp nền khi ARM | nếu mean diff > 20 **hoặc** tỉ lệ pixel lệch > 20 % **và** LiDAR trước trống ≥ 0,9 m |
 
 ---
 
@@ -244,6 +254,10 @@ Mở `http://<ip>:8080` (giao diện cũ: `/classic`).
 
 - Radar LiDAR 360°, vòng 1–4 m, nón camera ±25°, dấu × đỏ cho vật cản động, marker B.
 - Camera MJPEG trực tiếp + số đo + trạng thái.
+- **Hình thang hành lang trên ảnh camera** (từ V2.2): vẽ đúng vùng xe quan tâm
+  0,25–0,80 m, chia 4 dải màu — đỏ (≤ 0,30 m, vùng dừng), cam (0,30–0,45 m),
+  vàng (0,45–0,60 m), xanh (0,60–0,80 m) + vạch mỗi 5 cm. Vật đang thấy hiện dấu ✛
+  kèm khoảng cách và nhãn NHỎ/TO.
 - Chip: ARMED / AUTO / MODE / FAULT / LiDAR / CAMERA / AVOID.
 - Tab ① Trực tiếp A→B; Tab ② Quét map trước (XOÁ MAP, % phủ, frontier).
 - Panel **Tốc độ** (4 slider), panel **Ngưỡng camera** (chặn/nhả/hành lang/timeout + CHỤP LẠI NỀN SÀN + test logic).
@@ -278,6 +292,9 @@ Mở `http://<ip>:8080` (giao diện cũ: `/classic`).
 | Bỏ qua vật to sát mũi | Tắt camera tuyệt đối khi nền lệch | Thêm `support ≥ 12` + d ≤ 0,35 m |
 | Dừng nhầm khi chuyển tab | Chrome throttle heartbeat | Thêm SSE |
 | `DISARMED_REJECT_S` | Gửi lệnh chạy khi chưa ARM | Chặn tại Pi → `NOT_ARMED` |
+| Xe cà giật từng nhịp ~10 Hz | `_forward_arc_clear` so epoch có `scan_mono`/`map_version`; sweep mất ~0,1 s nên scan/map đổi giữa chừng → `INPUT_CHANGED_DURING_SWEEP` → gửi `V 0 0` rồi chạy lại | Bỏ `scan_mono`/`map_version` khỏi epoch; vẫn kiểm tra độ tươi scan ≤ 0,65 s và map ≤ 5 s |
+| Camera báo vật 0,28 m khi sàn trống | Thuật toán chọn theo cột: nhận cụm 10 cột (~6 mm) sát mép ROI; nền "OK" theo mean 19,8 | V2.1: cụm 2D + bỏ chạm mép + kiểm tra màu + gate nền theo tỉ lệ pixel |
+| Xe dừng hoài vì "vật nhỏ" | Đúng thiết kế chờ vật cản | Lấy vật ra; hoặc tăng `small_max_m` (mặc định 0,15 m) |
 | Pi tự reboot 4 lần (14/11) | Mất nguồn (throttled=0x0, temp 39°C) | Cần UBEC riêng cho Pi |
 | Push GitHub 403 | Credential `priv1tehub` | Đăng nhập `Glmstar746383` |
 | V2 thiếu model ONNX | `.gitignore` của app chặn `exported/` | `git add -f` |
