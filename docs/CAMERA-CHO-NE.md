@@ -63,7 +63,7 @@ Hoặc trên giao diện Fusion, panel **Ngưỡng camera** có thêm slider
 1. **Cụm 2D (connected components)** thay vì "cột thấp nhất":
    - morphology open 3×3 (diệt vạch gạch 1–2 px) → close 5×5 (nối vật bị đứt)
    - bỏ cụm **chạm mép trái/phải ROI**
-   - yêu cầu **rộng ≥ 10 px, cao ≥ 8 px, diện tích ≥ 120 px**
+   - yêu cầu **rộng ≥ 20 mm, cao ≥ 10 px, diện tích ≥ 200 px**
 2. **Kiểm tra màu**: cụm chỉ được coi là vật thật nếu
    `ΔV ≥ 25` hoặc `ΔS ≥ 20` hoặc chênh sáng rất mạnh (`Δgray ≥ 55`).
    Phản chiếu trên sàn bóng giữ nguyên màu/độ bão hoà → bị loại.
@@ -105,7 +105,7 @@ Test chèn vật 3 cm (ảnh thật, nền vừa chụp lại):
 Tham số CLI mới của node: `--half-w` (0,25), `--min-range` (0,25), `--max-range` (0,80),
 `--min-obj-m` (0,020), `--min-area` (200), `--min-h` (10).
 
-### 3d. Hình thang hiển thị trên ảnh camera
+### 3c. Hình thang hiển thị trên ảnh camera
 
 UI Fusion vẽ **đúng hình thang đang dùng để phát hiện** lên ảnh MJPEG (canvas trong
 suốt phủ lên ảnh), nên nhìn là biết vật nào gần/xa:
@@ -123,7 +123,7 @@ suốt phủ lên ảnh), nên nhìn là biết vật nào gần/xa:
   v0 = 177,811; cx = 320,17; fx = 457,4). Nếu hiệu chuẩn lại, cập nhật `CAM_CAL`
   trong `index_fusion.html`.
 
-### 3c. Chống báo sai ở đáy ảnh (V2.3)
+### 3d. Chống báo sai ở đáy ảnh (V2.3)
 
 Triệu chứng: UI báo `CAM: 0,22 m · CHỜ LẤY VẬT` dù sàn trống. Nguyên nhân: 0,22 m là
 **hàng cuối của dải phát hiện** — cụm bị cắt ngang bởi biên dưới, thực chất là bóng
@@ -185,7 +185,7 @@ Preflight sau khi sửa: **0 FAIL / 2 WARN**.
 
 1. **Luôn chụp lại nền** khi đổi chỗ/đổi ánh sáng: nút *CHỤP LẠI NỀN SÀN* hoặc ARM
    (tự chụp khi LiDAR trước trống). Kiểm tra `bg_ok = true`, `d = 9.9`.
-2. Vật nằm ngoài hành lang ±0,25 m hoặc ngoài dải **0,22–0,80 m** sẽ **không** bị phát hiện.
+2. Vật nằm ngoài hành lang ±0,25 m hoặc ngoài dải **0,25–0,80 m** sẽ **không** bị phát hiện.
 3. Dây/ vật mảnh < ~6 mm ở sát 0,3 m có thể lọt (ngưỡng rộng 10 px). Muốn bắt mảnh hơn:
    `--min-w 8 --min-area 80` (đổi trong service) hoặc thêm cảm biến ToF/depth.
 4. Xe dừng chờ **không có timeout** (đúng yêu cầu). Muốn thoát: lấy vật ra, hoặc bấm STOP/DỪNG KHẨN CẤP.
