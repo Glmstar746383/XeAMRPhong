@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AGV Fusion — LiDAR + Camera</title>
+<style>
+  :root{
+    --bg:#070b12; --panel:#0d1522; --panel2:#111c2c; --line:#1e2f45;
+    --cyan:#22d3ee; --green:#34d399; --amber:#fbbf24; --red:#f87171;
+    --txt:#d6e4f5; --dim:#7d93ad;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:"Segoe UI",Roboto,sans-serif;font-size:13px}
+  header{display:flex;align-items:center;gap:12px;padding:8px 14px;border-bottom:1px solid var(--line);
+         background:var(--panel);position:sticky;top:0;z-index:5}
+  h1{font-size:14px;margin:0;letter-spacing:.4px;color:var(--cyan);white-space:nowrap}
+  .chips{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
+  .chip{padding:2px 9px;border-radius:20px;border:1px solid var(--line);background:var(--panel2);
+        font-size:11px;color:var(--dim);white-space:nowrap}
+  .chip.on{color:#04121a;background:var(--green);border-color:var(--green);font-weight:700}
+  .chip.warn{color:#1a1204;background:var(--amber);border-color:var(--amber);font-weight:700}
+  .chip.bad{color:#1a0404;background:var(--red);border-color:var(--red);font-weight:700}
+  main{display:grid;grid-template-columns:minmax(300px,1fr) minmax(300px,1fr) 330px;
+       gap:10px;padding:10px;align-items:start}
+  @media(max-width:1180px){main{grid-template-columns:minmax(280px,1fr) minmax(280px,1fr)}
+                           #ctrl{grid-column:span 2}}
+  @media(max-width:760px){main{grid-template-columns:1fr}#ctrl{grid-column:span 1}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .card h2{margin:0;padding:6px 10px;font-size:11px;letter-spacing:.7px;color:var(--dim);
+           border-bottom:1px solid var(--line);text-transform:uppercase;display:flex;gap:8px;
+           align-items:center;min-height:30px}
+  .card h2 .right{margin-left:auto;font-weight:400;text-transform:none;letter-spacing:0;
+                  font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .body{padding:8px}
+  .radarWrap{max-width:520px;margin:0 auto}
+  canvas{display:block;width:100%;height:auto;background:#050a11;border-radius:6px;cursor:crosshair}
+  .camWrap{position:relative;background:#000;border-radius:6px;overflow:hidden}
+  #cam{width:100%;display:block;aspect-ratio:4/3;object-fit:contain;background:#000}
+  .camOverlay{position:absolute;left:8px;top:8px;padding:4px 8px;border-radius:6px;
+              background:rgba(5,10,17,.75);border:1px solid var(--line);font-size:12px}
+  .camOverlay b{font-size:16px}
+  .readout{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}
+  @media(max-width:520px){.readout{grid-template-columns:repeat(2,1fr)}}
+  .metric{background:var(--panel2);border:1px solid var(--line);border-radius:7px;padding:5px 7px}
+  .metric .k{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+  .metric .v{font-size:16px;font-weight:700;margin-top:1px}
+  .v.ok{color:var(--green)} .v.warn{color:var(--amber)} .v.bad{color:var(--red)}
+  .btns{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  .btns.two{grid-template-columns:1fr 1fr}
+  button{cursor:pointer;border-radius:7px;border:1px solid var(--line);background:var(--panel2);
+         color:var(--txt);padding:9px 6px;font-size:12px;font-weight:700;transition:.12s}
+  button:hover{border-color:var(--cyan);color:var(--cyan)}
+  button.primary{background:#0e3b45;border-color:var(--cyan);color:var(--cyan)}
+  button.go{background:#0d3a2a;border-color:var(--green);color:var(--green)}
+  button.stop{background:#3a0d14;border-color:var(--red);color:var(--red);font-size:13px}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  .pad{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,42px);gap:5px;margin:8px 0}
+  .pad button{font-size:15px;padding:0}
+  .pad .empty{visibility:hidden}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:6px 0;font-size:12px}
+  .row span:first-child{color:var(--dim);white-space:nowrap}
+  input[type=range]{width:112px;accent-color:var(--cyan)}
+  input[type=number]{width:72px;background:#050a11;border:1px solid var(--line);color:var(--txt);
+                     border-radius:6px;padding:4px}
+  label.sw{display:flex;gap:6px;align-items:center;color:var(--dim);font-size:11px;cursor:pointer;
+           font-weight:400;text-transform:none}
+  .log{height:110px;overflow:auto;background:#050a11;border:1px solid var(--line);border-radius:6px;
+       padding:5px;font-family:Consolas,monospace;font-size:11px;color:var(--dim)}
+  .log div{border-bottom:1px solid #0d1522;padding:2px 0}
+  .hint{color:var(--dim);font-size:11px;margin-top:5px;line-height:1.45}
+  a{color:var(--cyan)}
+  #testOut{font-size:11px;margin-top:5px;color:var(--dim)}
+  .tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:10px 0 8px}
+  .tab{background:#0a121d;border:1px solid var(--line);font-size:11px;padding:8px 4px;color:var(--dim)}
+  .tab.active{background:#0e3b45;border-color:var(--cyan);color:var(--cyan)}
+  .pane.hidden{display:none}
+  .pane h3{margin:4px 0 8px;font-size:12px;color:var(--cyan);font-weight:600}
+  .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;border:1px solid var(--line)}
+  .badge.ok{background:var(--green);color:#04121a;border-color:var(--green);font-weight:700}
+  .badge.no{color:var(--dim)}
+  #banner{position:fixed;top:54px;left:50%;transform:translateX(-50%);z-index:50;
+          padding:10px 18px;border-radius:9px;font-weight:700;font-size:13px;display:none;
+          border:1px solid;max-width:92vw;text-align:center;line-height:1.45}
+  #banner.bad{background:#3a0d14;border-color:var(--red);color:#ffb4b4}
+  #banner.ok{background:#0d3a2a;border-color:var(--green);color:#a7f3d0}
+  @keyframes pulseArm{0%,100%{box-shadow:0 0 0 0 rgba(34,211,238,0)}
+                      50%{box-shadow:0 0 0 6px rgba(34,211,238,.25)}}
+  button.attention{animation:pulseArm 1.6s infinite}
+</style>
+</head>
+<body>
+<div id="banner"></div>
+<header>
+  <h1>AGV FUSION · LiDAR + CAMERA</h1>
+  <div class="chips">
+    <span class="chip" id="cArm">DISARMED</span>
+    <span class="chip" id="cAuto">AUTO</span>
+    <span class="chip" id="cMode">MODE</span>
+    <span class="chip" id="cFault">FAULT</span>
+    <span class="chip" id="cLidar">LiDAR</span>
+    <span class="chip" id="cCam">CAMERA</span>
+    <span class="chip" id="cAvoid">AVOID</span>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <h2 style="white-space:nowrap">LiDAR 2D <span class="right" id="radarInfo"></span></h2>
+    <div class="body">
+      <div class="radarWrap"><canvas id="radar" width="520" height="520"></canvas></div>
+      <div class="readout">
+        <div class="metric"><div class="k">Gần nhất</div><div class="v" id="mMin">--</div></div>
+        <div class="metric"><div class="k">Trước</div><div class="v" id="mFront">--</div></div>
+        <div class="metric"><div class="k">Trái/Phải</div><div class="v" id="mLR">--</div></div>
+        <div class="metric"><div class="k">Phủ sàn</div><div class="v" id="mCov">--</div></div>
+      </div>
+      <div class="hint">Bấm vào radar để chọn điểm B. Toạ độ theo map, gốc là vị trí xe lúc bắt đầu.</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Camera — vật cản thấp <span class="right" id="camLink"></span></h2>
+    <div class="body">
+      <div class="camWrap">
+        <img id="cam" alt="camera stream">
+        <div class="camOverlay" id="camOverlay">--</div>
+      </div>
+      <div class="readout">
+        <div class="metric"><div class="k">Camera đo</div><div class="v" id="camD">--</div></div>
+        <div class="metric"><div class="k">Lệch ngang</div><div class="v" id="camX">--</div></div>
+        <div class="metric"><div class="k">Vật cản</div><div class="v" id="camBlock">--</div></div>
+        <div class="metric"><div class="k">Độ trễ</div><div class="v" id="camAge">--</div></div>
+      </div>
+      <div class="hint" id="camHint">Camera bắt vật thấp dưới mặt phẳng quét LiDAR: dây, cạnh hộp, chân bàn.</div>
+    </div>
+  </section>
+
+  <aside class="card" id="ctrl">
+    <h2>Điều khiển</h2>
+    <div class="body">
+      <div class="btns two">
+        <button id="bArm" class="primary">ARM</button>
+        <button id="bReset">RESET</button>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="t1">① Trực tiếp A→B</button>
+        <button class="tab" data-tab="t2">② Quét map trước</button>
+      </div>
+
+      <div class="pane" id="t1">
+        <h3>Đi A→B, không cần map</h3>
+        <div class="row"><span>X đích (m)</span><input type="number" id="dx" value="1.5" step="0.1"></div>
+        <div class="row"><span>Y đích (m)</span><input type="number" id="dy" value="0.0" step="0.1"></div>
+        <button id="bDirect" class="go" style="width:100%">ĐI TỚI B (vừa quét vừa đi)</button>
+        <div class="row" style="margin-top:8px"><span>Trạng thái</span><b id="dState">--</b></div>
+        <div class="row"><span>Còn lại</span><b id="dDist">--</b></div>
+        <div class="hint">Bị chặn thì xe tự quay tìm hướng vòng. LiDAR + camera luôn bật.</div>
+      </div>
+
+      <div class="pane hidden" id="t2">
+        <h3>Bước 1 — quét toàn bộ map</h3>
+        <div class="btns two" style="margin-bottom:6px">
+          <button id="bScan" class="go">BẮT ĐẦU QUÉT</button>
+          <button id="bResetMap">XOÁ MAP</button>
+        </div>
+        <div class="row" style="margin-top:4px"><span>Trạng thái</span>
+          <b id="scanState"><span class="badge no">chưa quét</span></b></div>
+        <div class="row"><span>Phủ sàn</span><b id="scanCov">--</b></div>
+        <div class="row"><span>Vùng chưa biết</span><b id="scanUnknown">--</b></div>
+        <div class="row"><span>Frontier</span><b id="scanFrontier">--</b></div>
+
+        <h3 style="margin-top:12px">Bước 2 — đi tới B trên map đã quét</h3>
+        <div class="row"><span>X đích (m)</span><input type="number" id="mx" value="1.5" step="0.1"></div>
+        <div class="row"><span>Y đích (m)</span><input type="number" id="my" value="0.0" step="0.1"></div>
+        <button id="bMapped" class="go" style="width:100%" disabled>ĐI TỚI B (theo map)</button>
+        <div class="hint" id="mappedHint">Quét xong nút này mới bật. Xe tự STOP sau khi quét, phải ARM lại.</div>
+      </div>
+
+      <div class="pad">
+        <span class="empty"></span><button data-mv="fwd">▲</button><span class="empty"></span>
+        <button data-mv="left">◀</button><button data-mv="stop" class="stop" style="font-size:10px">STOP</button><button data-mv="right">▶</button>
+        <span class="empty"></span><button data-mv="back">▼</button><span class="empty"></span>
+      </div>
+      <button id="bEstop" class="stop" style="width:100%">■ DỪNG KHẨN CẤP</button>
+      <div class="hint">Giữ nút mũi tên để chạy tay, thả để dừng.</div>
+    </div>
+  </aside>
+
+  <section class="card">
+    <h2>Tốc độ <span class="right" id="spdInfo"></span></h2>
+    <div class="body">
+      <div class="row"><span>Tiến tự hành (RPM)</span><input type="range" id="sSpd" min="40" max="135" step="1"><span id="vSpd">40</span></div>
+      <div class="row"><span>Quay tự hành (RPM)</span><input type="range" id="sTurn" min="40" max="135" step="1"><span id="vTurn">35</span></div>
+      <div class="row"><span>Lái tay (m/s)</span><input type="range" id="sManV" min="0.04" max="0.30" step="0.01"><span id="vManV">0.12</span></div>
+      <div class="row"><span>Quay tay (rad/s)</span><input type="range" id="sManW" min="0.20" max="1.20" step="0.05"><span id="vManW">0.60</span></div>
+      <button id="bApplySpd" class="primary" style="width:100%;margin-top:6px">ÁP DỤNG TỐC ĐỘ</button>
+      <div class="hint" id="spdHint">Tự hành dùng RPM; lái tay dùng m/s. Cấu hình được lưu và giữ sau khi restart.</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Ngưỡng camera
+      <label class="sw" style="margin-left:auto"><input type="checkbox" id="camEnabled"> bật</label>
+    </h2>
+    <div class="body">
+      <div class="row"><span>Chặn dưới (m)</span><input type="range" id="sStop" min="0.10" max="0.90" step="0.01"><span id="vStop">0.30</span></div>
+      <div class="row"><span>Nhả trên (m)</span><input type="range" id="sClear" min="0.15" max="1.20" step="0.01"><span id="vClear">0.45</span></div>
+      <div class="row"><span>Nửa bề ngang (m)</span><input type="range" id="sHalf" min="0.05" max="0.60" step="0.01"><span id="vHalf">0.25</span></div>
+      <div class="row"><span>Timeout (s)</span><input type="range" id="sTo" min="0.3" max="5" step="0.1"><span id="vTo">2.0</span></div>
+      <div class="btns two" style="margin-top:6px">
+        <button id="bApplyCam" class="primary">Áp dụng</button>
+        <button id="bReloadCam">Tải lại</button>
+      </div>
+      <button id="bCaptureBg" style="width:100%;margin-top:6px">CHỤP LẠI NỀN SÀN</button>
+      <div class="hint" style="margin-top:3px">Đặt xe đứng yên, trước mặt trống ≥ 1 m, rồi bấm. Dùng khi đổi chỗ chạy.</div>
+      <div class="row" style="margin-top:10px"><span>Test logic (m)</span>
+        <input type="number" id="testD" value="0.2" step="0.05" min="0.05" max="2">
+        <button id="bTest" style="padding:5px 9px">Thử</button></div>
+      <div id="testOut">Kiểm tra chặn mà không cần cho xe chạy.</div>
+    </div>
+  </section>
+
+  <section class="card" style="grid-column:span 2">
+    <h2>Nhật ký</h2>
+    <div class="body"><div class="log" id="log"></div></div>
+  </section>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const host = location.hostname;
+let lastPose = null;
+let pick = null;
+let activeTab = 't1';
+let scanStartedAt = 0;
+let scanDoneNotified = false;
+
+function fmt(v, d){ d = (d === undefined) ? 2 : d; return (v===null||v===undefined||isNaN(v)) ? '--' : Number(v).toFixed(d); }
+function cls(el, mode){ el.classList.remove('on','warn','bad'); if(mode) el.classList.add(mode); }
+function logLine(msg){
+  const box = $('log'), div = document.createElement('div');
+  div.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+  box.prepend(div);
+  while(box.childElementCount > 60) box.lastChild.remove();
+}
+async function api(path){
+  try { const r = await fetch(path); const t = await r.text(); try { return JSON.parse(t); } catch(e){ return {raw:t}; } }
+  catch(e){ return {error:String(e)}; }
+}
+async function send(cmd, note){
+  const j = await api('/api/cmd?val=' + encodeURIComponent(cmd));
+  if(j && j.reason === 'NOT_ARMED' && cmd !== 'STOP'){
+    showBanner('Chưa ARM — bấm nút ARM trước khi lái', 'bad');
+    $('bArm').classList.add('attention');
+    setTimeout(function(){ $('bArm').classList.remove('attention'); }, 5000);
+  }
+  logLine((note||cmd) + ' → ' + (j.status||j.error||'?') + ' ' + (j.reason||''));
+  return j;
+}
+
+const BLOCK_VI = {
+  NOT_ARMED: 'Chưa ARM — bấm nút ARM trước',
+  LATCHED: 'Cần ARM lại (xe đang khoá)',
+  FAULT: 'MCU báo lỗi — bấm RESET',
+  MCU_FAULT: 'MCU báo lỗi — bấm RESET',
+  D0_STALE: 'MCU không phản hồi — kiểm tra cáp/nguồn',
+  SCAN_STALE: 'LiDAR mất dữ liệu',
+  CALLER_STALE: 'Lệnh quá cũ — thử lại',
+  MAP_NOT_READY: 'Chưa có map — chờ 2-3 giây',
+  TF_NOT_READY: 'SLAM chưa sẵn sàng — chờ 2-3 giây',
+  SCAN_MOUNT_TF_NOT_READY: 'Thiếu TF gắn LiDAR',
+  BODY_RADIUS_UNCONFIGURED: 'Thiếu cấu hình kích thước thân xe',
+  TRIAL_EXPIRED: 'Hết thời gian thử',
+  CAM_OBSTACLE: 'Camera thấy vật cản phía trước'
+};
+let bannerTimer = null;
+function showBanner(msg, kind){
+  const el = $('banner');
+  el.textContent = msg;
+  el.className = '';
+  el.classList.add(kind || 'bad');
+  el.style.display = 'block';
+  clearTimeout(bannerTimer);
+  bannerTimer = setTimeout(function(){ el.style.display = 'none'; }, 8000);
+}
+function handleStart(j, tag){
+  if(j && j.status === 'ok'){ showBanner(tag + ' — đã bắt đầu', 'ok'); return true; }
+  const list = (j && j.blockers) || [];
+  const msg = list.length ? list.map(function(b){ return BLOCK_VI[b] || b; }).join(' · ')
+                          : ((j && j.reason) || 'Không rõ lý do');
+  showBanner(tag + ' thất bại: ' + msg, 'bad');
+  logLine(tag + ' thất bại: ' + msg);
+  if(list.indexOf('NOT_ARMED') >= 0 || list.indexOf('LATCHED') >= 0){
+    $('bArm').classList.add('attention');
+    setTimeout(function(){ $('bArm').classList.remove('attention'); }, 8000);
+  }
+  return false;
+}
+
+const camHost = (host === 'localhost' || host === '::1') ? '127.0.0.1' : host;
+$('cam').src = 'http://' + camHost + ':8081/stream';
+$('camLink').innerHTML = '<a href="http://' + camHost + ':8081/view" target="_blank">tab riêng</a>';
+
+const cv = $('radar'), ctx = cv.getContext('2d');
+const MAX_R = 4.0;
+const GEO = { cx: 260, cy: 0.84*520, scale: 1 };
+
+function drawRadar(t){
+  const W = cv.width, H = cv.height, cx = W/2, cy = H*0.84;
+  const scale = Math.min(W, H*0.84) / (MAX_R*1.25);
+  GEO.cx = cx; GEO.cy = cy; GEO.scale = scale;
+  ctx.clearRect(0,0,W,H); ctx.fillStyle = '#050a11'; ctx.fillRect(0,0,W,H);
+
+  ctx.strokeStyle = '#12202f'; ctx.lineWidth = 1; ctx.font = '10px Consolas';
+  for(let r=1; r<=4; r++){
+    ctx.beginPath(); ctx.arc(cx, cy, r*scale, Math.PI, 2*Math.PI); ctx.stroke();
+    ctx.fillStyle = '#2c4258'; ctx.fillText(r+'m', cx + r*scale - 11, cy - 3);
+  }
+  ctx.strokeStyle = '#16283a';
+  const dirs = [-60,-30,0,30,60];
+  for(let i=0;i<dirs.length;i++){
+    const rad = (dirs[i]-90)*Math.PI/180;
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+Math.cos(rad)*MAX_R*scale, cy+Math.sin(rad)*MAX_R*scale); ctx.stroke();
+  }
+
+  const ranges = (t && t.ranges) || [], n = ranges.length || 0;
+  for(let i=0;i<n;i++){
+    const d = ranges[i];
+    if(!isFinite(d) || d<=0.02 || d>=15) continue;
+    const ang = (i/n)*2*Math.PI;
+    const r = Math.min(d, MAX_R)*scale;
+    const x = cx - Math.sin(ang)*r, y = cy - Math.cos(ang)*r;
+    ctx.fillStyle = d < 0.35 ? '#f87171' : d < 0.8 ? '#fbbf24' : '#22d3ee';
+    ctx.fillRect(x-1.5, y-1.5, 3, 3);
+  }
+
+  const cam = (t && t.camera) || {};
+  const camHit = !!(cam.blocked || cam.obstacle);
+  if(cam.enabled && isFinite(cam.d) && cam.d < 9){
+    const dr = Math.min(cam.d, MAX_R)*scale;
+    ctx.fillStyle = camHit ? 'rgba(248,113,113,.22)' : 'rgba(52,211,153,.13)';
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.arc(cx, cy, dr, -Math.PI/2-0.44, -Math.PI/2+0.44); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = camHit ? '#f87171' : '#34d399';
+    ctx.beginPath(); ctx.arc(cx, cy, dr, -Math.PI/2-0.44, -Math.PI/2+0.44); ctx.stroke();
+  }
+
+  const mi = (t && t.map_info) || {};
+  let goal = pick;
+  if(mi.goal_x || mi.goal_y) goal = { x: mi.goal_x, y: mi.goal_y };
+  if(goal && lastPose){
+    const dx = goal.x - lastPose[0], dy = goal.y - lastPose[1];
+    const th = lastPose[2];
+    const xf = Math.cos(th)*dx + Math.sin(th)*dy;
+    const yl = -Math.sin(th)*dx + Math.cos(th)*dy;
+    const gx = cx - yl*scale, gy = cy - xf*scale;
+    ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(gx, gy, 7, 0, 2*Math.PI); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gx-12,gy); ctx.lineTo(gx+12,gy);
+    ctx.moveTo(gx,gy-12); ctx.lineTo(gx,gy+12); ctx.stroke();
+    ctx.fillStyle = '#fbbf24'; ctx.font = 'bold 11px Consolas';
+    ctx.fillText('B', gx+10, gy-10);
+  }
+
+  const bl = 0.16*scale, bw = 0.12*scale;
+  ctx.fillStyle = '#22d3ee'; ctx.fillRect(cx-bw, cy-bl, bw*2, bl*2);
+  ctx.fillStyle = '#04121a'; ctx.font = 'bold 9px Consolas'; ctx.textAlign='center';
+  ctx.fillText('AGV', cx, cy+3); ctx.textAlign='start';
+
+  // vat can dong do camera dong gop vao ban do
+  const dyn = (mi && mi.dyn_obstacles) || [];
+  if(lastPose){
+    ctx.strokeStyle = '#fb7185'; ctx.lineWidth = 2;
+    for(let i=0;i<dyn.length;i++){
+      const dx = dyn[i][0] - lastPose[0], dy = dyn[i][1] - lastPose[1];
+      const xf = Math.cos(lastPose[2])*dx + Math.sin(lastPose[2])*dy;
+      const yl = -Math.sin(lastPose[2])*dx + Math.cos(lastPose[2])*dy;
+      const gx = cx - yl*scale, gy = cy - xf*scale;
+      ctx.beginPath(); ctx.moveTo(gx-4, gy-4); ctx.lineTo(gx+4, gy+4);
+      ctx.moveTo(gx+4, gy-4); ctx.lineTo(gx-4, gy+4); ctx.stroke();
+    }
+  }
+}
+
+function sectorMin(ranges, fromDeg, toDeg){
+  const n = ranges.length || 0;
+  if(!n) return null;
+  let m = Infinity;
+  for(let deg = fromDeg; deg <= toDeg; deg++){
+    const idx = ((Math.round(deg*n/360) % n) + n) % n;
+    const v = ranges[idx];
+    if(isFinite(v) && v > 0.02 && v < 15 && v < m) m = v;
+  }
+  return m === Infinity ? null : m;
+}
+
+cv.addEventListener('click', function(e){
+  if(!lastPose){ showBanner('Chưa có vị trí xe (SLAM chưa sẵn sàng)', 'bad'); return; }
+  const r = cv.getBoundingClientRect();
+  const px = (e.clientX - r.left) * (cv.width / r.width);
+  const py = (e.clientY - r.top) * (cv.height / r.height);
+  const xf = (GEO.cy - py) / GEO.scale;
+  const yl = (GEO.cx - px) / GEO.scale;
+  const th = lastPose[2];
+  const wx = lastPose[0] + Math.cos(th)*xf - Math.sin(th)*yl;
+  const wy = lastPose[1] + Math.sin(th)*xf + Math.cos(th)*yl;
+  pick = { x: wx, y: wy };
+  if(activeTab === 't1'){ $('dx').value = wx.toFixed(2); $('dy').value = wy.toFixed(2); }
+  else { $('mx').value = wx.toFixed(2); $('my').value = wy.toFixed(2); }
+  logLine('Chọn B: x=' + wx.toFixed(2) + ' y=' + wy.toFixed(2));
+});
+
+document.querySelectorAll('.tab').forEach(function(btn){
+  btn.onclick = function(){
+    document.querySelectorAll('.tab').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    activeTab = btn.dataset.tab;
+    $('t1').classList.toggle('hidden', activeTab !== 't1');
+    $('t2').classList.toggle('hidden', activeTab !== 't2');
+  };
+});
+
+/* ---------- heartbeat: mat ket noi la xe tu dung ---------- */
+let hbFail = 0;
+let stream = null;
+function openStream(){
+  try{
+    if(stream){ stream.close(); }
+    stream = new EventSource('/api/stream');
+    stream.onmessage = function(){ hbFail = 0; };
+    stream.onerror = function(){ /* EventSource tu dong ket noi lai */ };
+  }catch(e){}
+}
+openStream();
+
+async function heartbeat(){
+  try {
+    const r = await fetch('/api/alive', {cache:'no-store'});
+    if(!r.ok) throw new Error('bad');
+    if(hbFail >= 2){ showBanner('Đã kết nối lại với xe', 'ok'); }
+    hbFail = 0;
+  } catch(e){
+    hbFail++;
+    if(hbFail === 3){
+      showBanner('MẤT KẾT NỐI TỚI XE — nút STOP trên web không còn tác dụng. Xe sẽ tự dừng sau ~2,5 giây.', 'bad');
+    }
+  }
+}
+setInterval(heartbeat, 500);
+
+async function tick(){
+  const t = await api('/api/telemetry');
+  if(!t || t.status === 'NO_TRANSPORT'){ logLine('Không kết nối điều khiển'); return; }
+  const c = t.control || {};
+  const mi = t.map_info || {};
+  loadSpeed(t);
+
+  cls($('cArm'), c.armed ? 'on' : null);
+  $('cArm').textContent = c.armed ? 'ARMED' : 'DISARMED';
+  if(!c.armed){ $('bArm').classList.add('attention'); }
+  else { $('bArm').classList.remove('attention'); }
+
+  cls($('cAuto'), t.auto ? 'on' : null);
+  $('cAuto').textContent = t.auto ? 'AUTO' : 'MANUAL';
+  cls($('cMode'), null);
+  $('cMode').textContent = mi.task_mode || 'IDLE';
+
+  const fault = c.fault || (((c.latest_d0||{}).safety === 'FAULT') ? 'MCU FAULT' : null);
+  cls($('cFault'), fault ? 'bad' : null);
+  $('cFault').textContent = fault || 'OK';
+
+  const l = t.lidar || {};
+  cls($('cLidar'), l.connected ? 'on' : 'bad');
+  $('cLidar').textContent = l.connected ? ('LiDAR ' + fmt(l.age_s,2) + 's') : 'LiDAR mất';
+
+  const cam = t.camera || {};
+  const fresh = cam.age_s !== null && cam.age_s !== undefined && cam.age_s <= (cam.timeout_s || 2);
+  const camHit = !!(cam.blocked || cam.obstacle);
+  const bgStale = (cam.bg_diff !== null && cam.bg_diff !== undefined &&
+                   cam.bg_diff > (cam.bg_max_diff || 20));
+  cls($('cCam'), cam.enabled ? (bgStale ? 'warn' : (fresh ? 'on' : 'warn')) : null);
+  $('cCam').textContent = cam.enabled ? (bgStale ? 'CAMERA LỆCH NỀN' : (fresh ? 'CAMERA OK' : 'CAMERA TRỄ')) : 'CAMERA TẮT';
+  if(bgStale){
+    cls($('cAvoid'), 'warn');
+    $('cAvoid').textContent = 'BỎ QUA CAM';
+  } else {
+    cls($('cAvoid'), cam.enabled ? (camHit ? 'bad' : 'on') : null);
+    $('cAvoid').textContent = cam.enabled ? (camHit ? 'CÓ VẬT CẢN' : 'SẴN SÀNG') : 'TẮT';
+  }
+
+  lastPose = (mi.robot_pose && mi.robot_pose.length === 3) ? mi.robot_pose : null;
+
+  $('mMin').textContent = fmt(t.min_m, 2) + ' m';
+  cls($('mMin'), t.min_m < 0.3 ? 'bad' : t.min_m < 0.6 ? 'warn' : 'ok');
+  const rr = t.ranges || [];
+  const front = sectorMin(rr, -15, 15);
+  const left  = sectorMin(rr, 60, 120);
+  const right = sectorMin(rr, -120, -60);
+  $('mFront').textContent = fmt(front, 2) + ' m';
+  cls($('mFront'), front !== null && front < 0.35 ? 'bad' : front !== null && front < 0.7 ? 'warn' : 'ok');
+  $('mLR').textContent = fmt(left,1) + '/' + fmt(right,1);
+  $('mCov').textContent = fmt(t.trajectory && t.trajectory.coverage_pct, 1) + ' %';
+
+  const clear = (cam.d === null || cam.d === undefined || cam.d >= 9);
+  const blockedNow = !!cam.obstacle;      // chi bao CHAN khi dang trong nguong
+  $('camD').textContent = clear ? 'trống' : fmt(cam.d, 2) + ' m';
+  cls($('camD'), blockedNow ? 'bad' : 'ok');
+  $('camX').textContent = fmt(Math.abs(cam.x) < 0.005 ? 0 : cam.x, 2) + ' m';
+  $('camBlock').textContent = blockedNow ? 'CÓ' : 'không';
+  cls($('camBlock'), blockedNow ? 'bad' : 'ok');
+  $('camAge').textContent = fmt(cam.age_s, 2) + ' s';
+  cls($('camAge'), fresh ? 'ok' : 'warn');
+  $('camOverlay').innerHTML = clear ? 'CAM: <b>trống</b>'
+      : ('CAM: <b>' + fmt(cam.d,2) + ' m</b>' + (blockedNow ? ' · CHẶN' : ''));
+
+  const bgd = cam.bg_diff;
+  if(bgd !== null && bgd !== undefined && bgd > 20){
+    $('camHint').textContent = 'NỀN LỆCH ' + Number(bgd).toFixed(0) +
+      ' — bấm CHỤP LẠI NỀN SÀN (xe đã đổi chỗ?)';
+    $('camHint').style.color = 'var(--red)';
+  } else {
+    $('camHint').textContent = 'Camera bắt vật thấp dưới mặt phẳng quét LiDAR: dây, cạnh hộp, chân bàn.';
+    $('camHint').style.color = '';
+  }
+
+  $('radarInfo').textContent = rr.length + ' tia · ' + (mi.task_mode || 'IDLE') + ' · ' + (mi.goal_type || '');
+
+  $('dState').textContent = mi.phase || '--';
+  $('dDist').textContent = (mi.dist_to_goal !== null && mi.dist_to_goal !== undefined)
+      ? fmt(mi.dist_to_goal, 2) + ' m' : '--';
+
+  const st = mi.explore_state || 'IDLE';
+  const ready = !!mi.map_ready;
+  let label = 'chưa quét', color = 'no';
+  if(st === 'EXPLORING'){ label = 'đang quét...'; color = ''; }
+  else if(st === 'RETURNING_HOME'){ label = 'đang về Home'; color = ''; }
+  else if(st === 'COMPLETED'){ label = mi.explore_partial ? 'xong một phần' : 'map sẵn sàng'; color = ready ? 'ok' : ''; }
+  else if(st === 'DIRECT_NAV'){ label = 'đang đi trực tiếp'; color = ''; }
+  $('scanState').innerHTML = '<span class="badge ' + color + '">' + label + '</span>';
+  $('scanCov').textContent = fmt(t.trajectory && t.trajectory.coverage_pct, 1) + ' %';
+  $('scanUnknown').textContent = (mi.unknown_cells === null || mi.unknown_cells === undefined) ? '--' : mi.unknown_cells;
+  $('scanFrontier').textContent = (mi.frontiers === null || mi.frontiers === undefined) ? '--' : mi.frontiers;
+
+  $('bMapped').disabled = !ready;
+  $('mappedHint').textContent = ready
+      ? 'Map đã sẵn sàng. Bấm ARM lại (xe đã STOP sau khi quét) rồi ĐI TỚI B.'
+      : 'Quét xong nút này mới bật. Xe tự STOP sau khi quét, phải ARM lại.';
+
+  if(scanStartedAt && st === 'COMPLETED' && !scanDoneNotified){
+    scanDoneNotified = true;
+    const elapsed = Date.now() - scanStartedAt;
+    if(elapsed < 6000){
+      showBanner('Quét kết thúc ngay: map không còn frontier để đi. Bấm XOÁ MAP rồi quét lại, hoặc dời xe tới vùng mới.', 'bad');
+    } else if(mi.explore_partial){
+      showBanner('Quét xong MỘT PHẦN (còn vùng chưa biết). Bấm ARM lại nếu muốn đi tiếp, hoặc XOÁ MAP để quét lại.', 'ok');
+    } else {
+      showBanner('Map đã quét xong. Xe đã tự STOP — bấm ARM lại rồi ĐI TỚI B.', 'ok');
+    }
+    scanStartedAt = 0;
+  }
+  if(st !== 'COMPLETED'){ scanDoneNotified = false; }
+
+  drawRadar(t);
+}
+
+async function loadCam(){
+  const j = await api('/api/cam');
+  if(j.status !== 'ok') return;
+  $('camEnabled').checked = !!j.enabled;
+  $('sStop').value = j.stop_m;   $('vStop').textContent = Number(j.stop_m).toFixed(2);
+  $('sClear').value = j.clear_m; $('vClear').textContent = Number(j.clear_m).toFixed(2);
+  $('sHalf').value = j.half_w;   $('vHalf').textContent = Number(j.half_w).toFixed(2);
+  $('sTo').value = j.timeout_s;  $('vTo').textContent = Number(j.timeout_s).toFixed(1);
+}
+
+$('bArm').onclick = function(){ send('ARM', 'ARM'); };
+$('bReset').onclick = function(){ send('RESET', 'RESET'); };
+$('bEstop').onclick = function(){ send('STOP','DỪNG KHẨN CẤP'); api('/api/auto?act=STOP'); };
+
+$('bDirect').onclick = async function(){
+  const x = $('dx').value, y = $('dy').value;
+  pick = { x: Number(x), y: Number(y) };
+  const j = await api('/api/auto?act=START&mode=DIRECT&x=' + x + '&y=' + y);
+  handleStart(j, 'Đi trực tiếp');
+};
+
+$('bScan').onclick = async function(){
+  const j = await api('/api/auto?act=START&mode=EXPLORE');
+  if(handleStart(j, 'Quét map')){ scanStartedAt = Date.now(); }
+};
+
+$('bResetMap').onclick = async function(){
+  const j = await api('/api/cmd?val=RESET_MAP');
+  const ok = j && (j.status === 'SENT' || j.status === 'OK');
+  if(ok){
+    scanStartedAt = 0;
+    showBanner('Đã xoá map — chờ ~8 giây rồi bấm ARM + BẮT ĐẦU QUÉT', 'ok');
+  } else {
+    showBanner('Không xoá được map: ' + ((j && (j.reason || j.error)) || '?'), 'bad');
+  }
+  logLine('RESET_MAP → ' + ((j && (j.status || j.error)) || '?') + ' ' + ((j && j.reason) || ''));
+};
+
+$('bMapped').onclick = async function(){
+  const x = $('mx').value, y = $('my').value;
+  pick = { x: Number(x), y: Number(y) };
+  const j = await api('/api/auto?act=START&mode=POINT&x=' + x + '&y=' + y);
+  handleStart(j, 'Đi theo map');
+};
+
+let holdTimer = null;
+let manV = 0.12, manW = 0.60;
+document.querySelectorAll('.pad button').forEach(function(btn){
+  const mv = btn.dataset.mv;
+  function cmdNow(){
+    if(mv === 'fwd') return 'V ' + manV.toFixed(3) + ' 0.0';
+    if(mv === 'back') return 'V ' + (-manV * 0.8).toFixed(3) + ' 0.0';
+    if(mv === 'left') return 'V 0.0 ' + manW.toFixed(2);
+    if(mv === 'right') return 'V 0.0 ' + (-manW).toFixed(2);
+    return null;
+  }
+  function start(e){
+    e.preventDefault();
+    if(mv === 'stop'){ send('STOP','STOP tay'); return; }
+    const cmd = cmdNow();
+    send(cmd, mv);
+    clearInterval(holdTimer);
+    holdTimer = setInterval(function(){ send(cmdNow(), mv); }, 150);
+  }
+  function stop(){
+    if(holdTimer){ clearInterval(holdTimer); holdTimer = null; send('V 0.000 0.000','nhả'); }
+  }
+  btn.addEventListener('pointerdown', start);
+  btn.addEventListener('pointerup', stop);
+  btn.addEventListener('pointerleave', stop);
+  btn.addEventListener('pointercancel', stop);
+});
+
+['sStop','sClear','sHalf','sTo'].forEach(function(id){
+  $(id).addEventListener('input', function(){
+    $('v'+id.slice(1)).textContent = Number($(id).value).toFixed(id==='sTo'?1:2);
+  });
+});
+
+$('bApplyCam').onclick = async function(){
+  const q = new URLSearchParams({ enabled: $('camEnabled').checked ? 1 : 0,
+    stop_m: $('sStop').value, clear_m: $('sClear').value,
+    half_w: $('sHalf').value, timeout_s: $('sTo').value });
+  const j = await api('/api/cam_config?' + q.toString());
+  logLine('Cấu hình camera → ' + (j.status||j.error||'?'));
+};
+$('bReloadCam').onclick = loadCam;
+
+/* ---------- toc do ---------- */
+let spdDirty = false;
+let spdTimer = null;
+
+function loadSpeed(t){
+  const sc = (t && t.speed_config) || {};
+  if(sc.speed_rpm !== undefined){
+    if(!spdDirty){
+      $('sSpd').value = sc.speed_rpm;   $('vSpd').textContent = Math.round(sc.speed_rpm);
+      $('sTurn').value = sc.turn_rpm;   $('vTurn').textContent = Math.round(sc.turn_rpm);
+      $('spdInfo').textContent = (sc.cruise_mps ? sc.cruise_mps.toFixed(2) + ' m/s' : '');
+    }
+  }
+}
+
+async function applySpeed(quiet){
+  const j = await api('/api/auto_config?speed=' + $('sSpd').value + '&turn=' + $('sTurn').value);
+  if(j && j.status === 'OK'){
+    spdDirty = false;
+    $('spdInfo').textContent = (j.cruise_mps ? j.cruise_mps.toFixed(2) + ' m/s' : '');
+    if(!quiet){
+      showBanner('Đã áp dụng: ' + Math.round(j.speed_rpm) + ' RPM tiến · ' +
+                 Math.round(j.turn_rpm) + ' RPM quay', 'ok');
+    }
+    logLine('Tốc độ → ' + j.speed_rpm + '/' + j.turn_rpm + ' RPM');
+  } else {
+    showBanner('Không đổi được tốc độ: ' + ((j && (j.reason || j.status)) || '?'), 'bad');
+  }
+}
+
+['sSpd','sTurn','sManV','sManW'].forEach(function(id){
+  $(id).addEventListener('input', function(){
+    const v = Number($(id).value);
+    if(id === 'sSpd' || id === 'sTurn'){
+      $('v'+id.slice(1)).textContent = Math.round(v);
+      spdDirty = true;                       // khong cho tick ghi de
+      clearTimeout(spdTimer);
+      spdTimer = setTimeout(function(){ applySpeed(true); }, 500);
+    } else {
+      $('v'+id.slice(1)).textContent = v.toFixed(2);
+      if(id === 'sManV') manV = v;
+      if(id === 'sManW') manW = v;
+    }
+  });
+});
+$('bApplySpd').onclick = function(){ applySpeed(false); };
+
+$('bCaptureBg').onclick = async function(){
+  const j = await api('/api/cam_capture_bg');
+  if(j && j.status === 'ok'){
+    showBanner('Đã chụp nền mới (' + j.bytes + ' bytes)' + (j.restarted ? ' · node đã restart' : ''), 'ok');
+  } else {
+    showBanner('Chụp nền thất bại: ' + ((j && (j.reason || j.detail || j.error)) || '?'), 'bad');
+  }
+  logLine('CAPTURE_BG → ' + ((j && (j.status || j.error)) || '?'));
+};
+$('bTest').onclick = async function(){
+  const d = $('testD').value;
+  const j = await api('/api/cam_gate?v=0.12&d=' + d);
+  $('testOut').textContent = j.allow ? ('d=' + d + ' m → KHÔNG chặn (' + (j.status||'') + ')')
+                                     : ('d=' + d + ' m → CHẶN (' + (j.reason||'') + ')');
+  $('testOut').style.color = j.allow ? 'var(--green)' : 'var(--red)';
+};
+
+tick(); loadCam();
+setInterval(tick, 250);
+setInterval(loadCam, 5000);
+</script>
+</body>
+</html>

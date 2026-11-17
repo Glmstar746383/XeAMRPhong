@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+runtime/
+logs/
+*.bak
+*.bak_*
+ai_local_planner/checkpoints/
+ai_local_planner/exported/
+ai_local_planner/environments/
+models/runs/
