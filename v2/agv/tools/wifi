@@ -1,0 +1,498 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""wifi — cấu hình Wi-Fi cho xe AGV (netplan + systemd-networkd).
+
+Cách dùng:
+    wifi                # quét, chọn mạng, nhập mật khẩu, kết nối
+    wifi list           # chỉ liệt kê mạng đang thấy
+    wifi status         # trạng thái Wi-Fi / IP / Internet / Tailscale
+    wifi -y             # không hỏi xác nhận
+    wifi --ssid "ABC" --password-file /root/pw   # không tương tác
+    wifi --dry-run ...  # chỉ kiểm tra YAML, không áp dụng
+
+An toàn: trước khi áp dụng, toàn bộ /etc/netplan được sao lưu vào
+/root/netplan-backup-<thời gian>. Nếu không kết nối được trong 45 s,
+cấu hình cũ được khôi phục và áp dụng lại (giữ nguyên Wi-Fi đang chạy).
+"""
+import argparse
+import getpass
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+from datetime import datetime
+
+try:
+    import yaml
+except Exception:
+    yaml = None
+
+IFACE = "wlan0"
+NETPLAN_DIR = "/etc/netplan"
+USER_FILE = os.path.join(NETPLAN_DIR, "70-wifi-user.yaml")
+BACKUP_PREFIX = "/root/netplan-backup-"
+TIMEOUT_S = 45
+
+
+# ------------------------------------------------------------------ helpers
+def sh(cmd, timeout=60):
+    try:
+        r = subprocess.run(cmd, shell=isinstance(cmd, str),
+                           capture_output=True, text=True, timeout=timeout)
+        return r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()
+    except subprocess.TimeoutExpired:
+        return 124, "timeout"
+    except Exception as exc:
+        return 1, str(exc)
+
+
+def is_root():
+    return os.geteuid() == 0
+
+
+def elevate():
+    if is_root():
+        return
+    script = os.path.abspath(__file__)
+    args = sys.argv[1:]
+    if subprocess.run(["sudo", "-n", "true"], capture_output=True).returncode == 0:
+        os.execvp("sudo", ["sudo", "-n", sys.executable, script] + args)
+    os.execvp("sudo", ["sudo", sys.executable, script] + args)
+
+
+def iw_link():
+    rc, out = sh(["iw", "dev", IFACE, "link"], timeout=10)
+    ssid = None
+    signal = None
+    if rc == 0:
+        for line in out.splitlines():
+            line = line.strip()
+            if line.startswith("SSID:"):
+                ssid = line.split(":", 1)[1].strip()
+            elif line.startswith("signal:"):
+                signal = line.split(":", 1)[1].strip()
+    return ssid, signal
+
+
+def wlan_ipv4():
+    rc, out = sh(["ip", "-4", "-o", "addr", "show", IFACE], timeout=10)
+    if rc != 0:
+        return None
+    m = re.search(r"inet (\d+\.\d+\.\d+\.\d+/\d+)", out)
+    return m.group(1) if m else None
+
+
+def default_gw():
+    rc, out = sh(["ip", "route", "show", "default", "dev", IFACE], timeout=10)
+    return out.splitlines()[0] if rc == 0 and out else None
+
+
+def has_internet():
+    return sh(["ping", "-c", "1", "-W", "2", "1.1.1.1"], timeout=6)[0] == 0
+
+
+def tailscale_info():
+    info = {"ip": None, "state": "không có"}
+    rc, out = sh(["tailscale", "ip", "-4"], timeout=8)
+    if rc == 0 and out:
+        info["ip"] = out.splitlines()[0].strip()
+    rc, out = sh(["tailscale", "status"], timeout=8)
+    if rc == 0:
+        info["state"] = "đang chạy" if "logged out" not in out.lower() else "chưa đăng nhập"
+    return info
+
+
+def eth_state():
+    rc, out = sh(["ip", "-br", "addr", "show", "eth0"], timeout=8)
+    if rc != 0 or not out:
+        return "không có eth0"
+    parts = out.split()
+    state = parts[1] if len(parts) > 1 else "?"
+    ips = [p for p in parts[2:] if "/" in p]
+    return "%s%s" % (state, (" " + ", ".join(ips)) if ips else "")
+
+
+# ------------------------------------------------------------------ scan
+def scan_networks():
+    rc, out = sh(["iw", "dev", IFACE, "scan"], timeout=35)
+    if rc != 0:
+        return []
+    nets = {}
+    state = {"ssid": None, "sig": -999.0, "psk": False, "sae": False, "wep": False}
+
+    def flush():
+        ssid = state["ssid"]
+        if ssid:
+            cur = nets.get(ssid)
+            if cur is None or state["sig"] > cur[0]:
+                if state["sae"] and not state["psk"]:
+                    sec = "WPA3"
+                elif state["sae"] and state["psk"]:
+                    sec = "WPA2/3"
+                elif state["psk"]:
+                    sec = "WPA2"
+                elif state["wep"]:
+                    sec = "WEP"
+                else:
+                    sec = "MỞ"
+                nets[ssid] = (state["sig"], sec)
+
+    for line in out.splitlines():
+        if line.startswith("BSS "):
+            flush()
+            state.update({"ssid": None, "sig": -999.0, "psk": False,
+                          "sae": False, "wep": False})
+            continue
+        s = line.strip()
+        if s.startswith("signal:"):
+            try:
+                state["sig"] = float(s.split(":", 1)[1].split()[0])
+            except ValueError:
+                pass
+        elif s.startswith("SSID:"):
+            state["ssid"] = s.split(":", 1)[1].strip()
+        elif s.startswith("RSN:"):
+            pass
+        elif "Authentication suites:" in s or "AKM:" in s:
+            if "SAE" in s or "00-0f-ac:8" in s:
+                state["sae"] = True
+            if "PSK" in s or "00-0f-ac:2" in s:
+                state["psk"] = True
+        elif s.startswith("WEP:"):
+            state["wep"] = True
+    flush()
+    return sorted(((v[0], k, v[1]) for k, v in nets.items()), reverse=True)
+
+
+# ------------------------------------------------------------------ ui
+def bar(sig):
+    if sig >= -55:
+        return "████"
+    if sig >= -67:
+        return "███ "
+    if sig >= -78:
+        return "██  "
+    return "█   "
+
+
+def show_status():
+    ssid, sig = iw_link()
+    ip = wlan_ipv4()
+    ts = tailscale_info()
+    print("── Xe AGV · mạng ─────────────────────────────")
+    print("  eth0      : %s" % eth_state())
+    if ssid:
+        print("  Wi-Fi     : %s  (%s)" % (ssid, sig or "?"))
+    else:
+        print("  Wi-Fi     : chưa kết nối")
+    print("  IPv4      : %s" % (ip or "-"))
+    gw = default_gw()
+    print("  Gateway   : %s" % (gw or "-"))
+    print("  Internet  : %s" % ("OK" if has_internet() else "KHÔNG (có thể do mạng chặn / chưa có IP)"))
+    print("  Tailscale : %s  %s" % (ts["state"], ts["ip"] or ""))
+    try:
+        doc = load_user_yaml() or {}
+        saved = list(((doc.get("network") or {}).get("wifis") or {}).get("wlan0", {})
+                     .get("access-points", {}) or {})
+        if saved:
+            print("  Đã lưu    : %s" % ", ".join(saved))
+    except Exception:
+        pass
+    print("──────────────────────────────────────────────")
+
+
+def prompt_choice(nets):
+    print("\nWi-Fi thấy được (mạnh → yếu):")
+    for i, (sig, ssid, sec) in enumerate(nets, 1):
+        print("  %2d. %s %-32s %5.0f dBm  %s" % (i, bar(sig), ssid, sig, sec))
+    print("   0. Nhập tên Wi-Fi khác (mạng ẩn)")
+    while True:
+        try:
+            raw = input("\nChọn số hoặc gõ tên Wi-Fi: ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            sys.exit(1)
+        if raw == "0":
+            try:
+                name = input("Tên Wi-Fi (SSID): ").strip()
+            except (EOFError, KeyboardInterrupt):
+                print()
+                sys.exit(1)
+            if name:
+                return name, None
+            continue
+        if raw.isdigit() and 1 <= int(raw) <= len(nets):
+            return nets[int(raw) - 1][1], nets[int(raw) - 1][2]
+        if raw:
+            return raw, None
+
+
+# ------------------------------------------------------------------ netplan
+def load_user_yaml():
+    if not os.path.exists(USER_FILE):
+        return None
+    try:
+        with open(USER_FILE, "r", encoding="utf-8") as fh:
+            return yaml.safe_load(fh) or None
+    except Exception:
+        return None
+
+
+def build_doc(ssid, password, key_mgmt, base=None):
+    doc = base or {"network": {"version": 2, "renderer": "networkd"}}
+    net = doc.setdefault("network", {})
+    net["version"] = 2
+    net.setdefault("renderer", "networkd")
+    wifis = net.setdefault("wifis", {})
+    wlan = wifis.setdefault(IFACE, {})
+    wlan["dhcp4"] = True
+    wlan["optional"] = True
+    wlan.setdefault("regulatory-domain", "VN")
+    aps = wlan.setdefault("access-points", {})
+    if password is None:
+        ap = {}
+    else:
+        ap = {"auth": {"key-management": key_mgmt, "password": password}}
+    aps[ssid] = ap
+    return doc
+
+
+def dump_doc(doc):
+    return yaml.safe_dump(doc, sort_keys=False, allow_unicode=True,
+                          default_flow_style=False)
+
+
+def write_file(path, text, mode=0o600):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as fh:
+        fh.write(text)
+    os.chmod(tmp, mode)
+    os.replace(tmp, path)
+
+
+def backup_netplan():
+    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    dst = BACKUP_PREFIX + stamp
+    shutil.copytree(NETPLAN_DIR, dst)
+    return dst
+
+
+def restore_netplan(src):
+    if not os.path.isdir(src):
+        return
+    for name in os.listdir(NETPLAN_DIR):
+        p = os.path.join(NETPLAN_DIR, name)
+        if os.path.isfile(p):
+            os.remove(p)
+    shutil.copytree(src, NETPLAN_DIR, dirs_exist_ok=True)
+
+
+def force_network(ssid):
+    """Chọn đúng SSID trong wpa_supplicant (khi có nhiều mạng đã lưu)."""
+    rc, out = sh(["wpa_cli", "-i", IFACE, "list_networks"], timeout=10)
+    if rc != 0:
+        return False
+    for line in out.splitlines():
+        parts = line.split("\t")
+        if len(parts) >= 2 and parts[1] == ssid:
+            return sh(["wpa_cli", "-i", IFACE, "select_network", parts[0]],
+                      timeout=10)[0] == 0
+    return False
+
+
+def wait_connected(ssid, timeout=TIMEOUT_S):
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        now, _ = iw_link()
+        if now == ssid and wlan_ipv4():
+            return True
+        time.sleep(1.0)
+    return False
+
+
+def validate(doc):
+    """netplan generate trên bản sao tạm (không đụng hệ thống)."""
+    root = tempfile.mkdtemp(prefix="netplan-check-")
+    dest = os.path.join(root, "etc", "netplan")
+    os.makedirs(dest, exist_ok=True)
+    for name in os.listdir(NETPLAN_DIR):
+        if name.endswith(".yaml") and name != os.path.basename(USER_FILE):
+            shutil.copy2(os.path.join(NETPLAN_DIR, name), os.path.join(dest, name))
+    tmp_file = os.path.join(dest, os.path.basename(USER_FILE))
+    with open(tmp_file, "w", encoding="utf-8") as fh:
+        fh.write(dump_doc(doc))
+    os.chmod(tmp_file, 0o600)
+    rc, out = sh(["netplan", "generate", "--root-dir", root], timeout=30)
+    shutil.rmtree(root, ignore_errors=True)
+    return rc == 0, out
+
+
+def connect(ssid, password, key_mgmt="psk", dry=False, assume_yes=False,
+            apply=True, force_sae_retry=True):
+    base = load_user_yaml()
+    doc = build_doc(ssid, password, key_mgmt, base)
+    ok, out = validate(doc)
+    if not ok:
+        print("LỖI: YAML không hợp lệ:\n%s" % out)
+        return False
+    if dry:
+        print("── YAML sẽ ghi vào %s ──" % USER_FILE)
+        print(dump_doc(doc))
+        print("(dry-run: không áp dụng)")
+        return True
+    if not assume_yes:
+        cur, _ = iw_link()
+        print("\nSắp kết nối tới: %s" % ssid)
+        if cur:
+            print("Wi-Fi hiện tại  : %s" % cur)
+            print("CẢNH BÁO: nếu bạn đang SSH qua Wi-Fi, phiên này sẽ ngắt.")
+        print("Nên cắm dây LAN hoặc dùng Tailscale khi đổi mạng.")
+        try:
+            ans = input("Tiếp tục? [y/N] ").strip().lower()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            return False
+        if ans not in ("y", "yes", "c", "co", "có"):
+            print("Đã huỷ.")
+            return False
+
+    old = iw_link()[0]
+    backup = backup_netplan()
+    print("Đã sao lưu netplan → %s" % backup)
+
+    # nếu mạng cũ trùng SSID, bỏ ưu tiên cũ để chắc chắn thử mật khẩu mới
+    write_file(USER_FILE, dump_doc(doc))
+    print("Đang áp dụng cấu hình…")
+    rc, out = sh(["netplan", "apply"], timeout=90)
+    if rc != 0:
+        print("netplan apply lỗi:\n%s" % out)
+        restore_netplan(backup)
+        sh(["netplan", "apply"], timeout=90)
+        return False
+
+    sh(["iw", "dev", IFACE, "set", "power_save", "off"], timeout=8)
+    force_network(ssid)
+    print("Đang chờ kết nối (tối đa %ds)…" % TIMEOUT_S)
+    if wait_connected(ssid):
+        print("\n✅ ĐÃ KẾT NỐI: %s" % ssid)
+        show_status()
+        ip = wlan_ipv4()
+        ts = tailscale_info()
+        print("Gợi ý:")
+        print("  • Rút dây LAN được; xe tự vào lại mạng này khi khởi động.")
+        if ip:
+            print("  • SSH nội bộ     : ssh khangho@%s" % ip.split("/")[0])
+        if ts.get("ip"):
+            print("  • SSH Tailscale  : ssh khangho@%s" % ts["ip"])
+        return True
+
+    print("\n❌ Không kết nối được trong %ds." % TIMEOUT_S)
+    if force_sae_retry and key_mgmt == "psk":
+        print("Thử lại với WPA3 (SAE)…")
+        return connect(ssid, password, "sae", dry=False, assume_yes=True,
+                       apply=True, force_sae_retry=False)
+
+    print("Khôi phục cấu hình cũ…")
+    restore_netplan(backup)
+    sh(["netplan", "apply"], timeout=90)
+    time.sleep(4)
+    cur, _ = iw_link()
+    if cur:
+        print("Đã quay lại Wi-Fi cũ: %s" % cur)
+    else:
+        print("CẢNH BÁO: chưa vào lại được mạng cũ. Cắm LAN/Tailscale rồi thử lại.")
+        print("Sao lưu nằm ở: %s" % backup)
+    print("Nguyên nhân thường gặp: sai mật khẩu, mạng quá xa, hoặc router chặn thiết bị mới.")
+    return False
+
+
+# ------------------------------------------------------------------ main
+def main():
+    ap = argparse.ArgumentParser(
+        prog="wifi",
+        description="Cấu hình Wi-Fi cho xe AGV (netplan + networkd)")
+    ap.add_argument("action", nargs="?", default="connect",
+                    choices=["connect", "list", "status", "help"])
+    ap.add_argument("--ssid")
+    ap.add_argument("--password")
+    ap.add_argument("--password-file")
+    ap.add_argument("--key-mgmt", choices=["psk", "sae"], default="psk")
+    ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--no-apply", action="store_true",
+                    help="chỉ ghi file, không netplan apply")
+    ap.add_argument("-y", "--yes", action="store_true")
+    args = ap.parse_args()
+
+    if args.action in ("help",):
+        print(__doc__)
+        return 0
+
+    elevate()
+
+    if yaml is None:
+        print("Thiếu python3-yaml. Cài: sudo apt-get install -y python3-yaml")
+        return 1
+
+    if args.action == "status":
+        show_status()
+        return 0
+
+    if args.action == "list":
+        nets = scan_networks()
+        if not nets:
+            print("Không quét được mạng nào (kiểm tra: iw dev %s scan)." % IFACE)
+            return 1
+        print("Wi-Fi thấy được:")
+        for sig, ssid, sec in nets:
+            print("  %s %-32s %5.0f dBm  %s" % (bar(sig), ssid, sig, sec))
+        return 0
+
+    if os.path.exists("/sys/class/net/%s" % IFACE) is False:
+        print("Không có card Wi-Fi (%s)." % IFACE)
+        return 1
+
+    ssid = args.ssid
+    password = args.password or os.environ.get("WIFI_PASSWORD")
+    if args.password_file:
+        try:
+            with open(args.password_file, "r", encoding="utf-8") as fh:
+                password = fh.read().rstrip("\n")
+        except Exception as exc:
+            print("Không đọc được file mật khẩu: %s" % exc)
+            return 1
+
+    if not ssid:
+        nets = scan_networks()
+        if not nets:
+            print("Không quét được Wi-Fi. Thử: sudo iw dev %s scan" % IFACE)
+            return 1
+        ssid, sec_hint = prompt_choice(nets)
+        if sec_hint == "MỞ" and password is None:
+            password = None
+        else:
+            while True:
+                try:
+                    password = getpass.getpass("Mật khẩu Wi-Fi của '%s': " % ssid)
+                except (EOFError, KeyboardInterrupt):
+                    print()
+                    return 1
+                if password == "":
+                    print("Mật khẩu rỗng (Enter) = mạng mở. Gõ lại nếu không phải.")
+                    continue
+                break
+            if sec_hint == "WPA3":
+                args.key_mgmt = "sae"
+
+    if password is None and not args.ssid:
+        password = None
+
+    return 0 if connect(ssid, password, args.key_mgmt, dry=args.dry_run,
+                        assume_yes=args.yes, apply=not args.no_apply) else 2
+
+
+if __name__ == "__main__":
+    sys.exit(main())

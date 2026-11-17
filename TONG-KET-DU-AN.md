@@ -83,6 +83,21 @@ ssh -i $env:USERPROFILE\.ssh\pi_agv khangho@192.168.1.14
 
 Nếu IP đổi: quét LAN tìm cổng 22, `Resolve-DnsName khang.local`, hoặc dùng Tailscale.
 
+### Đổi Wi-Fi tại chỗ mới (lệnh `wifi`)
+
+Cắm LAN (hoặc vào bằng Tailscale) → SSH → gõ:
+
+```bash
+wifi            # quét mạng, chọn số, nhập mật khẩu, kết nối
+wifi status     # SSID, IP, gateway, Internet, Tailscale, mạng đã lưu
+wifi list       # chỉ liệt kê mạng đang thấy
+```
+
+Công cụ nằm ở `/usr/local/bin/wifi` (nguồn `~/agv/tools/wifi`). Nó tự sao lưu
+`/etc/netplan` → `/root/netplan-backup-*`, tự khôi phục nếu sai mật khẩu, tự thử
+WPA3 nếu cần, bật DHCP cho eth0 và tắt power-save Wi-Fi. Chi tiết:
+`docs/WIFI-TAILSCALE.md`.
+
 > Router bật **AP Isolation** → hai máy cùng Wi-Fi không thấy nhau. Dùng dây LAN hoặc Tailscale.
 
 ---
