@@ -1,4 +1,4 @@
-﻿# Äá»”I WI-FI Táº I CHá»– Má»šI â€” Lá»†NH `wifi`
+# Äá»”I WI-FI Táº I CHá»– Má»šI â€” Lá»†NH `wifi`
 
 Cáº­p nháº­t: 2026-11-17 Â· Ãp dá»¥ng trÃªn Pi (Ubuntu 24.04, netplan + systemd-networkd)
 
